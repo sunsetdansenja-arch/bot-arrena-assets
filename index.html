@@ -1,1 +1,177 @@
-sss
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARENA PLAYBOX - Booking Anti Ribet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --apple-black: #000000;
+            --arena-orange: #FF6B00;
+            --apple-gray: #1C1C1E;
+        }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--apple-black);
+            color: white;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass {
+            background: rgba(28, 28, 30, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .card-solid {
+            background-color: var(--apple-gray);
+            border-radius: 16px;
+        }
+        .btn-orange {
+            background-color: var(--arena-orange);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-orange:active {
+            transform: scale(0.96);
+        }
+        input, select {
+            background: #2C2C2E !important;
+            border: none !important;
+            outline: none !important;
+            color: white !important;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div id="app" class="max-w-md mx-auto">
+        <header class="text-center mb-8">
+            <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" 
+                 alt="Arena Playbox" class="h-20 mx-auto mb-4 object-contain">
+            <h1 class="text-2xl font-bold tracking-tight">ARENA PLAYBOX</h1>
+            <p class="text-gray-400 text-sm">Booking Anti Ribet & Cepat</p>
+        </header>
+
+        <section id="region-step">
+            <h2 class="text-lg font-semibold mb-4">Pilih Wilayah Rental:</h2>
+            <div class="grid grid-cols-1 gap-3">
+                <button onclick="selectRegion('Sabang')" class="card-solid p-4 text-left border-l-4 border-[#FF6B00] hover:bg-[#2C2C2E]">
+                    <span class="font-medium">SABANG</span>
+                </button>
+                <button onclick="selectRegion('Banda Aceh')" class="card-solid p-4 text-left border-l-4 border-[#FF6B00] hover:bg-[#2C2C2E]">
+                    <span class="font-medium">BANDA ACEH</span>
+                </button>
+                <button onclick="selectRegion('Aceh Timur')" class="card-solid p-4 text-left border-l-4 border-[#FF6B00] hover:bg-[#2C2C2E]">
+                    <span class="font-medium">ACEH TIMUR</span>
+                </button>
+            </div>
+            
+            <a href="https://wa.me/6283863557669?text=Halo%20Arena%20Playbox,%20mau%20tanya-tanya%20dulu" 
+               class="block mt-6 text-center text-orange-500 font-medium text-sm">
+               💬 Tanya Tanya Dulu (TTD)
+            </a>
+        </section>
+
+        <section id="booking-step" class="hidden animate-fade-in">
+            <div class="flex items-center mb-6">
+                <button onclick="location.reload()" class="text-orange-500 mr-4">← Back</button>
+                <h2 class="text-xl font-bold">Booking Form</h2>
+            </div>
+
+            <div class="flex p-1 bg-[#1C1C1E] rounded-xl mb-6">
+                <button id="tab-paket" onclick="switchType('Paket')" class="flex-1 py-2 rounded-lg bg-[#FF6B00] text-white font-medium">Paket</button>
+                <button id="tab-regular" onclick="switchType('Regular')" class="flex-1 py-2 rounded-lg text-gray-400 font-medium">Regular</button>
+            </div>
+
+            <form id="orderForm" class="space-y-4">
+                <div>
+                    <label class="text-xs text-gray-400 ml-1">NAMA LENGKAP</label>
+                    <input type="text" id="name" required class="w-full p-4 rounded-xl mt-1" placeholder="Masukkan nama Anda">
+                </div>
+
+                <div>
+                    <label class="text-xs text-gray-400 ml-1">PILIH PRODUK (<span id="type-label">Paket</span>)</label>
+                    <select id="product" class="w-full p-4 rounded-xl mt-1 appearance-none">
+                        </select>
+                </div>
+
+                <div class="glass p-4 rounded-2xl mt-4 border border-orange-500/20">
+                    <p class="text-xs text-gray-400">Estimasi Terpilih:</p>
+                    <p id="summary" class="text-orange-500 font-bold mt-1">Silahkan pilih paket</p>
+                </div>
+
+                <button type="submit" class="w-full btn-orange p-4 rounded-2xl font-bold mt-4 shadow-lg shadow-orange-500/20">
+                    BOOKING VIA WHATSAPP
+                </button>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        const CONFIG = {
+            whatsapp: "6283863557669",
+            colors: { primary: "#FF6B00", secondary: "#000000" }
+        };
+
+        const DATA = {
+            Paket: [
+                { name: "Paket Hemat 3 Jam", price: "Rp 25.000" },
+                { name: "Paket Malam (20:00 - Tutup)", price: "Rp 40.000" },
+                { name: "Paket Puas Seharian", price: "Rp 75.000" }
+            ],
+            Regular: [
+                { name: "PS4 - 1 Jam", price: "Rp 10.000" },
+                { name: "PS4 - Per jam selanjutnya", price: "+Rp 8.000" }
+            ]
+        };
+
+        const APP_STATE = {
+            region: "",
+            type: "Paket"
+        };
+
+        function selectRegion(region) {
+            APP_STATE.region = region;
+            document.getElementById('region-step').classList.add('hidden');
+            document.getElementById('booking-step').classList.remove('hidden');
+            updateProductList();
+        }
+
+        function switchType(type) {
+            APP_STATE.type = type;
+            const isPaket = type === 'Paket';
+            
+            // UI Toggle
+            document.getElementById('tab-paket').className = isPaket ? 'flex-1 py-2 rounded-lg bg-[#FF6B00] text-white font-medium' : 'flex-1 py-2 rounded-lg text-gray-400 font-medium';
+            document.getElementById('tab-regular').className = !isPaket ? 'flex-1 py-2 rounded-lg bg-[#FF6B00] text-white font-medium' : 'flex-1 py-2 rounded-lg text-gray-400 font-medium';
+            document.getElementById('type-label').innerText = type;
+            
+            updateProductList();
+        }
+
+        function updateProductList() {
+            const select = document.getElementById('product');
+            const items = DATA[APP_STATE.type];
+            select.innerHTML = items.map(item => `<option value="${item.name}">${item.name} (${item.price})</option>`).join('');
+            document.getElementById('summary').innerText = `${APP_STATE.type}: ${items[0].name}`;
+        }
+
+        document.getElementById('orderForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const product = document.getElementById('product').value;
+            
+            const message = `Halo Arena Playbox!\n\nSAYA MAU BOOKING ANTI RIBET\n--------------------------\n📍 Lokasi: ${APP_STATE.region}\n👤 Nama: ${name}\n🎮 Pilihan: ${product} (${APP_STATE.type})\n--------------------------\nMohon diproses ya, terima kasih!`;
+            
+            const waUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(message)}`;
+            window.open(waUrl, '_blank');
+        });
+
+        // Sync summary text
+        document.getElementById('product').addEventListener('change', (e) => {
+            document.getElementById('summary').innerText = `${APP_STATE.type}: ${e.target.value}`;
+        });
+    </script>
+</body>
+</html>
