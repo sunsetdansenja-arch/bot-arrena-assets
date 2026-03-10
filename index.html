@@ -4,174 +4,325 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARENA PLAYBOX - Booking Anti Ribet</title>
+    
+    <link rel="icon" href="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" type="image/png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --apple-black: #000000;
-            --arena-orange: #FF6B00;
-            --apple-gray: #1C1C1E;
+            --mario-orange: #FF6B00;
+            --mario-black: #000000;
+            --mario-yellow: #FFD700;
+            --mario-bg: #FF8833;
         }
+        
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: var(--apple-black);
-            color: white;
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--mario-orange);
+            color: var(--mario-black);
             -webkit-font-smoothing: antialiased;
+            /* Pola titik transparan untuk tekstur kartun tipis */
+            background-image: radial-gradient(rgba(0,0,0,0.05) 2px, transparent 2px);
+            background-size: 20px 20px;
         }
-        .glass {
-            background: rgba(28, 28, 30, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .card-solid {
-            background-color: var(--apple-gray);
+
+        /* Neo-brutalism / Mario UI Styles */
+        .mario-card {
+            background-color: white;
+            border: 4px solid var(--mario-black);
             border-radius: 16px;
+            box-shadow: 8px 8px 0px 0px var(--mario-black);
         }
-        .btn-orange {
-            background-color: var(--arena-orange);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+        .mario-btn {
+            background-color: white;
+            border: 4px solid var(--mario-black);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px 0px var(--mario-black);
+            transition: all 0.1s ease-in-out;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        .btn-orange:active {
-            transform: scale(0.96);
+
+        .mario-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px var(--mario-black);
         }
-        input, select {
-            background: #2C2C2E !important;
-            border: none !important;
-            outline: none !important;
-            color: white !important;
+
+        .mario-btn-yellow { background-color: var(--mario-yellow); }
+        .mario-btn-black { background-color: var(--mario-black); color: white; }
+
+        .mario-input {
+            width: 100%;
+            background-color: #F3F4F6;
+            border: 3px solid var(--mario-black);
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            outline: none;
+        }
+        
+        .mario-input:focus {
+            background-color: #ffffff;
+            border-color: var(--mario-orange);
+        }
+
+        .hidden { display: none !important; }
+        .animate-pop { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-8 min-h-screen flex items-center justify-center">
 
-    <div id="app" class="max-w-md mx-auto">
+    <div id="app" class="max-w-md w-full mx-auto animate-pop">
+        
         <header class="text-center mb-8">
-            <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" 
-                 alt="Arena Playbox" class="h-20 mx-auto mb-4 object-contain">
-            <h1 class="text-2xl font-bold tracking-tight">ARENA PLAYBOX</h1>
-            <p class="text-gray-400 text-sm">Booking Anti Ribet & Cepat</p>
+            <div class="inline-block p-2 bg-white border-4 border-black rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4">
+                <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" 
+                     alt="Arena Playbox" class="h-20 w-20 object-contain rounded-full">
+            </div>
+            <h1 class="text-3xl font-black text-white uppercase" style="text-shadow: 3px 3px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;">
+                ARENA PLAYBOX!
+            </h1>
+            <div class="mt-3 bg-black text-white px-4 py-2 rounded-lg border-2 border-white inline-block transform -rotate-2">
+                <p class="text-sm font-bold tracking-wide">"HAI NYOE RAKAN PLAYBOX ANDALAN GEUTANYOE"</p>
+            </div>
         </header>
 
-        <section id="region-step">
-            <h2 class="text-lg font-semibold mb-4">Pilih Wilayah Rental:</h2>
-            <div class="grid grid-cols-1 gap-3">
-                <button onclick="selectRegion('Sabang')" class="card-solid p-4 text-left border-l-4 border-[#FF6B00] hover:bg-[#2C2C2E]">
-                    <span class="font-medium">SABANG</span>
+        <section id="region-step" class="mario-card p-6">
+            <h2 class="text-xl font-bold mb-4 text-center border-b-4 border-black pb-2">PILIH MARKASMU:</h2>
+            <div class="grid grid-cols-1 gap-4">
+                <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">
+                    📍 SABANG
                 </button>
-                <button onclick="selectRegion('Banda Aceh')" class="card-solid p-4 text-left border-l-4 border-[#FF6B00] hover:bg-[#2C2C2E]">
-                    <span class="font-medium">BANDA ACEH</span>
+                <button onclick="APP_LOGIC.selectRegion('Banda Aceh')" class="mario-btn mario-btn-yellow p-4 text-lg">
+                    📍 BANDA ACEH
                 </button>
-                <button onclick="selectRegion('Aceh Timur')" class="card-solid p-4 text-left border-l-4 border-[#FF6B00] hover:bg-[#2C2C2E]">
-                    <span class="font-medium">ACEH TIMUR</span>
+                <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">
+                    📍 ACEH TIMUR
                 </button>
             </div>
             
-            <a href="https://wa.me/6283863557669?text=Halo%20Arena%20Playbox,%20mau%20tanya-tanya%20dulu" 
-               class="block mt-6 text-center text-orange-500 font-medium text-sm">
-               💬 Tanya Tanya Dulu (TTD)
+            <a href="#" onclick="APP_LOGIC.sendTTD()" class="block mt-6 text-center text-black font-bold text-sm hover:underline">
+               💬 WA TTD (Tanya Tanya Dulu)
             </a>
         </section>
 
-        <section id="booking-step" class="hidden animate-fade-in">
-            <div class="flex items-center mb-6">
-                <button onclick="location.reload()" class="text-orange-500 mr-4">← Back</button>
-                <h2 class="text-xl font-bold">Booking Form</h2>
+        <section id="booking-step" class="hidden">
+            <div class="flex items-center mb-4">
+                <button onclick="location.reload()" class="mario-btn bg-white px-4 py-2 text-sm mr-3">← KEMBALI</button>
             </div>
 
-            <div class="flex p-1 bg-[#1C1C1E] rounded-xl mb-6">
-                <button id="tab-paket" onclick="switchType('Paket')" class="flex-1 py-2 rounded-lg bg-[#FF6B00] text-white font-medium">Paket</button>
-                <button id="tab-regular" onclick="switchType('Regular')" class="flex-1 py-2 rounded-lg text-gray-400 font-medium">Regular</button>
+            <div class="mario-card p-6">
+                <h2 class="text-2xl font-black mb-6 text-center uppercase" id="region-title">BOOKING</h2>
+
+                <div class="flex gap-2 mb-6">
+                    <button id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2">PAKET</button>
+                    <button id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn bg-gray-200 flex-1 py-2">REGULAR</button>
+                </div>
+
+                <form id="orderForm" class="space-y-4">
+                    <div>
+                        <label class="block font-bold mb-1">NAMA LENGKAP PENGUASA KONSOL</label>
+                        <input type="text" id="name" required class="mario-input" placeholder="Misal > Bang Kapluk">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold mb-1">PILIHAN AMUNISI (<span id="type-label">Paket</span>)</label>
+                        <div class="relative">
+                            <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="mario-input appearance-none cursor-pointer">
+                                </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black">
+                                ▼
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="antar-jemput-container" class="hidden p-4 bg-yellow-100 border-3 border-black rounded-xl mt-4">
+                        <label class="flex items-center space-x-3 cursor-pointer font-bold mb-2">
+                            <input type="checkbox" id="isAntar" onchange="APP_LOGIC.toggleAddress()" class="w-6 h-6 accent-black border-black cursor-pointer">
+                            <span>Mau Pakai Layanan Antar/Jemput? 🛵</span>
+                        </label>
+                        <div id="address-container" class="hidden mt-2">
+                            <textarea id="address" class="mario-input" rows="2" placeholder="Ketik alamat lengkap pengantaran..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="bg-black text-white p-4 rounded-xl border-4 border-yellow-400 mt-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-red-600 text-white font-black px-3 py-1 rounded-bl-xl border-b-4 border-l-4 border-black transform rotate-6 scale-110 shadow-lg">
+                            SUPER DISKON!
+                        </div>
+                        <p class="font-bold text-gray-300 text-sm">Total Biaya:</p>
+                        <div class="flex items-end gap-3 mt-1">
+                            <p id="fake-price" class="text-lg text-gray-400 line-through decoration-red-500 decoration-4 font-black">Rp 0</p>
+                            <p id="real-price" class="text-3xl font-black text-yellow-400">Rp 0</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full mario-btn mario-btn-yellow p-4 text-xl mt-6 uppercase">
+                        🚀 GAS BOOKING SEKARANG!
+                    </button>
+                </form>
             </div>
-
-            <form id="orderForm" class="space-y-4">
-                <div>
-                    <label class="text-xs text-gray-400 ml-1">NAMA LENGKAP</label>
-                    <input type="text" id="name" required class="w-full p-4 rounded-xl mt-1" placeholder="Masukkan nama Anda">
-                </div>
-
-                <div>
-                    <label class="text-xs text-gray-400 ml-1">PILIH PRODUK (<span id="type-label">Paket</span>)</label>
-                    <select id="product" class="w-full p-4 rounded-xl mt-1 appearance-none">
-                        </select>
-                </div>
-
-                <div class="glass p-4 rounded-2xl mt-4 border border-orange-500/20">
-                    <p class="text-xs text-gray-400">Estimasi Terpilih:</p>
-                    <p id="summary" class="text-orange-500 font-bold mt-1">Silahkan pilih paket</p>
-                </div>
-
-                <button type="submit" class="w-full btn-orange p-4 rounded-2xl font-bold mt-4 shadow-lg shadow-orange-500/20">
-                    BOOKING VIA WHATSAPP
-                </button>
-            </form>
         </section>
     </div>
 
     <script>
+        // ==========================================
+        // 1. CONFIGURATION (Ubah Harga & WA di sini)
+        // ==========================================
         const CONFIG = {
             whatsapp: "6283863557669",
-            colors: { primary: "#FF6B00", secondary: "#000000" }
+            // Silakan sesuaikan nama paket dan harga aslinya di sini
+            data: {
+                Paket: [
+                    { name: "Paket Gamer Pemula (Placeholder)", price: 40000 },
+                    { name: "Paket Begadang (Placeholder)", price: 75000 },
+                    { name: "Paket Sultan Seharian (Placeholder)", price: 120000 }
+                ],
+                // Regular sesuai instruksi: 3-5 jam, flat 10k/jam
+                Regular: [
+                    { name: "Sewa 3 Jam", price: 30000 },
+                    { name: "Sewa 4 Jam", price: 40000 },
+                    { name: "Sewa 5 Jam", price: 50000 }
+                ]
+            }
         };
 
-        const DATA = {
-            Paket: [
-                { name: "Paket Hemat 3 Jam", price: "Rp 25.000" },
-                { name: "Paket Malam (20:00 - Tutup)", price: "Rp 40.000" },
-                { name: "Paket Puas Seharian", price: "Rp 75.000" }
-            ],
-            Regular: [
-                { name: "PS4 - 1 Jam", price: "Rp 10.000" },
-                { name: "PS4 - Per jam selanjutnya", price: "+Rp 8.000" }
-            ]
+        // ==========================================
+        // 2. APP LOGIC (Vanilla JS)
+        // ==========================================
+        const APP_LOGIC = {
+            state: {
+                region: "",
+                type: "Paket",
+                selectedPrice: 0
+            },
+
+            formatRupiah: (number) => {
+                return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+            },
+
+            selectRegion: (regionName) => {
+                APP_LOGIC.state.region = regionName;
+                document.getElementById('region-step').classList.add('hidden');
+                document.getElementById('booking-step').classList.remove('hidden');
+                document.getElementById('booking-step').classList.add('animate-pop');
+                document.getElementById('region-title').innerText = `MARKAS ${regionName.toUpperCase()}`;
+                
+                // Tampilkan opsi Antar/Jemput hanya untuk Banda Aceh
+                const antarContainer = document.getElementById('antar-jemput-container');
+                if (regionName === 'Banda Aceh') {
+                    antarContainer.classList.remove('hidden');
+                } else {
+                    antarContainer.classList.add('hidden');
+                    document.getElementById('isAntar').checked = false;
+                    APP_LOGIC.toggleAddress();
+                }
+
+                APP_LOGIC.updateDropdown();
+            },
+
+            switchType: (type) => {
+                APP_LOGIC.state.type = type;
+                const isPaket = type === 'Paket';
+                
+                // Ubah gaya tombol Tab
+                document.getElementById('tab-paket').className = isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2' : 'mario-btn bg-gray-200 flex-1 py-2 text-gray-500';
+                document.getElementById('tab-regular').className = !isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2' : 'mario-btn bg-gray-200 flex-1 py-2 text-gray-500';
+                document.getElementById('type-label').innerText = type;
+                
+                APP_LOGIC.updateDropdown();
+            },
+
+            updateDropdown: () => {
+                const select = document.getElementById('product');
+                const items = CONFIG.data[APP_LOGIC.state.type];
+                
+                select.innerHTML = items.map((item, index) => 
+                    `<option value="${index}">${item.name}</option>`
+                ).join('');
+                
+                APP_LOGIC.updatePriceUI();
+            },
+
+            updatePriceUI: () => {
+                const select = document.getElementById('product');
+                const selectedIndex = select.value;
+                const item = CONFIG.data[APP_LOGIC.state.type][selectedIndex];
+                
+                if (item) {
+                    APP_LOGIC.state.selectedPrice = item.price;
+                    // Kalkulasi gimmick: Harga palsu = Harga asli + 25%
+                    const fakePrice = item.price * 1.25;
+                    
+                    document.getElementById('fake-price').innerText = APP_LOGIC.formatRupiah(fakePrice);
+                    document.getElementById('real-price').innerText = APP_LOGIC.formatRupiah(item.price);
+                }
+            },
+
+            toggleAddress: () => {
+                const isChecked = document.getElementById('isAntar').checked;
+                const addressContainer = document.getElementById('address-container');
+                const addressInput = document.getElementById('address');
+                
+                if (isChecked) {
+                    addressContainer.classList.remove('hidden');
+                    addressInput.setAttribute('required', 'true');
+                } else {
+                    addressContainer.classList.add('hidden');
+                    addressInput.removeAttribute('required');
+                    addressInput.value = '';
+                }
+            },
+
+            sendTTD: () => {
+                const waUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Halo Arena Playbox! Saya mau tanya-tanya dulu nih soal rentalnya 🎮")}`;
+                window.open(waUrl, '_blank');
+            },
+
+            submitForm: (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const select = document.getElementById('product');
+                const selectedItemName = select.options[select.selectedIndex].text;
+                const price = APP_LOGIC.formatRupiah(APP_LOGIC.state.selectedPrice);
+                
+                const isAntar = document.getElementById('isAntar').checked;
+                const address = document.getElementById('address').value;
+
+                let message = `🍄 *BOS, ADA BOOKING BARU!* 🍄\n\n`;
+                message += `📍 *Markas:* ${APP_LOGIC.state.region}\n`;
+                message += `👤 *Nama:* ${name}\n`;
+                message += `🎮 *Pesanan:* ${selectedItemName} (${APP_LOGIC.state.type})\n`;
+                message += `💰 *Total Harga:* ${price}\n\n`;
+                
+                if (APP_LOGIC.state.region === 'Banda Aceh' && isAntar) {
+                    message += `🛵 *Layanan:* Antar/Jemput\n`;
+                    message += `🏠 *Alamat Pengantaran:* ${address}\n\n`;
+                }
+
+                message += `Mohon segera diproses ya! 🚀`;
+
+                const waUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(message)}`;
+                window.open(waUrl, '_blank');
+            }
         };
 
-        const APP_STATE = {
-            region: "",
-            type: "Paket"
-        };
+        // Initialize event listener for form
+        document.getElementById('orderForm').addEventListener('submit', APP_LOGIC.submitForm);
 
-        function selectRegion(region) {
-            APP_STATE.region = region;
-            document.getElementById('region-step').classList.add('hidden');
-            document.getElementById('booking-step').classList.remove('hidden');
-            updateProductList();
-        }
-
-        function switchType(type) {
-            APP_STATE.type = type;
-            const isPaket = type === 'Paket';
-            
-            // UI Toggle
-            document.getElementById('tab-paket').className = isPaket ? 'flex-1 py-2 rounded-lg bg-[#FF6B00] text-white font-medium' : 'flex-1 py-2 rounded-lg text-gray-400 font-medium';
-            document.getElementById('tab-regular').className = !isPaket ? 'flex-1 py-2 rounded-lg bg-[#FF6B00] text-white font-medium' : 'flex-1 py-2 rounded-lg text-gray-400 font-medium';
-            document.getElementById('type-label').innerText = type;
-            
-            updateProductList();
-        }
-
-        function updateProductList() {
-            const select = document.getElementById('product');
-            const items = DATA[APP_STATE.type];
-            select.innerHTML = items.map(item => `<option value="${item.name}">${item.name} (${item.price})</option>`).join('');
-            document.getElementById('summary').innerText = `${APP_STATE.type}: ${items[0].name}`;
-        }
-
-        document.getElementById('orderForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const product = document.getElementById('product').value;
-            
-            const message = `Halo Arena Playbox!\n\nSAYA MAU BOOKING ANTI RIBET\n--------------------------\n📍 Lokasi: ${APP_STATE.region}\n👤 Nama: ${name}\n🎮 Pilihan: ${product} (${APP_STATE.type})\n--------------------------\nMohon diproses ya, terima kasih!`;
-            
-            const waUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(message)}`;
-            window.open(waUrl, '_blank');
-        });
-
-        // Sync summary text
-        document.getElementById('product').addEventListener('change', (e) => {
-            document.getElementById('summary').innerText = `${APP_STATE.type}: ${e.target.value}`;
-        });
     </script>
 </body>
 </html>
