@@ -6,9 +6,7 @@
     <title>ARENA PLAYBOX - Booking Anti Ribet</title>
     
     <link rel="icon" href="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" type="image/png">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -16,7 +14,6 @@
             --mario-orange: #FF6B00;
             --mario-black: #000000;
             --mario-yellow: #FFD700;
-            --mario-bg: #FF8833;
         }
         
         body {
@@ -24,12 +21,10 @@
             background-color: var(--mario-orange);
             color: var(--mario-black);
             -webkit-font-smoothing: antialiased;
-            /* Pola titik transparan untuk tekstur kartun tipis */
             background-image: radial-gradient(rgba(0,0,0,0.05) 2px, transparent 2px);
             background-size: 20px 20px;
         }
 
-        /* Neo-brutalism / Mario UI Styles */
         .mario-card {
             background-color: white;
             border: 4px solid var(--mario-black);
@@ -48,6 +43,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            cursor: pointer;
         }
 
         .mario-btn:active {
@@ -56,7 +52,7 @@
         }
 
         .mario-btn-yellow { background-color: var(--mario-yellow); }
-        .mario-btn-black { background-color: var(--mario-black); color: white; }
+        .mario-btn-gray { background-color: #E5E7EB; color: #6B7280; box-shadow: 2px 2px 0px 0px var(--mario-black); }
 
         .mario-input {
             width: 100%;
@@ -75,10 +71,20 @@
 
         .hidden { display: none !important; }
         .animate-pop { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .animate-wiggle { animation: wiggle 2s linear infinite; }
 
         @keyframes popIn {
             0% { transform: scale(0.9); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes wiggle {
+            0%, 7% { transform: rotateZ(0); }
+            15% { transform: rotateZ(-5deg); }
+            20% { transform: rotateZ(3deg); }
+            25% { transform: rotateZ(-5deg); }
+            30% { transform: rotateZ(2deg); }
+            35%, 100% { transform: rotateZ(0); }
         }
     </style>
 </head>
@@ -102,15 +108,9 @@
         <section id="region-step" class="mario-card p-6">
             <h2 class="text-xl font-bold mb-4 text-center border-b-4 border-black pb-2">PILIH MARKASMU:</h2>
             <div class="grid grid-cols-1 gap-4">
-                <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">
-                    📍 SABANG
-                </button>
-                <button onclick="APP_LOGIC.selectRegion('Banda Aceh')" class="mario-btn mario-btn-yellow p-4 text-lg">
-                    📍 BANDA ACEH
-                </button>
-                <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">
-                    📍 ACEH TIMUR
-                </button>
+                <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">📍 SABANG</button>
+                <button onclick="APP_LOGIC.selectRegion('Banda Aceh')" class="mario-btn mario-btn-yellow p-4 text-lg">📍 BANDA ACEH</button>
+                <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">📍 ACEH TIMUR</button>
             </div>
             
             <a href="#" onclick="APP_LOGIC.sendTTD()" class="block mt-6 text-center text-black font-bold text-sm hover:underline">
@@ -128,7 +128,7 @@
 
                 <div class="flex gap-2 mb-6">
                     <button id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2">PAKET</button>
-                    <button id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn bg-gray-200 flex-1 py-2">REGULAR</button>
+                    <button id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn mario-btn-gray flex-1 py-2">REGULAR</button>
                 </div>
 
                 <form id="orderForm" class="space-y-4">
@@ -142,30 +142,43 @@
                         <div class="relative">
                             <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="mario-input appearance-none cursor-pointer">
                                 </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black">
-                                ▼
-                            </div>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black">▼</div>
                         </div>
                     </div>
 
-                    <div id="antar-jemput-container" class="hidden p-4 bg-yellow-100 border-3 border-black rounded-xl mt-4">
-                        <label class="flex items-center space-x-3 cursor-pointer font-bold mb-2">
-                            <input type="checkbox" id="isAntar" onchange="APP_LOGIC.toggleAddress()" class="w-6 h-6 accent-black border-black cursor-pointer">
-                            <span>Mau Pakai Layanan Antar/Jemput? 🛵</span>
-                        </label>
-                        <div id="address-container" class="hidden mt-2">
+                    <div id="antar-jemput-container" class="hidden p-4 bg-[#FFE8B3] border-3 border-black rounded-xl mt-4">
+                        <label class="block font-bold mb-3 text-center">METODE LOGISTIK 🛵</label>
+                        <div class="flex gap-2 mb-3">
+                            <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="mario-btn mario-btn-gray flex-1 py-2 text-sm">Antar ke Lokasi</button>
+                            <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm">Ambil di Markas</button>
+                        </div>
+                        <div id="address-container" class="hidden">
                             <textarea id="address" class="mario-input" rows="2" placeholder="Ketik alamat lengkap pengantaran..."></textarea>
                         </div>
                     </div>
 
-                    <div class="bg-black text-white p-4 rounded-xl border-4 border-yellow-400 mt-6 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 bg-red-600 text-white font-black px-3 py-1 rounded-bl-xl border-b-4 border-l-4 border-black transform rotate-6 scale-110 shadow-lg">
-                            SUPER DISKON!
+                    <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black mt-8 relative shadow-[4px_4px_0px_0px_#000]">
+                        <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-4 py-1 rounded-sm border-4 border-black transform rotate-6 animate-wiggle shadow-[2px_2px_0px_0px_#000]">
+                            PENAWARAN TERBATAS! 🔥
                         </div>
-                        <p class="font-bold text-gray-300 text-sm">Total Biaya:</p>
-                        <div class="flex items-end gap-3 mt-1">
-                            <p id="fake-price" class="text-lg text-gray-400 line-through decoration-red-500 decoration-4 font-black">Rp 0</p>
-                            <p id="real-price" class="text-3xl font-black text-yellow-400">Rp 0</p>
+                        
+                        <p class="font-bold text-red-200 text-sm uppercase tracking-wider mb-1">Ringkasan Biaya</p>
+                        
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-semibold text-red-200">Harga Normal:</span>
+                                <span id="fake-price" class="text-lg text-red-300 line-through decoration-black decoration-4 font-black">Rp 0</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border-2 border-red-800">
+                                <span class="text-sm font-bold text-yellow-300 animate-pulse">✨ ANDA HEMAT:</span>
+                                <span id="hemat-price" class="text-md font-black text-yellow-300">Rp 0</span>
+                            </div>
+
+                            <div class="flex items-end justify-between mt-2 pt-2 border-t-2 border-red-500/50">
+                                <span class="text-md font-bold">Total Bayar:</span>
+                                <span id="real-price" class="text-3xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
+                            </div>
                         </div>
                     </div>
 
@@ -179,22 +192,21 @@
 
     <script>
         // ==========================================
-        // 1. CONFIGURATION (Ubah Harga & WA di sini)
+        // 1. CONFIGURATION
         // ==========================================
         const CONFIG = {
             whatsapp: "6283863557669",
-            // Silakan sesuaikan nama paket dan harga aslinya di sini
             data: {
                 Paket: [
-                    { name: "Paket Gamer Pemula (Placeholder)", price: 40000 },
-                    { name: "Paket Begadang (Placeholder)", price: 75000 },
-                    { name: "Paket Sultan Seharian (Placeholder)", price: 120000 }
+                    { name: "Paket Malam", time: "00:00 - 10:00", price: 50000 },
+                    { name: "Paket Pagi", time: "10:00 - 17:00", price: 45000 },
+                    { name: "Paket Sore", time: "17:00 - 23:40", price: 45000 },
+                    { name: "Paket Sultan 24 Jam", time: "Bebas mulai kapan aja", price: 115000 }
                 ],
-                // Regular sesuai instruksi: 3-5 jam, flat 10k/jam
                 Regular: [
-                    { name: "Sewa 3 Jam", price: 30000 },
-                    { name: "Sewa 4 Jam", price: 40000 },
-                    { name: "Sewa 5 Jam", price: 50000 }
+                    { name: "PlayBox - 3 Jam", time: "Bebas", price: 30000 },
+                    { name: "PlayBox - 4 Jam", time: "Bebas", price: 40000 },
+                    { name: "PlayBox - 5 Jam", time: "Bebas", price: 50000 }
                 ]
             }
         };
@@ -206,7 +218,8 @@
             state: {
                 region: "",
                 type: "Paket",
-                selectedPrice: 0
+                deliveryMode: "ambil", // Default ambil di markas
+                selectedItem: null
             },
 
             formatRupiah: (number) => {
@@ -220,26 +233,47 @@
                 document.getElementById('booking-step').classList.add('animate-pop');
                 document.getElementById('region-title').innerText = `MARKAS ${regionName.toUpperCase()}`;
                 
-                // Tampilkan opsi Antar/Jemput hanya untuk Banda Aceh
+                // Logika Tombol Banda Aceh
                 const antarContainer = document.getElementById('antar-jemput-container');
                 if (regionName === 'Banda Aceh') {
                     antarContainer.classList.remove('hidden');
+                    APP_LOGIC.setDelivery('ambil'); // Reset ke default
                 } else {
                     antarContainer.classList.add('hidden');
-                    document.getElementById('isAntar').checked = false;
-                    APP_LOGIC.toggleAddress();
+                    APP_LOGIC.state.deliveryMode = "ambil";
+                    document.getElementById('address').removeAttribute('required');
                 }
 
                 APP_LOGIC.updateDropdown();
+            },
+
+            setDelivery: (mode) => {
+                APP_LOGIC.state.deliveryMode = mode;
+                const btnAntar = document.getElementById('btn-antar');
+                const btnAmbil = document.getElementById('btn-ambil');
+                const addressContainer = document.getElementById('address-container');
+                const addressInput = document.getElementById('address');
+
+                if (mode === 'antar') {
+                    btnAntar.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-sm';
+                    btnAmbil.className = 'mario-btn mario-btn-gray flex-1 py-2 text-sm';
+                    addressContainer.classList.remove('hidden');
+                    addressInput.setAttribute('required', 'true');
+                } else {
+                    btnAmbil.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-sm';
+                    btnAntar.className = 'mario-btn mario-btn-gray flex-1 py-2 text-sm';
+                    addressContainer.classList.add('hidden');
+                    addressInput.removeAttribute('required');
+                    addressInput.value = '';
+                }
             },
 
             switchType: (type) => {
                 APP_LOGIC.state.type = type;
                 const isPaket = type === 'Paket';
                 
-                // Ubah gaya tombol Tab
-                document.getElementById('tab-paket').className = isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2' : 'mario-btn bg-gray-200 flex-1 py-2 text-gray-500';
-                document.getElementById('tab-regular').className = !isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2' : 'mario-btn bg-gray-200 flex-1 py-2 text-gray-500';
+                document.getElementById('tab-paket').className = isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2' : 'mario-btn mario-btn-gray flex-1 py-2';
+                document.getElementById('tab-regular').className = !isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2' : 'mario-btn mario-btn-gray flex-1 py-2';
                 document.getElementById('type-label').innerText = type;
                 
                 APP_LOGIC.updateDropdown();
@@ -249,9 +283,10 @@
                 const select = document.getElementById('product');
                 const items = CONFIG.data[APP_LOGIC.state.type];
                 
-                select.innerHTML = items.map((item, index) => 
-                    `<option value="${index}">${item.name}</option>`
-                ).join('');
+                select.innerHTML = items.map((item, index) => {
+                    const timeLabel = item.time !== "Bebas" ? ` (${item.time})` : "";
+                    return `<option value="${index}">${item.name}${timeLabel}</option>`;
+                }).join('');
                 
                 APP_LOGIC.updatePriceUI();
             },
@@ -262,27 +297,15 @@
                 const item = CONFIG.data[APP_LOGIC.state.type][selectedIndex];
                 
                 if (item) {
-                    APP_LOGIC.state.selectedPrice = item.price;
-                    // Kalkulasi gimmick: Harga palsu = Harga asli + 25%
-                    const fakePrice = item.price * 1.25;
+                    APP_LOGIC.state.selectedItem = item;
+                    
+                    const realPrice = item.price;
+                    const fakePrice = realPrice * 1.25;
+                    const hematPrice = fakePrice - realPrice;
                     
                     document.getElementById('fake-price').innerText = APP_LOGIC.formatRupiah(fakePrice);
-                    document.getElementById('real-price').innerText = APP_LOGIC.formatRupiah(item.price);
-                }
-            },
-
-            toggleAddress: () => {
-                const isChecked = document.getElementById('isAntar').checked;
-                const addressContainer = document.getElementById('address-container');
-                const addressInput = document.getElementById('address');
-                
-                if (isChecked) {
-                    addressContainer.classList.remove('hidden');
-                    addressInput.setAttribute('required', 'true');
-                } else {
-                    addressContainer.classList.add('hidden');
-                    addressInput.removeAttribute('required');
-                    addressInput.value = '';
+                    document.getElementById('hemat-price').innerText = APP_LOGIC.formatRupiah(hematPrice);
+                    document.getElementById('real-price').innerText = APP_LOGIC.formatRupiah(realPrice);
                 }
             },
 
@@ -295,22 +318,30 @@
                 e.preventDefault();
                 
                 const name = document.getElementById('name').value;
-                const select = document.getElementById('product');
-                const selectedItemName = select.options[select.selectedIndex].text;
-                const price = APP_LOGIC.formatRupiah(APP_LOGIC.state.selectedPrice);
-                
-                const isAntar = document.getElementById('isAntar').checked;
+                const item = APP_LOGIC.state.selectedItem;
+                const price = APP_LOGIC.formatRupiah(item.price);
                 const address = document.getElementById('address').value;
 
                 let message = `🍄 *BOS, ADA BOOKING BARU!* 🍄\n\n`;
                 message += `📍 *Markas:* ${APP_LOGIC.state.region}\n`;
                 message += `👤 *Nama:* ${name}\n`;
-                message += `🎮 *Pesanan:* ${selectedItemName} (${APP_LOGIC.state.type})\n`;
-                message += `💰 *Total Harga:* ${price}\n\n`;
                 
-                if (APP_LOGIC.state.region === 'Banda Aceh' && isAntar) {
-                    message += `🛵 *Layanan:* Antar/Jemput\n`;
-                    message += `🏠 *Alamat Pengantaran:* ${address}\n\n`;
+                // Format Pesanan
+                message += `🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
+                if(item.time !== "Bebas") {
+                    message += `⏰ *Waktu:* ${item.time}\n`;
+                }
+                
+                message += `💰 *Total Harga:* ${price} (Dapat Diskon)\n\n`;
+                
+                // Tambahan khusus Banda Aceh
+                if (APP_LOGIC.state.region === 'Banda Aceh') {
+                    if (APP_LOGIC.state.deliveryMode === 'antar') {
+                        message += `🛵 *Logistik:* Minta Diantar\n`;
+                        message += `🏠 *Alamat Pengantaran:* ${address}\n\n`;
+                    } else {
+                        message += `🏪 *Logistik:* Ambil Sendiri ke Markas\n\n`;
+                    }
                 }
 
                 message += `Mohon segera diproses ya! 🚀`;
@@ -320,7 +351,7 @@
             }
         };
 
-        // Initialize event listener for form
+        // Inisialisasi Event Listener
         document.getElementById('orderForm').addEventListener('submit', APP_LOGIC.submitForm);
 
     </script>
