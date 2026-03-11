@@ -113,6 +113,20 @@
                 <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">📍 ACEH TIMUR</button>
             </div>
             
+            <div class="mt-8 relative">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-black text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-white z-10 whitespace-nowrap shadow-[2px_2px_0px_0px_#FFD700]">
+                    KATA MEREKA 🍄
+                </div>
+                <div class="mario-card p-4 bg-[#FFE8B3] text-center min-h-[120px] flex flex-col justify-center items-center border-3">
+                    <div class="flex gap-1 mb-2 text-yellow-500 text-lg drop-shadow-[1px_1px_0px_#000]">
+                        ⭐⭐⭐⭐⭐
+                    </div>
+                    <p id="testimonial-text" class="text-sm font-bold italic transition-opacity duration-300 text-gray-800">
+                        "akme bereh that jinoe bak sabang kana playbox syit"
+                    </p>
+                </div>
+            </div>
+
             <a href="#" onclick="APP_LOGIC.sendTTD()" class="block mt-6 text-center text-black font-bold text-sm hover:underline">
                💬 WA TTD (Tanya Tanya Dulu)
             </a>
@@ -196,6 +210,16 @@
         // ==========================================
         const CONFIG = {
             whatsapp: "6283863557669",
+            testimonials: [
+                "akme bereh that jinoe bak sabang kana playbox syit",
+                "long menyoe playbox hana laen, pasti arena",
+                "dari thon 2023 wate hana so tepeu playbox ka na keh awak awai meuen bak arena",
+                "pengiriman oke sat set",
+                "bang lebeh mangat lom menyoe gem jih jeut rikwest beuhh",
+                "anak anak senang buat hari libur main playbox, murah ga perlu beli ps bisa juga buat atur waktu anak",
+                "jawaban gabut ya pasti kami call kakak cantek arena",
+                "keh kop beungeh ke si rusli ji cok mancity keh sabe sabe"
+            ],
             data: {
                 Paket: [
                     { name: "Paket Malam", time: "00:00 - 10:00", price: 50000 },
@@ -218,8 +242,21 @@
             state: {
                 region: "",
                 type: "Paket",
-                deliveryMode: "ambil", // Default ambil di markas
-                selectedItem: null
+                deliveryMode: "ambil",
+                selectedItem: null,
+                currentReviewIndex: 0
+            },
+
+            initTestimonials: () => {
+                const textEl = document.getElementById('testimonial-text');
+                setInterval(() => {
+                    textEl.style.opacity = 0; // Fade out
+                    setTimeout(() => {
+                        APP_LOGIC.state.currentReviewIndex = (APP_LOGIC.state.currentReviewIndex + 1) % CONFIG.testimonials.length;
+                        textEl.innerText = `"${CONFIG.testimonials[APP_LOGIC.state.currentReviewIndex]}"`;
+                        textEl.style.opacity = 1; // Fade in
+                    }, 300); // Tunggu efek fade out selesai
+                }, 4000); // Ganti tiap 4 detik
             },
 
             formatRupiah: (number) => {
@@ -233,11 +270,10 @@
                 document.getElementById('booking-step').classList.add('animate-pop');
                 document.getElementById('region-title').innerText = `MARKAS ${regionName.toUpperCase()}`;
                 
-                // Logika Tombol Banda Aceh
                 const antarContainer = document.getElementById('antar-jemput-container');
                 if (regionName === 'Banda Aceh') {
                     antarContainer.classList.remove('hidden');
-                    APP_LOGIC.setDelivery('ambil'); // Reset ke default
+                    APP_LOGIC.setDelivery('ambil');
                 } else {
                     antarContainer.classList.add('hidden');
                     APP_LOGIC.state.deliveryMode = "ambil";
@@ -326,7 +362,6 @@
                 message += `📍 *Markas:* ${APP_LOGIC.state.region}\n`;
                 message += `👤 *Nama:* ${name}\n`;
                 
-                // Format Pesanan
                 message += `🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
                 if(item.time !== "Bebas") {
                     message += `⏰ *Waktu:* ${item.time}\n`;
@@ -334,7 +369,6 @@
                 
                 message += `💰 *Total Harga:* ${price} (Dapat Diskon)\n\n`;
                 
-                // Tambahan khusus Banda Aceh
                 if (APP_LOGIC.state.region === 'Banda Aceh') {
                     if (APP_LOGIC.state.deliveryMode === 'antar') {
                         message += `🛵 *Logistik:* Minta Diantar\n`;
@@ -351,8 +385,9 @@
             }
         };
 
-        // Inisialisasi Event Listener
+        // Inisialisasi Event Listener & Testimonial Slider
         document.getElementById('orderForm').addEventListener('submit', APP_LOGIC.submitForm);
+        APP_LOGIC.initTestimonials();
 
     </script>
 </body>
