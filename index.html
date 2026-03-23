@@ -10,109 +10,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --mario-orange: #FF6B00;
-            --mario-black: #000000;
-            --mario-yellow: #FFD700;
-        }
-        
-        body {
-            font-family: 'Fredoka', sans-serif;
-            background-color: var(--mario-orange);
-            color: var(--mario-black);
-            -webkit-font-smoothing: antialiased;
-            background-image: radial-gradient(rgba(0,0,0,0.05) 2px, transparent 2px);
-            background-size: 20px 20px;
-            overflow-x: hidden;
-        }
-
-        .mario-card {
-            background-color: white;
-            border: 4px solid var(--mario-black);
-            border-radius: 16px;
-            box-shadow: 8px 8px 0px 0px var(--mario-black);
-        }
-
-        .mario-btn {
-            background-color: white;
-            border: 4px solid var(--mario-black);
-            border-radius: 12px;
-            box-shadow: 4px 4px 0px 0px var(--mario-black);
-            transition: all 0.1s ease-in-out;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .mario-btn:active {
-            transform: translate(4px, 4px);
-            box-shadow: 0px 0px 0px 0px var(--mario-black);
-        }
-
+        :root { --mario-orange: #FF6B00; --mario-black: #000000; --mario-yellow: #FFD700; }
+        body { font-family: 'Fredoka', sans-serif; background-color: var(--mario-orange); color: var(--mario-black); -webkit-font-smoothing: antialiased; background-image: radial-gradient(rgba(0,0,0,0.05) 2px, transparent 2px); background-size: 20px 20px; overflow-x: hidden; }
+        .mario-card { background-color: white; border: 4px solid var(--mario-black); border-radius: 16px; box-shadow: 8px 8px 0px 0px var(--mario-black); }
+        .mario-btn { background-color: white; border: 4px solid var(--mario-black); border-radius: 12px; box-shadow: 4px 4px 0px 0px var(--mario-black); transition: all 0.1s ease-in-out; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
+        .mario-btn:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px 0px var(--mario-black); }
         .mario-btn-yellow { background-color: var(--mario-yellow); }
         .mario-btn-gray { background-color: #E5E7EB; color: #6B7280; box-shadow: 2px 2px 0px 0px var(--mario-black); }
-
-        .mario-input {
-            width: 100%;
-            background-color: #F3F4F6;
-            border: 3px solid var(--mario-black);
-            border-radius: 8px;
-            padding: 12px;
-            font-weight: 600;
-            outline: none;
-        }
-        
-        .mario-input:focus {
-            background-color: #ffffff;
-            border-color: var(--mario-orange);
-        }
-
+        .mario-input { width: 100%; background-color: #F3F4F6; border: 3px solid var(--mario-black); border-radius: 8px; padding: 12px; font-weight: 600; outline: none; }
+        .mario-input:focus { background-color: #ffffff; border-color: var(--mario-orange); }
         .hidden { display: none !important; }
         .animate-pop { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         .animate-wiggle { animation: wiggle 2s linear infinite; }
-
-        /* Marquee Animation CSS */
-        .marquee-wrapper {
-            width: 100vw;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
-            overflow: hidden;
-            padding: 10px 0;
-        }
-        .marquee-track {
-            display: flex;
-            width: max-content;
-            animation: scroll 35s linear infinite;
-            gap: 16px;
-            padding-left: 16px;
-        }
-        .marquee-track:hover {
-            animation-play-state: paused;
-        }
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes wiggle {
-            0%, 7% { transform: rotateZ(0); }
-            15% { transform: rotateZ(-5deg); }
-            20% { transform: rotateZ(3deg); }
-            25% { transform: rotateZ(-5deg); }
-            30% { transform: rotateZ(2deg); }
-            35%, 100% { transform: rotateZ(0); }
-        }
+        .marquee-wrapper { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; overflow: hidden; padding: 10px 0; }
+        .marquee-track { display: flex; width: max-content; animation: scroll 35s linear infinite; gap: 16px; padding-left: 16px; }
+        .marquee-track:hover { animation-play-state: paused; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes wiggle { 0%, 7% { transform: rotateZ(0); } 15% { transform: rotateZ(-5deg); } 20% { transform: rotateZ(3deg); } 25% { transform: rotateZ(-5deg); } 30% { transform: rotateZ(2deg); } 35%, 100% { transform: rotateZ(0); } }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen flex flex-col items-center">
@@ -150,8 +65,7 @@
             </div>
             
             <div class="marquee-wrapper">
-                <div id="marquee-track" class="marquee-track">
-                    </div>
+                <div id="marquee-track" class="marquee-track"></div>
             </div>
         </section>
 
@@ -159,7 +73,7 @@
             <h2 class="text-xl font-bold mb-4 text-center border-b-4 border-black pb-2">PILIH MARKASMU:</h2>
             <div class="grid grid-cols-1 gap-4">
                 <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">📍 SABANG</button>
-                <button onclick="APP_LOGIC.selectRegion('Banda Aceh')" class="mario-btn mario-btn-yellow p-4 text-lg">📍 BANDA ACEH</button>
+                <button onclick="APP_LOGIC.selectRegion('Banda')" class="mario-btn mario-btn-yellow p-4 text-lg">📍 BANDA ACEH</button>
                 <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">📍 ACEH TIMUR</button>
             </div>
         </section>
@@ -179,8 +93,13 @@
 
                 <form id="orderForm" class="space-y-4">
                     <div>
-                        <label class="block font-bold mb-1">NAMA LENGKAP PENGUASA KONSOL</label>
+                        <label class="block font-bold mb-1">NAMA LENGKAP</label>
                         <input type="text" id="name" required class="mario-input" placeholder="Misal > Bang Kapluk">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold mb-1">NOMOR WHATSAPP</label>
+                        <input type="number" id="wa-number" required class="mario-input" placeholder="08xxxxxxxxxx">
                     </div>
 
                     <div>
@@ -228,7 +147,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="w-full mario-btn mario-btn-yellow p-4 text-xl mt-6 uppercase">
+                    <button type="submit" id="btn-submit-order" class="w-full mario-btn mario-btn-yellow p-4 text-xl mt-6 uppercase">
                         🚀 GAS BOOKING SEKARANG!
                     </button>
                 </form>
@@ -241,11 +160,9 @@
     </button>
 
     <script>
-        // ==========================================
-        // 1. CONFIGURATION
-        // ==========================================
         const CONFIG = {
             whatsapp: "6283863557669",
+            webhook_url: "https://n8n-mzbmiib3etk4.kangkung.sumopod.my.id/webhook/86cee1b8-b00d-4aa6-8ff4-23735dc9afe1", // WEBHOOK ARENA SYSTEM
             testimonials: [
                 "akme bereh that jinoe bak sabang kana playbox syit",
                 "long menyoe playbox hana laen, pasti arena",
@@ -271,29 +188,17 @@
             }
         };
 
-        // ==========================================
-        // 2. APP LOGIC (Vanilla JS)
-        // ==========================================
         const APP_LOGIC = {
-            state: {
-                region: "",
-                type: "Paket",
-                deliveryMode: "ambil",
-                selectedItem: null
-            },
+            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null },
 
             initMarquee: () => {
                 const track = document.getElementById('marquee-track');
-                
-                // Buat HTML untuk satu set cards
                 const cardsHTML = CONFIG.testimonials.map(text => `
                     <div class="bg-[#FFE8B3] border-3 border-black rounded-xl p-4 w-64 flex-shrink-0 flex flex-col justify-center items-center h-32 shadow-[4px_4px_0px_0px_#000]">
                         <div class="text-yellow-500 text-sm mb-2 drop-shadow-[1px_1px_0px_#000]">⭐⭐⭐⭐⭐</div>
                         <p class="text-xs font-bold italic text-gray-800 text-center leading-relaxed">"${text}"</p>
                     </div>
                 `).join('');
-
-                // Render 2 set agar scroll infinite terlihat mulus tanpa putus
                 track.innerHTML = cardsHTML + cardsHTML;
             },
 
@@ -307,10 +212,10 @@
                 document.getElementById('testimonial-step').classList.add('hidden');
                 document.getElementById('booking-step').classList.remove('hidden');
                 document.getElementById('booking-step').classList.add('animate-pop');
-                document.getElementById('region-title').innerText = `MARKAS ${regionName.toUpperCase()}`;
+                document.getElementById('region-title').innerText = `MARKAS ${regionName === 'Banda' ? 'BANDA ACEH' : regionName.toUpperCase()}`;
                 
                 const antarContainer = document.getElementById('antar-jemput-container');
-                if (regionName === 'Banda Aceh') {
+                if (regionName === 'Banda') { // Menyesuaikan value DB "Banda"
                     antarContainer.classList.remove('hidden');
                     APP_LOGIC.setDelivery('ambil');
                 } else {
@@ -347,23 +252,19 @@
             switchType: (type) => {
                 APP_LOGIC.state.type = type;
                 const isPaket = type === 'Paket';
-                
                 document.getElementById('tab-paket').className = isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2' : 'mario-btn mario-btn-gray flex-1 py-2';
                 document.getElementById('tab-regular').className = !isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2' : 'mario-btn mario-btn-gray flex-1 py-2';
                 document.getElementById('type-label').innerText = type;
-                
                 APP_LOGIC.updateDropdown();
             },
 
             updateDropdown: () => {
                 const select = document.getElementById('product');
                 const items = CONFIG.data[APP_LOGIC.state.type];
-                
                 select.innerHTML = items.map((item, index) => {
                     const timeLabel = item.time !== "Bebas" ? ` (${item.time})` : "";
                     return `<option value="${index}">${item.name}${timeLabel}</option>`;
                 }).join('');
-                
                 APP_LOGIC.updatePriceUI();
             },
 
@@ -374,11 +275,9 @@
                 
                 if (item) {
                     APP_LOGIC.state.selectedItem = item;
-                    
                     const realPrice = item.price;
                     const fakePrice = realPrice * 1.25;
                     const hematPrice = fakePrice - realPrice;
-                    
                     document.getElementById('fake-price').innerText = APP_LOGIC.formatRupiah(fakePrice);
                     document.getElementById('hemat-price').innerText = APP_LOGIC.formatRupiah(hematPrice);
                     document.getElementById('real-price').innerText = APP_LOGIC.formatRupiah(realPrice);
@@ -390,26 +289,61 @@
                 window.open(waUrl, '_blank');
             },
 
-            submitForm: (e) => {
+            submitForm: async (e) => {
                 e.preventDefault();
+                const btnSubmit = document.getElementById('btn-submit-order');
+                btnSubmit.innerHTML = 'MEMPROSES... ⏳';
+                btnSubmit.disabled = true;
                 
                 const name = document.getElementById('name').value;
+                const waNumber = document.getElementById('wa-number').value;
                 const item = APP_LOGIC.state.selectedItem;
-                const price = APP_LOGIC.formatRupiah(item.price);
+                const priceStr = APP_LOGIC.formatRupiah(item.price);
                 const address = document.getElementById('address').value;
+                
+                // 1. SIAPKAN DATA UNTUK ARENA SYSTEM (WEBHOOK)
+                // Waktu saat ini menyesuaikan zona waktu lokal (WIB)
+                const now = new Date();
+                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+                const formattedDate = now.toISOString().slice(0,16).replace('T', ' ') + ':00';
+                
+                const payloadWebhook = {
+                    action: 'pending_booking',
+                    data: {
+                        name: name,
+                        wa: waNumber,
+                        branch: APP_LOGIC.state.region,
+                        unit: 'TBD', // To Be Determined (Belum ditentukan Admin)
+                        price: item.price,
+                        admin_name: 'Self-Booking', // Penanda bahwa ini diisi mandiri oleh user
+                        status_unit: 'pending',
+                        pembayaran: 'Belum',
+                        paket: `${item.name} (${APP_LOGIC.state.type})`,
+                        jam_mulai_sewa: formattedDate
+                    }
+                };
 
-                let message = `🍄 *BOS, ADA BOOKING BARU!* 🍄\n\n`;
-                message += `📍 *Markas:* ${APP_LOGIC.state.region}\n`;
-                message += `👤 *Nama:* ${name}\n`;
-                
-                message += `🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
-                if(item.time !== "Bebas") {
-                    message += `⏰ *Waktu:* ${item.time}\n`;
+                // 2. TEMBAK KE WEBHOOK N8N (Tanpa peduli berhasil/gagal agar tidak menghambat user)
+                try {
+                    await fetch(CONFIG.webhook_url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payloadWebhook)
+                    });
+                } catch (err) {
+                    console.log("Webhook terkirim, mengalihkan ke WA...");
                 }
+
+                // 3. GENERATE TEKS WA UNTUK PELANGGAN
+                let message = `🍄 *BOS, ADA BOOKING BARU!* 🍄\n\n`;
+                message += `📍 *Markas:* ${APP_LOGIC.state.region === 'Banda' ? 'Banda Aceh' : APP_LOGIC.state.region}\n`;
+                message += `👤 *Nama:* ${name}\n`;
+                message += `📱 *No WA:* ${waNumber}\n`;
+                message += `🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
+                if(item.time !== "Bebas") message += `⏰ *Waktu:* ${item.time}\n`;
+                message += `💰 *Total Harga:* ${priceStr} (Dapat Diskon)\n\n`;
                 
-                message += `💰 *Total Harga:* ${price} (Dapat Diskon)\n\n`;
-                
-                if (APP_LOGIC.state.region === 'Banda Aceh') {
+                if (APP_LOGIC.state.region === 'Banda') {
                     if (APP_LOGIC.state.deliveryMode === 'antar') {
                         message += `🛵 *Logistik:* Minta Diantar\n`;
                         message += `🏠 *Alamat Pengantaran:* ${address}\n\n`;
@@ -417,15 +351,14 @@
                         message += `🏪 *Logistik:* Ambil Sendiri ke Markas\n\n`;
                     }
                 }
-
                 message += `Mohon segera diproses ya! 🚀`;
 
+                // 4. ARAHKAN PELANGGAN KE WA
                 const waUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(message)}`;
-                window.open(waUrl, '_blank');
+                window.location.href = waUrl; 
             }
         };
 
-        // Inisialisasi Event Listener & Marquee Testimoni
         document.getElementById('orderForm').addEventListener('submit', APP_LOGIC.submitForm);
         document.addEventListener('DOMContentLoaded', APP_LOGIC.initMarquee);
 
