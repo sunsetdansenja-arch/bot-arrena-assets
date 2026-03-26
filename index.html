@@ -31,6 +31,17 @@
         
         /* Modal Style */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
+
+        /* Podium CSS */
+        .podium-container { display: flex; align-items: flex-end; justify-content: center; gap: 8px; padding-top: 20px; width: 100%; }
+        .podium-rank { border: 3px solid var(--mario-black); border-bottom: 0; border-top-left-radius: 8px; border-top-right-radius: 8px; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 10px; align-items: center; position: relative; width: 30%; }
+        .rank-1 { height: 140px; background: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%); z-index: 10; box-shadow: 0px -4px 10px rgba(255, 215, 0, 0.5); }
+        .rank-2 { height: 100px; background: linear-gradient(180deg, #E2E8F0 0%, #94A3B8 100%); }
+        .rank-3 { height: 80px; background: linear-gradient(180deg, #FDBA74 0%, #B45309 100%); }
+        .crown { position: absolute; top: -30px; font-size: 30px; filter: drop-shadow(2px 2px 0px black); animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .podium-name { font-size: 11px; font-weight: 900; text-align: center; text-transform: uppercase; margin-bottom: 4px; line-height: 1.1; word-break: break-word; padding: 0 4px; }
+        .podium-medal { font-size: 20px; filter: drop-shadow(1px 1px 0px black); margin-bottom: 4px; }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen flex flex-col items-center">
@@ -46,6 +57,27 @@
                 <p class="text-sm font-bold tracking-wide">"HAI NYOE RAKAN PLAYBOX ANDALAN GEUTANYOE"</p>
             </div>
         </header>
+
+        <section id="leaderboard-section" class="mario-card p-4 mb-6 relative overflow-hidden hidden">
+            <div class="absolute -right-6 -top-6 opacity-10 text-9xl">👑</div>
+            <h2 class="text-lg font-black text-center border-b-4 border-black pb-2 mb-4 uppercase text-[#FF6B00]">🏆 TOP 5 SULTAN BULAN INI</h2>
+            
+            <div class="flex justify-center mb-4 relative z-10">
+                <select id="lb-branch" onchange="APP_LOGIC.renderPodium()" class="mario-input w-full p-2 text-xs font-black bg-yellow-100 border-yellow-500 cursor-pointer text-center">
+                    <option value="ALL">🌍 SEMUA MARKAS (GLOBAL)</option>
+                    <option value="Banda">📍 BANDA ACEH</option>
+                    <option value="Sabang">📍 SABANG</option>
+                    <option value="Aceh Timur">📍 ACEH TIMUR</option>
+                </select>
+            </div>
+
+            <div id="podium-display" class="podium-container border-b-4 border-black pb-0 relative z-10">
+                <p class="text-xs font-bold text-gray-500 animate-pulse w-full text-center">Menarik data klasemen sultan...</p>
+            </div>
+
+            <div id="list-display" class="mt-3 space-y-2 relative z-10 px-2">
+            </div>
+        </section>
 
         <section id="testimonial-step" class="mb-8 mt-2">
             <div class="text-center mb-2"><span class="bg-black text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-white shadow-[2px_2px_0px_0px_#FFD700]">KATA MEREKA 🍄</span></div>
@@ -74,7 +106,7 @@
 
                 <form id="orderForm" class="space-y-4">
                     <div>
-                        <label class="block font-bold mb-1">NAMA LENGKAP PENGUASA KONSOL</label>
+                        <label class="block font-bold mb-1">NAMA LENGKAP</label>
                         <input type="text" id="name" required class="mario-input" placeholder="Misal > Bang Kapluk">
                     </div>
                     <div>
@@ -168,7 +200,7 @@
         };
 
         const APP_LOGIC = {
-            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "" },
+            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null },
 
             initMarquee: () => {
                 const track = document.getElementById('marquee-track');
@@ -178,10 +210,93 @@
 
             formatRupiah: (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n),
 
+            // --- LEADERBOARD LOGIC ---
+            fetchLeaderboard: async () => {
+                try {
+                    const res = await fetch(CONFIG.webhook_url, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'get_leaderboard' })
+                    });
+                    const data = await res.json();
+                    if(data && data.length > 0 && data[0].leaderboard) {
+                        APP_LOGIC.state.leaderboardData = data[0].leaderboard;
+                        document.getElementById('leaderboard-section').classList.remove('hidden');
+                        APP_LOGIC.renderPodium();
+                    }
+                } catch(e) { console.log('Gagal ambil data sultan'); }
+            },
+
+            renderPodium: () => {
+                const branch = document.getElementById('lb-branch').value;
+                const podiumDiv = document.getElementById('podium-display');
+                const listDiv = document.getElementById('list-display');
+                
+                if(!APP_LOGIC.state.leaderboardData || !APP_LOGIC.state.leaderboardData[branch] || APP_LOGIC.state.leaderboardData[branch].length === 0) {
+                    podiumDiv.innerHTML = '<p class="text-xs font-bold text-gray-500 py-6 w-full text-center">Belum ada sultan bulan ini... Yuk main!</p>';
+                    listDiv.innerHTML = '';
+                    return;
+                }
+
+                const sultans = APP_LOGIC.state.leaderboardData[branch];
+                const rank2 = sultans[1] || null;
+                const rank1 = sultans[0] || null;
+                const rank3 = sultans[2] || null;
+
+                let podiumHtml = '';
+                
+                // RANK 2 (KIRI)
+                if (rank2) {
+                    podiumHtml += `
+                    <div class="podium-rank rank-2" style="order: 1;">
+                        <span class="podium-medal">🥈</span>
+                        <p class="podium-name">${rank2.name}</p>
+                    </div>`;
+                }
+
+                // RANK 1 (TENGAH)
+                if (rank1) {
+                    podiumHtml += `
+                    <div class="podium-rank rank-1" style="order: 2;">
+                        <div class="crown">👑</div>
+                        <span class="podium-medal mt-2">🥇</span>
+                        <p class="podium-name text-white drop-shadow-md">${rank1.name}</p>
+                    </div>`;
+                }
+
+                // RANK 3 (KANAN)
+                if (rank3) {
+                    podiumHtml += `
+                    <div class="podium-rank rank-3" style="order: 3;">
+                        <span class="podium-medal">🥉</span>
+                        <p class="podium-name">${rank3.name}</p>
+                    </div>`;
+                }
+
+                podiumDiv.innerHTML = podiumHtml;
+
+                // RANK 4 & 5 (LIST DI BAWAH)
+                let listHtml = '';
+                for(let i=3; i<5; i++) {
+                    if(sultans[i]) {
+                        listHtml += `
+                        <div class="flex items-center justify-between bg-white border-2 border-black rounded-lg p-2 shadow-[2px_2px_0px_0px_#000]">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-gray-200 text-black font-black text-xs px-2 py-1 rounded">#${i+1}</span>
+                                <span class="font-bold text-sm uppercase">${sultans[i].name}</span>
+                            </div>
+                        </div>`;
+                    }
+                }
+                listDiv.innerHTML = listHtml;
+            },
+
+            // --- END LEADERBOARD ---
+
             selectRegion: (regionName) => {
                 APP_LOGIC.state.region = regionName;
                 document.getElementById('region-step').classList.add('hidden');
                 document.getElementById('testimonial-step').classList.add('hidden');
+                document.getElementById('leaderboard-section').classList.add('hidden'); // Sembunyikan LB
                 document.getElementById('booking-step').classList.remove('hidden');
                 document.getElementById('booking-step').classList.add('animate-pop');
                 document.getElementById('region-title').innerText = `MARKAS ${regionName === 'Banda' ? 'BANDA ACEH' : regionName.toUpperCase()}`;
@@ -234,7 +349,6 @@
                 const item = APP_LOGIC.state.selectedItem;
                 const address = document.getElementById('address').value;
                 
-                // 1. CEK STATUS MEMBER (Tarik data booking dari nomor WA ini)
                 let pastBookings = 0;
                 try {
                     const res = await fetch(CONFIG.webhook_url, {
@@ -245,30 +359,20 @@
                     if(Array.isArray(checkData)) pastBookings = checkData.length;
                 } catch(err) { console.log("Gagal cek member"); }
 
-                // Hitung total booking (termasuk yg sekarang)
                 const totalBookings = pastBookings + 1;
-                
-                // Tentukan Tier
-                let tier = "New Member 🌱";
-                let tierColor = "text-green-600 bg-green-100 border-green-500";
-                
+                let tier = "New Member 🌱"; let tierColor = "text-green-600 bg-green-100 border-green-500";
                 if (totalBookings >= 2 && totalBookings <= 3) { tier = "Kawan Akrab 🤝"; tierColor = "text-blue-600 bg-blue-100 border-blue-500"; }
                 else if (totalBookings >= 4 && totalBookings <= 6) { tier = "Cees Kental 👊"; tierColor = "text-orange-600 bg-orange-100 border-orange-500"; }
                 else if (totalBookings >= 7) { tier = "Keluarga Arena Prioritas 👑"; tierColor = "text-purple-600 bg-purple-100 border-purple-500"; }
 
-                // 2. KIRIM DATA BOOKING KE DASHBOARD ARENA SYSTEM (Latar Belakang)
                 const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
                 const formattedDate = now.toISOString().slice(0,16).replace('T', ' ') + ':00';
                 
                 fetch(CONFIG.webhook_url, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'pending_booking',
-                        data: { name: name, wa: waNumber, branch: APP_LOGIC.state.region, unit: 'TBD', price: item.price, admin_name: 'Self-Booking', status_unit: 'pending', pembayaran: 'Belum', paket: `${item.name} (${APP_LOGIC.state.type})`, jam_mulai_sewa: formattedDate }
-                    })
+                    body: JSON.stringify({ action: 'pending_booking', data: { name: name, wa: waNumber, branch: APP_LOGIC.state.region, unit: 'TBD', price: item.price, admin_name: 'Self-Booking', status_unit: 'pending', pembayaran: 'Belum', paket: `${item.name} (${APP_LOGIC.state.type})`, jam_mulai_sewa: formattedDate } })
                 }).catch(e => console.log('Pending error'));
 
-                // 3. GENERATE LINK WA
                 let msg = `🍄 *BOS, ADA BOOKING BARU!* 🍄\n\n📍 *Markas:* ${APP_LOGIC.state.region === 'Banda' ? 'Banda Aceh' : APP_LOGIC.state.region}\n👤 *Nama:* ${name}\n📱 *No WA:* ${waNumber}\n💎 *Status:* ${tier}\n\n🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
                 if(item.time !== "Bebas") msg += `⏰ *Waktu:* ${item.time}\n`;
                 msg += `💰 *Total Harga:* ${APP_LOGIC.formatRupiah(item.price)} (Dapat Diskon)\n\n`;
@@ -280,26 +384,25 @@
 
                 APP_LOGIC.state.pendingWaUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
 
-                // 4. MUNCULKAN KARTU NOTIFIKASI
                 document.getElementById('member-name').innerText = name;
                 document.getElementById('member-total').innerText = totalBookings + " Kali";
-                
                 const tierElement = document.getElementById('member-tier');
-                tierElement.innerText = tier;
-                tierElement.className = `text-lg font-black py-1 rounded-lg border-2 animate-pulse ${tierColor}`;
+                tierElement.innerText = tier; tierElement.className = `text-lg font-black py-1 rounded-lg border-2 animate-pulse ${tierColor}`;
 
                 document.getElementById('loyalty-modal').classList.remove('hidden');
                 btnSubmit.innerHTML = '🚀 GAS BOOKING SEKARANG!';
                 btnSubmit.disabled = false;
             },
 
-            proceedToWA: () => {
-                window.location.href = APP_LOGIC.state.pendingWaUrl;
-            }
+            proceedToWA: () => { window.location.href = APP_LOGIC.state.pendingWaUrl; }
         };
 
         document.getElementById('orderForm').addEventListener('submit', APP_LOGIC.submitForm);
-        document.addEventListener('DOMContentLoaded', APP_LOGIC.initMarquee);
+        document.addEventListener('DOMContentLoaded', () => {
+            APP_LOGIC.initMarquee();
+            APP_LOGIC.fetchLeaderboard(); // Panggil klasemen saat web dibuka
+        });
+
     </script>
 </body>
 </html>
