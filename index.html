@@ -29,7 +29,6 @@
         @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes wiggle { 0%, 7% { transform: rotateZ(0); } 15% { transform: rotateZ(-5deg); } 20% { transform: rotateZ(3deg); } 25% { transform: rotateZ(-5deg); } 30% { transform: rotateZ(2deg); } 35%, 100% { transform: rotateZ(0); } }
         
-        /* Modal Style */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
 
         /* Podium CSS */
@@ -44,9 +43,9 @@
         .podium-medal { font-size: 20px; filter: drop-shadow(1px 1px 0px black); margin-bottom: 4px; }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen flex flex-col items-center">
+<body class="p-4 md:p-8 min-h-screen flex flex-col items-center pb-28">
 
-    <div id="app" class="max-w-md w-full mx-auto animate-pop pb-20">
+    <div id="app" class="max-w-md w-full mx-auto animate-pop">
         
         <header class="text-center mb-4">
             <div class="inline-block p-2 bg-white border-4 border-black rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4">
@@ -75,8 +74,7 @@
                 <p class="text-xs font-bold text-gray-500 animate-pulse w-full text-center">Menarik data klasemen sultan...</p>
             </div>
 
-            <div id="list-display" class="mt-3 space-y-2 relative z-10 px-2">
-            </div>
+            <div id="list-display" class="mt-3 space-y-2 relative z-10 px-2"></div>
         </section>
 
         <section id="testimonial-step" class="mb-8 mt-2">
@@ -84,85 +82,86 @@
             <div class="marquee-wrapper"><div id="marquee-track" class="marquee-track"></div></div>
         </section>
 
-        <section id="region-step" class="mario-card p-6 relative z-10">
-            <h2 class="text-xl font-bold mb-4 text-center border-b-4 border-black pb-2">PILIH MARKASMU:</h2>
-            <div class="grid grid-cols-1 gap-4">
-                <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">📍 SABANG</button>
-                <button onclick="APP_LOGIC.selectRegion('Banda')" class="mario-btn mario-btn-yellow p-4 text-lg">📍 BANDA ACEH</button>
-                <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">📍 ACEH TIMUR</button>
-            </div>
-        </section>
-
-        <section id="booking-step" class="hidden relative z-10">
-            <div class="flex items-center mb-4"><button onclick="location.reload()" class="mario-btn bg-white px-4 py-2 text-sm mr-3">← KEMBALI</button></div>
-
-            <div class="mario-card p-6">
-                <h2 class="text-2xl font-black mb-6 text-center uppercase" id="region-title">BOOKING</h2>
-
-                <div class="flex gap-2 mb-6">
-                    <button id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2">PAKET</button>
-                    <button id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn mario-btn-gray flex-1 py-2">REGULAR</button>
+        <div id="booking-area-container">
+            <section id="region-step" class="mario-card p-6 relative z-10">
+                <h2 class="text-xl font-bold mb-4 text-center border-b-4 border-black pb-2">PILIH MARKASMU:</h2>
+                <div class="grid grid-cols-1 gap-4">
+                    <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">📍 SABANG</button>
+                    <button onclick="APP_LOGIC.selectRegion('Banda')" class="mario-btn mario-btn-yellow p-4 text-lg">📍 BANDA ACEH</button>
+                    <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">📍 ACEH TIMUR</button>
                 </div>
+            </section>
 
-                <form id="orderForm" class="space-y-4">
-                    <div>
-                        <label class="block font-bold mb-1">NAMA LENGKAP</label>
-                        <input type="text" id="name" required class="mario-input" placeholder="Misal > Bang Kapluk">
-                    </div>
-                    <div>
-                        <label class="block font-bold mb-1">NOMOR WHATSAPP (AKTIF)</label>
-                        <input type="number" id="wa-number" required class="mario-input" placeholder="08xxxxxxxxxx">
-                    </div>
-                    <div>
-                        <label class="block font-bold mb-1">PILIHAN AMUNISI (<span id="type-label">Paket</span>)</label>
-                        <div class="relative">
-                            <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="mario-input appearance-none cursor-pointer"></select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black">▼</div>
-                        </div>
+            <section id="booking-step" class="hidden relative z-10">
+                <div class="flex items-center mb-4"><button onclick="location.reload()" class="mario-btn bg-white px-4 py-2 text-sm mr-3">← KEMBALI</button></div>
+
+                <div class="mario-card p-6">
+                    <h2 class="text-2xl font-black mb-6 text-center uppercase" id="region-title">BOOKING</h2>
+
+                    <div class="flex gap-2 mb-6">
+                        <button id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2">PAKET</button>
+                        <button id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn mario-btn-gray flex-1 py-2">REGULAR</button>
                     </div>
 
-                    <div id="antar-jemput-container" class="hidden p-4 bg-[#FFE8B3] border-3 border-black rounded-xl mt-4">
-                        <label class="block font-bold mb-3 text-center">METODE LOGISTIK 🛵</label>
-                        <div class="flex gap-2 mb-3">
-                            <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="mario-btn mario-btn-gray flex-1 py-2 text-sm">Antar ke Lokasi</button>
-                            <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm">Ambil di Markas</button>
+                    <form id="orderForm" class="space-y-4">
+                        <div>
+                            <label class="block font-bold mb-1">NAMA LENGKAP</label>
+                            <input type="text" id="name" required class="mario-input" placeholder="Misal > Bang Kapluk">
                         </div>
-                        <div id="address-container" class="hidden">
-                            <textarea id="address" class="mario-input" rows="2" placeholder="Ketik alamat lengkap pengantaran..."></textarea>
+                        <div>
+                            <label class="block font-bold mb-1">NOMOR WHATSAPP (AKTIF)</label>
+                            <input type="number" id="wa-number" required class="mario-input" placeholder="08xxxxxxxxxx">
                         </div>
-                    </div>
-
-                    <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black mt-8 relative shadow-[4px_4px_0px_0px_#000]">
-                        <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-4 py-1 rounded-sm border-4 border-black transform rotate-6 animate-wiggle shadow-[2px_2px_0px_0px_#000]">PENAWARAN TERBATAS! 🔥</div>
-                        <p class="font-bold text-red-200 text-sm uppercase tracking-wider mb-1">Ringkasan Biaya</p>
-                        <div class="flex flex-col gap-1">
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-semibold text-red-200">Harga Normal:</span>
-                                <span id="fake-price" class="text-lg text-red-300 line-through decoration-black decoration-4 font-black">Rp 0</span>
-                            </div>
-                            <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border-2 border-red-800">
-                                <span class="text-sm font-bold text-yellow-300 animate-pulse">✨ ANDA HEMAT:</span>
-                                <span id="hemat-price" class="text-md font-black text-yellow-300">Rp 0</span>
-                            </div>
-                            <div class="flex items-end justify-between mt-2 pt-2 border-t-2 border-red-500/50">
-                                <span class="text-md font-bold">Total Bayar:</span>
-                                <span id="real-price" class="text-3xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
+                        <div>
+                            <label class="block font-bold mb-1">PILIHAN AMUNISI (<span id="type-label">Paket</span>)</label>
+                            <div class="relative">
+                                <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="mario-input appearance-none cursor-pointer"></select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black">▼</div>
                             </div>
                         </div>
-                    </div>
 
-                    <button type="submit" id="btn-submit-order" class="w-full mario-btn mario-btn-yellow p-4 text-xl mt-6 uppercase">
-                        🚀 GAS BOOKING SEKARANG!
-                    </button>
-                </form>
-            </div>
-        </section>
+                        <div id="antar-jemput-container" class="hidden p-4 bg-[#FFE8B3] border-3 border-black rounded-xl mt-4">
+                            <label class="block font-bold mb-3 text-center">METODE LOGISTIK 🛵</label>
+                            <div class="flex gap-2 mb-3">
+                                <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="mario-btn mario-btn-gray flex-1 py-2 text-sm">Antar ke Lokasi</button>
+                                <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm">Ambil di Markas</button>
+                            </div>
+                            <div id="address-container" class="hidden">
+                                <textarea id="address" class="mario-input" rows="2" placeholder="Ketik alamat lengkap pengantaran..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black mt-8 relative shadow-[4px_4px_0px_0px_#000]">
+                            <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-4 py-1 rounded-sm border-4 border-black transform rotate-6 animate-wiggle shadow-[2px_2px_0px_0px_#000]">PENAWARAN TERBATAS! 🔥</div>
+                            <p class="font-bold text-red-200 text-sm uppercase tracking-wider mb-1">Ringkasan Biaya</p>
+                            <div class="flex flex-col gap-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-semibold text-red-200">Harga Normal:</span>
+                                    <span id="fake-price" class="text-lg text-red-300 line-through decoration-black decoration-4 font-black">Rp 0</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border-2 border-red-800">
+                                    <span class="text-sm font-bold text-yellow-300 animate-pulse">✨ ANDA HEMAT:</span>
+                                    <span id="hemat-price" class="text-md font-black text-yellow-300">Rp 0</span>
+                                </div>
+                                <div class="flex items-end justify-between mt-2 pt-2 border-t-2 border-red-500/50">
+                                    <span class="text-md font-bold">Total Bayar:</span>
+                                    <span id="real-price" class="text-3xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="btn-submit-order" class="w-full mario-btn mario-btn-yellow p-4 text-xl mt-6 uppercase">
+                            🚀 GAS BOOKING SEKARANG!
+                        </button>
+                    </form>
+                </div>
+            </section>
+        </div>
     </div>
 
     <div id="loyalty-modal" class="modal-overlay hidden">
         <div class="mario-card p-6 w-full max-w-sm animate-pop text-center relative overflow-hidden bg-white">
             <div class="absolute -right-10 -top-10 opacity-10 text-9xl">🎮</div>
-            
             <h2 class="text-2xl font-black mb-2 uppercase text-[#FF6B00]">YEAY! BERHASIL! 🎉</h2>
             <p class="font-bold text-gray-700 text-sm mb-6 leading-relaxed">Kami senang Bang <span id="member-name" class="text-black font-black bg-yellow-300 px-2 py-0.5 rounded uppercase"></span> menjadi sahabat kami.</p>
             
@@ -183,6 +182,14 @@
         </div>
     </div>
 
+    <button onclick="APP_LOGIC.sendTTD()" class="fixed bottom-6 right-6 z-50 bg-white border-4 border-black text-black font-black rounded-full w-14 h-14 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_#000] hover:-translate-y-1 transition-transform animate-bounce">💬</button>
+
+    <div id="sticky-cta" class="fixed bottom-6 left-0 right-0 px-4 pointer-events-none z-40 flex justify-start max-w-md mx-auto transition-opacity duration-300">
+        <button onclick="APP_LOGIC.scrollToBooking()" class="mario-btn mario-btn-yellow py-3 px-4 text-lg font-black uppercase shadow-[4px_4px_0px_#000] pointer-events-auto animate-pulse w-[calc(100%-70px)]">
+            🚀 GAS BOOKING!
+        </button>
+    </div>
+
     <script>
         const CONFIG = {
             whatsapp: "6283863557669",
@@ -201,6 +208,29 @@
 
         const APP_LOGIC = {
             state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null },
+
+            initObserver: () => {
+                // Ninja Scroll Observer: Ngilangin tombol sticky kalau udah sampai di form
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const stickyCta = document.getElementById('sticky-cta');
+                        if (entry.isIntersecting) {
+                            stickyCta.classList.add('opacity-0');
+                            setTimeout(() => stickyCta.classList.add('hidden'), 300); // hidden setelah transisi
+                        } else {
+                            stickyCta.classList.remove('hidden');
+                            setTimeout(() => stickyCta.classList.remove('opacity-0'), 10);
+                        }
+                    });
+                }, { threshold: 0.1 }); 
+
+                observer.observe(document.getElementById('booking-area-container'));
+            },
+
+            scrollToBooking: () => {
+                const target = document.getElementById('region-step').classList.contains('hidden') ? document.getElementById('booking-step') : document.getElementById('region-step');
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            },
 
             initMarquee: () => {
                 const track = document.getElementById('marquee-track');
@@ -244,7 +274,6 @@
 
                 let podiumHtml = '';
                 
-                // RANK 2 (KIRI)
                 if (rank2) {
                     podiumHtml += `
                     <div class="podium-rank rank-2" style="order: 1;">
@@ -253,7 +282,6 @@
                     </div>`;
                 }
 
-                // RANK 1 (TENGAH)
                 if (rank1) {
                     podiumHtml += `
                     <div class="podium-rank rank-1" style="order: 2;">
@@ -263,7 +291,6 @@
                     </div>`;
                 }
 
-                // RANK 3 (KANAN)
                 if (rank3) {
                     podiumHtml += `
                     <div class="podium-rank rank-3" style="order: 3;">
@@ -274,7 +301,6 @@
 
                 podiumDiv.innerHTML = podiumHtml;
 
-                // RANK 4 & 5 (LIST DI BAWAH)
                 let listHtml = '';
                 for(let i=3; i<5; i++) {
                     if(sultans[i]) {
@@ -296,7 +322,7 @@
                 APP_LOGIC.state.region = regionName;
                 document.getElementById('region-step').classList.add('hidden');
                 document.getElementById('testimonial-step').classList.add('hidden');
-                document.getElementById('leaderboard-section').classList.add('hidden'); // Sembunyikan LB
+                document.getElementById('leaderboard-section').classList.add('hidden'); 
                 document.getElementById('booking-step').classList.remove('hidden');
                 document.getElementById('booking-step').classList.add('animate-pop');
                 document.getElementById('region-title').innerText = `MARKAS ${regionName === 'Banda' ? 'BANDA ACEH' : regionName.toUpperCase()}`;
@@ -394,13 +420,15 @@
                 btnSubmit.disabled = false;
             },
 
-            proceedToWA: () => { window.location.href = APP_LOGIC.state.pendingWaUrl; }
+            proceedToWA: () => { window.location.href = APP_LOGIC.state.pendingWaUrl; },
+            sendTTD: () => { window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Halo Arena Playbox! Saya mau tanya-tanya dulu nih soal rentalnya 🎮")}`, '_blank'); }
         };
 
         document.getElementById('orderForm').addEventListener('submit', APP_LOGIC.submitForm);
         document.addEventListener('DOMContentLoaded', () => {
             APP_LOGIC.initMarquee();
-            APP_LOGIC.fetchLeaderboard(); // Panggil klasemen saat web dibuka
+            APP_LOGIC.fetchLeaderboard(); 
+            APP_LOGIC.initObserver(); // Aktifkan radar ninja buat tombol sticky
         });
 
     </script>
