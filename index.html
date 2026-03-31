@@ -22,20 +22,18 @@
         .mario-input:focus { background-color: #ffffff; border-color: var(--mario-orange); box-shadow: 2px 2px 0px 0px var(--mario-orange); transform: translateY(-2px); }
         .hidden { display: none !important; }
         .animate-pop { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .animate-wiggle { animation: wiggle 2s linear infinite; }
+        .animate-fade { animation: fadeIn 0.2s ease-in-out; }
         .marquee-wrapper { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; overflow: hidden; padding: 10px 0; }
         .marquee-track { display: flex; width: max-content; animation: scroll 35s linear infinite; gap: 16px; padding-left: 16px; }
         .marquee-track:hover { animation-play-state: paused; }
         
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
         @keyframes wiggle { 0%, 7% { transform: rotateZ(0); } 15% { transform: rotateZ(-5deg); } 20% { transform: rotateZ(3deg); } 25% { transform: rotateZ(-5deg); } 30% { transform: rotateZ(2deg); } 35%, 100% { transform: rotateZ(0); } }
-        @keyframes throb { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-        .animate-throb { animation: throb 1.5s ease-in-out infinite; }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
 
-        /* Podium CSS */
         .podium-container { display: flex; align-items: flex-end; justify-content: center; gap: 8px; padding-top: 20px; width: 100%; }
         .podium-rank { border: 3px solid var(--mario-black); border-bottom: 0; border-top-left-radius: 8px; border-top-right-radius: 8px; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 10px; align-items: center; position: relative; width: 30%; }
         .rank-1 { height: 140px; background: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%); z-index: 10; box-shadow: 0px -4px 10px rgba(255, 215, 0, 0.5); }
@@ -49,18 +47,17 @@
 
         /* Horizontal Scroll Date Picker */
         .date-scroll-container { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; scroll-snap-type: x mandatory; }
-        .date-scroll-container::-webkit-scrollbar { height: 0px; } /* Sembunyikan scrollbar biar bersih kayak app */
+        .date-scroll-container::-webkit-scrollbar { height: 0px; } 
         .date-btn { flex: 0 0 auto; scroll-snap-align: start; padding: 10px 16px; border: 3px solid var(--mario-black); border-radius: 12px; background: #F9FAFB; font-weight: bold; font-size: 13px; cursor: pointer; transition: all 0.2s; min-width: 90px; text-align: center; }
         .date-btn.selected { background: var(--mario-yellow); box-shadow: 3px 3px 0px 0px var(--mario-black); transform: translateY(-3px); }
         
-        /* Section Form Styling */
-        .form-section { background: #f9fafb; border: 3px solid var(--mario-black); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-        .form-section-title { font-size: 13px; font-weight: 900; text-transform: uppercase; border-bottom: 2px dashed #d1d5db; padding-bottom: 8px; margin-bottom: 12px; color: var(--mario-black); display: flex; align-items: center; gap: 6px; }
+        /* Wizard Steps */
+        .step-indicator { transition: all 0.3s ease; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <div class="flex-grow w-full p-4 md:p-8 flex flex-col items-center pb-28 relative">
+    <div class="flex-grow w-full p-4 md:p-8 flex flex-col items-center pb-20 relative">
         <div id="app" class="max-w-md w-full mx-auto animate-pop">
             
             <header class="text-center mb-4">
@@ -106,88 +103,116 @@
                 </section>
 
                 <section id="booking-step" class="hidden relative z-10">
-                    <div class="flex items-center mb-4">
-                        <button type="button" onclick="location.reload()" class="mario-btn bg-white px-4 py-2 text-sm mr-3">← KEMBALI</button>
-                        <span class="bg-black text-white font-black px-3 py-1.5 rounded-lg text-xs" id="region-badge">📍 BANDA ACEH</span>
+                    <div class="flex items-center justify-between mb-4">
+                        <button type="button" onclick="location.reload()" class="bg-white border-2 border-black rounded-lg px-3 py-1 text-xs font-bold shadow-[2px_2px_0px_#000]">← KEMBALI</button>
+                        <span class="bg-black text-white font-black px-3 py-1.5 rounded-lg text-[10px]" id="region-badge">📍 BANDA ACEH</span>
                     </div>
 
                     <div class="mario-card p-4 md:p-6">
-                        <h2 class="text-2xl font-black mb-5 text-center uppercase border-b-4 border-black pb-2">FORM BOOKING</h2>
+                        
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="step-indicator w-1/3 text-center border-b-4 border-black pb-2 text-[10px] font-black text-yellow-500" id="ind-1">1. PAKET</div>
+                            <div class="step-indicator w-1/3 text-center border-b-4 border-gray-200 pb-2 text-[10px] font-black text-gray-400" id="ind-2">2. JADWAL</div>
+                            <div class="step-indicator w-1/3 text-center border-b-4 border-gray-200 pb-2 text-[10px] font-black text-gray-400" id="ind-3">3. CHECKOUT</div>
+                        </div>
 
-                        <form id="orderForm" class="space-y-0">
+                        <form id="orderForm">
                             
-                            <div class="form-section">
-                                <div class="form-section-title">🎮 1. MAU MAIN APA?</div>
-                                <div class="flex gap-2 mb-3">
-                                    <button type="button" id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm">PAKET</button>
-                                    <button type="button" id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn mario-btn-gray flex-1 py-2 text-sm">REGULAR</button>
+                            <div id="step-1" class="animate-fade">
+                                <h3 class="text-lg font-black mb-4 text-center uppercase">🎮 Mau Main Apa?</h3>
+                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-sm mb-4">
+                                    <div class="flex gap-2 mb-4">
+                                        <button type="button" id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm">PAKET</button>
+                                        <button type="button" id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn mario-btn-gray flex-1 py-2 text-sm">REGULAR</button>
+                                    </div>
+                                    <label class="block font-bold mb-2 text-xs">PILIH AMUNISI:</label>
+                                    <div class="relative">
+                                        <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="mario-input appearance-none cursor-pointer text-sm"></select>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black">▼</div>
+                                    </div>
                                 </div>
-                                <div class="relative">
-                                    <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="mario-input appearance-none cursor-pointer text-sm"></select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black">▼</div>
-                                </div>
+                                <button type="button" onclick="APP_LOGIC.goToStep(2)" class="w-full mario-btn bg-black text-white p-3 text-sm uppercase">Lanjut: Pilih Jadwal ➔</button>
                             </div>
 
-                            <div class="form-section">
-                                <div class="form-section-title">📅 2. KAPAN MAU MAIN?</div>
-                                <p class="text-[10px] font-bold text-gray-500 mb-2">Geser untuk pilih tanggal:</p>
-                                <div id="date-scroll" class="date-scroll-container mb-3"></div>
+                            <div id="step-2" class="hidden animate-fade">
+                                <h3 class="text-lg font-black mb-4 text-center uppercase">📅 Kapan Mau Main?</h3>
                                 
-                                <div class="flex items-center gap-3 bg-white p-3 border-2 border-black rounded-xl shadow-[2px_2px_0px_#000] mb-3">
-                                    <div class="bg-yellow-400 p-2 rounded-lg border-2 border-black">⏰</div>
-                                    <div class="flex-1">
-                                        <label class="text-[10px] font-black text-gray-600 block mb-1">JAM MULAI:</label>
-                                        <input type="time" id="time-input" required class="w-full bg-transparent font-black text-lg outline-none" onchange="APP_LOGIC.checkUnitsAvailability()">
+                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-sm mb-4">
+                                    <p class="text-[10px] font-bold text-gray-500 mb-2">GESER UNTUK PILIH TANGGAL:</p>
+                                    <div id="date-scroll" class="date-scroll-container mb-4"></div>
+                                    
+                                    <div class="flex items-center gap-3 bg-white p-3 border-2 border-black rounded-xl shadow-[2px_2px_0px_#000] mb-4">
+                                        <div class="bg-yellow-400 p-2 rounded-lg border-2 border-black">⏰</div>
+                                        <div class="flex-1">
+                                            <label class="text-[10px] font-black text-gray-600 block mb-1">PILIH JAM MULAI:</label>
+                                            <input type="time" id="time-input" required class="w-full bg-transparent font-black text-lg outline-none" onchange="APP_LOGIC.checkUnitsAvailability()">
+                                        </div>
+                                    </div>
+
+                                    <div id="unit-status-container" class="hidden border-t-2 border-dashed border-gray-300 pt-3">
+                                        <p class="text-[10px] font-black text-center mb-2">STATUS UNIT (<span id="lbl-tgl-cek" class="text-[#FF6B00]"></span>)</p>
+                                        <div id="unit-status-list" class="grid grid-cols-2 gap-2"></div>
                                     </div>
                                 </div>
-
-                                <div id="unit-status-container" class="hidden border-t-2 border-dashed border-gray-300 pt-3">
-                                    <p class="text-[10px] font-black text-center mb-2">STATUS UNIT (<span id="lbl-tgl-cek" class="text-[#FF6B00]"></span>)</p>
-                                    <div id="unit-status-list" class="grid grid-cols-2 gap-2"></div>
+                                
+                                <div class="flex gap-2">
+                                    <button type="button" onclick="APP_LOGIC.goToStep(1)" class="mario-btn bg-gray-200 text-gray-700 p-3 text-sm w-1/3">Kembali</button>
+                                    <button type="button" onclick="APP_LOGIC.goToStep(3)" class="mario-btn bg-black text-white p-3 text-sm uppercase flex-1">Lanjut: Data Diri ➔</button>
                                 </div>
                             </div>
 
-                            <div id="antar-jemput-container" class="form-section hidden bg-[#FFE8B3] border-yellow-600">
-                                <div class="form-section-title text-yellow-900 border-yellow-400">🛵 3. LOGISTIK PENGIRIMAN</div>
-                                <div class="flex gap-2 mb-3">
-                                    <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="mario-btn mario-btn-gray flex-1 py-2 text-sm">Antar ke Lokasi</button>
-                                    <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm">Ambil Sendiri</button>
+                            <div id="step-3" class="hidden animate-fade">
+                                <h3 class="text-lg font-black mb-4 text-center uppercase">👤 Isi Data & Checkout</h3>
+                                
+                                <div id="antar-jemput-container" class="hidden bg-[#FFE8B3] border-2 border-yellow-600 rounded-xl p-4 mb-4 shadow-[2px_2px_0px_#ca8a04]">
+                                    <label class="block font-black text-[10px] uppercase mb-2 text-yellow-900">🛵 LOGISTIK PENGIRIMAN</label>
+                                    <div class="flex gap-2 mb-3">
+                                        <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="mario-btn mario-btn-gray flex-1 py-2 text-xs">Antar ke Lokasi</button>
+                                        <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="mario-btn mario-btn-yellow flex-1 py-2 text-xs">Ambil Sendiri</button>
+                                    </div>
+                                    <div id="address-container" class="hidden">
+                                        <textarea id="address" class="mario-input text-sm" rows="2" placeholder="Ketik alamat lengkap kost / rumah..."></textarea>
+                                    </div>
                                 </div>
-                                <div id="address-container" class="hidden">
-                                    <textarea id="address" class="mario-input text-sm" rows="2" placeholder="Ketik alamat lengkap kost / rumah..."></textarea>
+
+                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-sm mb-4 space-y-3">
+                                    <div>
+                                        <label class="text-[10px] font-bold text-gray-600 block mb-1">NAMA LENGKAP</label>
+                                        <input type="text" id="name" required class="mario-input text-sm" placeholder="Cth: Bang Kapluk">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-bold text-gray-600 block mb-1">NOMOR WHATSAPP (AKTIF)</label>
+                                        <input type="number" id="wa-number" required class="mario-input text-sm" placeholder="08xxxxxxxxxx">
+                                    </div>
+                                </div>
+
+                                <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black mb-4 relative shadow-[4px_4px_0px_0px_#000]">
+                                    <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-3 py-1 rounded-sm border-2 border-black transform rotate-6 shadow-[2px_2px_0px_0px_#000] text-[10px]">PENAWARAN TERBATAS! 🔥</div>
+                                    <p class="font-bold text-red-200 text-xs uppercase tracking-wider mb-1">Total Biaya Rental</p>
+                                    <div class="flex flex-col gap-1">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs font-semibold text-red-200">Harga Normal:</span>
+                                            <span id="fake-price" class="text-sm text-red-300 line-through decoration-black decoration-2 font-black">Rp 0</span>
+                                        </div>
+                                        <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border-2 border-red-800">
+                                            <span class="text-[10px] font-bold text-yellow-300 animate-pulse">✨ ANDA HEMAT:</span>
+                                            <span id="hemat-price" class="text-xs font-black text-yellow-300">Rp 0</span>
+                                        </div>
+                                        <div class="flex items-end justify-between mt-2 pt-2 border-t-2 border-red-500/50">
+                                            <span class="text-sm font-bold">Bayar Nanti:</span>
+                                            <span id="real-price" class="text-2xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-2">
+                                    <button type="button" onclick="APP_LOGIC.goToStep(2)" class="mario-btn bg-gray-200 text-gray-700 p-3 text-sm w-1/4">←</button>
+                                    <button type="submit" id="btn-submit-order" class="mario-btn mario-btn-yellow p-3 text-sm font-black uppercase flex-1 shadow-[4px_4px_0px_#000]">
+                                        🚀 GAS BOOKING SEKARANG!
+                                    </button>
                                 </div>
                             </div>
 
-                            <div class="form-section">
-                                <div class="form-section-title">👤 4. DATA PENYEWA</div>
-                                <div class="space-y-3">
-                                    <input type="text" id="name" required class="mario-input text-sm" placeholder="Nama Panggilan (Cth: Bang Kapluk)">
-                                    <input type="number" id="wa-number" required class="mario-input text-sm" placeholder="No WhatsApp Aktif (08xx...)">
-                                </div>
-                            </div>
-
-                            <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black mt-6 relative shadow-[4px_4px_0px_0px_#000]">
-                                <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-4 py-1 rounded-sm border-4 border-black transform rotate-6 animate-wiggle shadow-[2px_2px_0px_0px_#000]">PENAWARAN TERBATAS! 🔥</div>
-                                <p class="font-bold text-red-200 text-xs uppercase tracking-wider mb-1">Total Biaya Rental</p>
-                                <div class="flex flex-col gap-1">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm font-semibold text-red-200">Harga Normal:</span>
-                                        <span id="fake-price" class="text-lg text-red-300 line-through decoration-black decoration-4 font-black">Rp 0</span>
-                                    </div>
-                                    <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border-2 border-red-800">
-                                        <span class="text-xs font-bold text-yellow-300 animate-pulse">✨ ANDA HEMAT:</span>
-                                        <span id="hemat-price" class="text-sm font-black text-yellow-300">Rp 0</span>
-                                    </div>
-                                    <div class="flex items-end justify-between mt-2 pt-2 border-t-2 border-red-500/50">
-                                        <span class="text-sm font-bold">Bayar Nanti:</span>
-                                        <span id="real-price" class="text-3xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="submit" id="btn-submit-order" class="w-full mario-btn mario-btn-yellow p-4 text-xl mt-6 uppercase">
-                                🚀 GAS BOOKING SEKARANG!
-                            </button>
                         </form>
                     </div>
                 </section>
@@ -232,12 +257,6 @@
         </div>
     </div>
 
-    <div id="sticky-cta" class="fixed bottom-6 left-0 right-0 px-4 pointer-events-none z-40 flex justify-center max-w-md mx-auto transition-opacity duration-300">
-        <button onclick="APP_LOGIC.scrollToBooking()" class="mario-btn mario-btn-yellow py-3 px-4 text-lg font-black uppercase shadow-[4px_4px_0px_#000] pointer-events-auto animate-throb w-full">
-            🚀 GAS BOOKING!
-        </button>
-    </div>
-
     <script>
         const CONFIG = {
             whatsapp: "6283863557669",
@@ -255,28 +274,7 @@
         };
 
         const APP_LOGIC = {
-            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null, allLogs: [], selectedDateStr: "" },
-
-            initObserver: () => {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        const stickyCta = document.getElementById('sticky-cta');
-                        if (entry.isIntersecting) {
-                            stickyCta.classList.add('opacity-0');
-                            setTimeout(() => stickyCta.classList.add('hidden'), 300);
-                        } else {
-                            stickyCta.classList.remove('hidden');
-                            setTimeout(() => stickyCta.classList.remove('opacity-0'), 10);
-                        }
-                    });
-                }, { threshold: 0.1 }); 
-                observer.observe(document.getElementById('booking-area-container'));
-            },
-
-            scrollToBooking: () => {
-                const target = document.getElementById('region-step').classList.contains('hidden') ? document.getElementById('booking-step') : document.getElementById('region-step');
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            },
+            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null, allLogs: [], selectedDateStr: "", currentStep: 1 },
 
             initMarquee: () => {
                 const track = document.getElementById('marquee-track');
@@ -289,7 +287,6 @@
             fetchData: async () => {
                 try {
                     const resLB = fetch(CONFIG.webhook_url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'get_leaderboard' }) });
-                    // Bypass buat narik semua log ke landing page
                     const resLogs = fetch(CONFIG.webhook_url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'get_dashboard', role: 'admin', branch: 'ALL' }) });
                     
                     const [lbResponse, logsResponse] = await Promise.all([resLB, resLogs]);
@@ -337,6 +334,40 @@
                     }
                 }
                 listDiv.innerHTML = listHtml;
+            },
+
+            // --- WIZARD FORM LOGIC ---
+            goToStep: (targetStep) => {
+                // Validasi Langkah 2 ke Langkah 3
+                if (targetStep === 3) {
+                    const timeInput = document.getElementById('time-input').value;
+                    if(!timeInput) { alert('Bos, tolong diisi jam mulainya dulu ya!'); return; }
+                }
+
+                APP_LOGIC.state.currentStep = targetStep;
+                
+                // Hide all steps
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-2').classList.add('hidden');
+                document.getElementById('step-3').classList.add('hidden');
+                
+                // Show target step
+                document.getElementById(`step-${targetStep}`).classList.remove('hidden');
+                
+                // Update Indicators
+                for(let i=1; i<=3; i++) {
+                    const ind = document.getElementById(`ind-${i}`);
+                    if(i === targetStep) {
+                        ind.className = 'step-indicator w-1/3 text-center border-b-4 border-black pb-2 text-[10px] font-black text-yellow-500';
+                    } else if (i < targetStep) {
+                        ind.className = 'step-indicator w-1/3 text-center border-b-4 border-black pb-2 text-[10px] font-black text-black'; 
+                    } else {
+                        ind.className = 'step-indicator w-1/3 text-center border-b-4 border-gray-200 pb-2 text-[10px] font-black text-gray-400';
+                    }
+                }
+                
+                // Scroll up sedikit biar nyaman
+                document.getElementById('booking-step').scrollIntoView({ behavior: 'smooth', block: 'start' });
             },
 
             initDatePicker: () => {
@@ -432,17 +463,16 @@
                         }
                     });
 
-                    // Desain grid compact untuk status unit
                     if (isClash) {
-                        listHtml += `<div class="bg-red-50 border border-red-300 p-2 rounded-lg text-center"><p class="text-[10px] font-black text-red-800">🔴 UNIT ${uNum}</p><p class="text-[9px] font-bold text-red-600">Kosong ±${finishTimeStr}</p></div>`;
+                        listHtml += `<div class="bg-red-50 border-2 border-red-300 p-2 rounded-lg text-center shadow-sm"><p class="text-[10px] font-black text-red-800">🔴 UNIT ${uNum}</p><p class="text-[9px] font-bold text-red-600">Kosong ±${finishTimeStr}</p></div>`;
                     } else {
-                        listHtml += `<div class="bg-green-50 border border-green-300 p-2 rounded-lg text-center"><p class="text-[10px] font-black text-green-800">🟢 UNIT ${uNum}</p><p class="text-[9px] font-bold text-green-600">Aman Bos!</p></div>`;
+                        listHtml += `<div class="bg-green-50 border-2 border-green-300 p-2 rounded-lg text-center shadow-sm"><p class="text-[10px] font-black text-green-800">🟢 UNIT ${uNum}</p><p class="text-[9px] font-bold text-green-600">Aman Bos!</p></div>`;
                     }
                 });
 
                 statusList.innerHTML = listHtml;
                 statusContainer.classList.remove('hidden');
-                APP_LOGIC.updatePriceUI(); // Update UI biar data kesimpen di state
+                APP_LOGIC.updatePriceUI(); 
             },
 
             selectRegion: (regionName) => {
@@ -460,22 +490,24 @@
                 
                 APP_LOGIC.initDatePicker(); 
                 APP_LOGIC.updateDropdown(); 
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Set form ke langkah 1
+                APP_LOGIC.goToStep(1);
             },
 
             setDelivery: (mode) => {
                 APP_LOGIC.state.deliveryMode = mode;
                 const btnAntar = document.getElementById('btn-antar'); const btnAmbil = document.getElementById('btn-ambil');
                 const addressContainer = document.getElementById('address-container'); const addressInput = document.getElementById('address');
-                if (mode === 'antar') { btnAntar.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-sm'; btnAmbil.className = 'mario-btn mario-btn-gray flex-1 py-2 text-sm'; addressContainer.classList.remove('hidden'); addressInput.setAttribute('required', 'true'); } 
-                else { btnAmbil.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-sm'; btnAntar.className = 'mario-btn mario-btn-gray flex-1 py-2 text-sm'; addressContainer.classList.add('hidden'); addressInput.removeAttribute('required'); addressInput.value = ''; }
+                if (mode === 'antar') { btnAntar.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; btnAmbil.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; addressContainer.classList.remove('hidden'); addressInput.setAttribute('required', 'true'); } 
+                else { btnAmbil.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; btnAntar.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; addressContainer.classList.add('hidden'); addressInput.removeAttribute('required'); addressInput.value = ''; }
             },
 
             switchType: (type) => {
                 APP_LOGIC.state.type = type; const isPaket = type === 'Paket';
                 document.getElementById('tab-paket').className = isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2 text-sm' : 'mario-btn mario-btn-gray flex-1 py-2 text-sm';
                 document.getElementById('tab-regular').className = !isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2 text-sm' : 'mario-btn mario-btn-gray flex-1 py-2 text-sm';
-                document.getElementById('type-label').innerText = type; APP_LOGIC.updateDropdown();
+                APP_LOGIC.updateDropdown();
             },
 
             updateDropdown: () => {
@@ -498,7 +530,11 @@
                 e.preventDefault();
                 
                 const timeInput = document.getElementById('time-input').value;
-                if(!timeInput) { alert('Bos, tolong isi pilihan Jam Mulai Main-nya dulu ya!'); return; }
+                if(!timeInput) { 
+                    alert('Bos, tolong kembali ke Langkah 2 dan isi pilihan Jam Main-nya dulu ya!'); 
+                    APP_LOGIC.goToStep(2);
+                    return; 
+                }
 
                 const btnSubmit = document.getElementById('btn-submit-order');
                 btnSubmit.innerHTML = 'MENGECEK STATUS... ⏳';
@@ -560,7 +596,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             APP_LOGIC.initMarquee();
             APP_LOGIC.fetchData(); 
-            APP_LOGIC.initObserver(); 
         });
     </script>
 </body>
