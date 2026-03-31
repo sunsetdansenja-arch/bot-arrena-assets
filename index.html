@@ -7,7 +7,9 @@
     
     <link rel="icon" href="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
         :root { --mario-orange: #FF6B00; --mario-black: #000000; --mario-yellow: #FFD700; }
@@ -30,13 +32,11 @@
         @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes wiggle { 0%, 7% { transform: rotateZ(0); } 15% { transform: rotateZ(-5deg); } 20% { transform: rotateZ(3deg); } 25% { transform: rotateZ(-5deg); } 30% { transform: rotateZ(2deg); } 35%, 100% { transform: rotateZ(0); } }
         
-        /* Animasi Berdenyut (Heartbeat) untuk tombol bawah */
         @keyframes throb { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
         .animate-throb { animation: throb 1.5s ease-in-out infinite; }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
 
-        /* Podium CSS */
         .podium-container { display: flex; align-items: flex-end; justify-content: center; gap: 8px; padding-top: 20px; width: 100%; }
         .podium-rank { border: 3px solid var(--mario-black); border-bottom: 0; border-top-left-radius: 8px; border-top-right-radius: 8px; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 10px; align-items: center; position: relative; width: 30%; }
         .rank-1 { height: 140px; background: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%); z-index: 10; box-shadow: 0px -4px 10px rgba(255, 215, 0, 0.5); }
@@ -46,129 +46,166 @@
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         .podium-name { font-size: 11px; font-weight: 900; text-align: center; text-transform: uppercase; margin-bottom: 4px; line-height: 1.1; word-break: break-word; padding: 0 4px; }
         .podium-medal { font-size: 20px; filter: drop-shadow(1px 1px 0px black); margin-bottom: 4px; }
+        
+        .font-beuna { font-family: 'Inter', sans-serif; }
+
+        /* Styling Horizontal Scroll Date Picker */
+        .date-scroll-container { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+        .date-scroll-container::-webkit-scrollbar { height: 4px; }
+        .date-scroll-container::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .date-scroll-container::-webkit-scrollbar-thumb { background: var(--mario-black); border-radius: 4px; }
+        .date-btn { flex: 0 0 auto; scroll-snap-align: start; padding: 8px 16px; border: 3px solid var(--mario-black); border-radius: 8px; background: white; font-weight: bold; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+        .date-btn.selected { background: var(--mario-yellow); box-shadow: 2px 2px 0px 0px var(--mario-black); transform: translateY(-2px); }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen flex flex-col items-center pb-28">
+<body class="min-h-screen flex flex-col">
 
-    <div id="app" class="max-w-md w-full mx-auto animate-pop">
-        
-        <header class="text-center mb-4">
-            <div class="inline-block p-2 bg-white border-4 border-black rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4">
-                <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" alt="Arena Playbox" class="h-20 w-20 object-contain rounded-full">
-            </div>
-            <h1 class="text-3xl font-black text-white uppercase" style="text-shadow: 3px 3px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;">ARENA PLAYBOX!</h1>
-            <div class="mt-3 bg-black text-white px-4 py-2 rounded-lg border-2 border-white inline-block transform -rotate-2">
-                <p class="text-sm font-bold tracking-wide">"HAI NYOE RAKAN PLAYBOX ANDALAN GEUTANYOE"</p>
-            </div>
-        </header>
-
-        <section id="leaderboard-section" class="mario-card p-4 mb-6 relative overflow-hidden hidden">
-            <div class="absolute -right-6 -top-6 opacity-10 text-9xl">👑</div>
-            <h2 class="text-lg font-black text-center border-b-4 border-black pb-2 mb-4 uppercase text-[#FF6B00]">🏆 TOP 5 SULTAN BULAN INI</h2>
+    <div class="flex-grow w-full p-4 md:p-8 flex flex-col items-center pb-28 relative">
+        <div id="app" class="max-w-md w-full mx-auto animate-pop">
             
-            <div class="flex justify-center mb-4 relative z-10">
-                <select id="lb-branch" onchange="APP_LOGIC.renderPodium()" class="mario-input w-full p-2 text-xs font-black bg-yellow-100 border-yellow-500 cursor-pointer text-center">
-                    <option value="ALL">🌍 SEMUA MARKAS (GLOBAL)</option>
-                    <option value="Banda">📍 BANDA ACEH</option>
-                    <option value="Sabang">📍 SABANG</option>
-                    <option value="Aceh Timur">📍 ACEH TIMUR</option>
-                </select>
-            </div>
-
-            <div id="podium-display" class="podium-container border-b-4 border-black pb-0 relative z-10">
-                <p class="text-xs font-bold text-gray-500 animate-pulse w-full text-center">Menarik data klasemen sultan...</p>
-            </div>
-
-            <div id="list-display" class="mt-3 space-y-2 relative z-10 px-2"></div>
-        </section>
-
-        <section id="testimonial-step" class="mb-8 mt-2">
-            <div class="text-center mb-2"><span class="bg-black text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-white shadow-[2px_2px_0px_0px_#FFD700]">KATA MEREKA 🍄</span></div>
-            <div class="marquee-wrapper"><div id="marquee-track" class="marquee-track"></div></div>
-        </section>
-
-        <div id="booking-area-container">
-            <section id="region-step" class="mario-card p-6 relative z-10">
-                <h2 class="text-xl font-bold mb-4 text-center border-b-4 border-black pb-2">PILIH MARKASMU:</h2>
-                <div class="grid grid-cols-1 gap-4">
-                    <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">📍 SABANG</button>
-                    <button onclick="APP_LOGIC.selectRegion('Banda')" class="mario-btn mario-btn-yellow p-4 text-lg">📍 BANDA ACEH</button>
-                    <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">📍 ACEH TIMUR</button>
+            <header class="text-center mb-4">
+                <div class="inline-block p-2 bg-white border-4 border-black rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4">
+                    <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" alt="Arena Playbox" class="h-20 w-20 object-contain rounded-full">
                 </div>
+                <h1 class="text-3xl font-black text-white uppercase" style="text-shadow: 3px 3px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;">ARENA PLAYBOX!</h1>
+                <div class="mt-3 bg-black text-white px-4 py-2 rounded-lg border-2 border-white inline-block transform -rotate-2">
+                    <p class="text-sm font-bold tracking-wide">"HAI NYOE RAKAN PLAYBOX ANDALAN GEUTANYOE"</p>
+                </div>
+            </header>
+
+            <section id="leaderboard-section" class="mario-card p-4 mb-6 relative overflow-hidden hidden">
+                <div class="absolute -right-6 -top-6 opacity-10 text-9xl">👑</div>
+                <h2 class="text-lg font-black text-center border-b-4 border-black pb-2 mb-4 uppercase text-[#FF6B00]">🏆 TOP 5 SULTAN BULAN INI</h2>
+                
+                <div class="flex justify-center mb-4 relative z-10">
+                    <select id="lb-branch" onchange="APP_LOGIC.renderPodium()" class="mario-input w-full p-2 text-xs font-black bg-yellow-100 border-yellow-500 cursor-pointer text-center">
+                        <option value="ALL">🌍 SEMUA MARKAS (GLOBAL)</option>
+                        <option value="Banda">📍 BANDA ACEH</option>
+                        <option value="Sabang">📍 SABANG</option>
+                        <option value="Aceh Timur">📍 ACEH TIMUR</option>
+                    </select>
+                </div>
+
+                <div id="podium-display" class="podium-container border-b-4 border-black pb-0 relative z-10">
+                    <p class="text-xs font-bold text-gray-500 animate-pulse w-full text-center">Menarik data klasemen sultan...</p>
+                </div>
+                <div id="list-display" class="mt-3 space-y-2 relative z-10 px-2"></div>
             </section>
 
-            <section id="booking-step" class="hidden relative z-10">
-                <div class="flex items-center mb-4"><button onclick="location.reload()" class="mario-btn bg-white px-4 py-2 text-sm mr-3">← KEMBALI</button></div>
+            <section id="testimonial-step" class="mb-8 mt-2">
+                <div class="text-center mb-2"><span class="bg-black text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-white shadow-[2px_2px_0px_0px_#FFD700]">KATA MEREKA 🍄</span></div>
+                <div class="marquee-wrapper"><div id="marquee-track" class="marquee-track"></div></div>
+            </section>
 
-                <div class="mario-card p-6">
-                    <h2 class="text-2xl font-black mb-6 text-center uppercase" id="region-title">BOOKING</h2>
-
-                    <div class="flex gap-2 mb-6">
-                        <button id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2">PAKET</button>
-                        <button id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn mario-btn-gray flex-1 py-2">REGULAR</button>
+            <div id="booking-area-container">
+                <section id="region-step" class="mario-card p-6 relative z-10">
+                    <h2 class="text-xl font-bold mb-4 text-center border-b-4 border-black pb-2">PILIH MARKASMU:</h2>
+                    <div class="grid grid-cols-1 gap-4">
+                        <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">📍 SABANG</button>
+                        <button onclick="APP_LOGIC.selectRegion('Banda')" class="mario-btn mario-btn-yellow p-4 text-lg">📍 BANDA ACEH</button>
+                        <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">📍 ACEH TIMUR</button>
                     </div>
+                </section>
 
-                    <form id="orderForm" class="space-y-4">
-                        <div>
-                            <label class="block font-bold mb-1">NAMA LENGKAP</label>
-                            <input type="text" id="name" required class="mario-input" placeholder="Misal > Bang Kapluk">
-                        </div>
-                        <div>
-                            <label class="block font-bold mb-1">NOMOR WHATSAPP (AKTIF)</label>
-                            <input type="number" id="wa-number" required class="mario-input" placeholder="08xxxxxxxxxx">
-                        </div>
-                        <div>
-                            <label class="block font-bold mb-1">PILIHAN AMUNISI (<span id="type-label">Paket</span>)</label>
-                            <div class="relative">
-                                <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="mario-input appearance-none cursor-pointer"></select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black">▼</div>
-                            </div>
+                <section id="booking-step" class="hidden relative z-10">
+                    <div class="flex items-center mb-4"><button type="button" onclick="location.reload()" class="mario-btn bg-white px-4 py-2 text-sm mr-3">← KEMBALI</button></div>
+
+                    <div class="mario-card p-6">
+                        <h2 class="text-2xl font-black mb-6 text-center uppercase" id="region-title">BOOKING</h2>
+
+                        <div class="flex gap-2 mb-6">
+                            <button type="button" id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2">PAKET</button>
+                            <button type="button" id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn mario-btn-gray flex-1 py-2">REGULAR</button>
                         </div>
 
-                        <div id="antar-jemput-container" class="hidden p-4 bg-[#FFE8B3] border-3 border-black rounded-xl mt-4">
-                            <label class="block font-bold mb-3 text-center">METODE LOGISTIK 🛵</label>
-                            <div class="flex gap-2 mb-3">
-                                <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="mario-btn mario-btn-gray flex-1 py-2 text-sm">Antar ke Lokasi</button>
-                                <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm">Ambil di Markas</button>
+                        <form id="orderForm" class="space-y-4">
+                            <div>
+                                <label class="block font-bold mb-1">NAMA LENGKAP</label>
+                                <input type="text" id="name" required class="mario-input" placeholder="Misal > Bang Kapluk">
                             </div>
-                            <div id="address-container" class="hidden">
-                                <textarea id="address" class="mario-input" rows="2" placeholder="Ketik alamat lengkap pengantaran..."></textarea>
+                            <div>
+                                <label class="block font-bold mb-1">NOMOR WHATSAPP (AKTIF)</label>
+                                <input type="number" id="wa-number" required class="mario-input" placeholder="08xxxxxxxxxx">
                             </div>
-                        </div>
-
-                        <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black mt-8 relative shadow-[4px_4px_0px_0px_#000]">
-                            <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-4 py-1 rounded-sm border-4 border-black transform rotate-6 animate-wiggle shadow-[2px_2px_0px_0px_#000]">PENAWARAN TERBATAS! 🔥</div>
-                            <p class="font-bold text-red-200 text-sm uppercase tracking-wider mb-1">Ringkasan Biaya</p>
-                            <div class="flex flex-col gap-1">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm font-semibold text-red-200">Harga Normal:</span>
-                                    <span id="fake-price" class="text-lg text-red-300 line-through decoration-black decoration-4 font-black">Rp 0</span>
-                                </div>
-                                <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border-2 border-red-800">
-                                    <span class="text-sm font-bold text-yellow-300 animate-pulse">✨ ANDA HEMAT:</span>
-                                    <span id="hemat-price" class="text-md font-black text-yellow-300">Rp 0</span>
-                                </div>
-                                <div class="flex items-end justify-between mt-2 pt-2 border-t-2 border-red-500/50">
-                                    <span class="text-md font-bold">Total Bayar:</span>
-                                    <span id="real-price" class="text-3xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
+                            
+                            <div class="p-3 border-3 border-black bg-white rounded-xl shadow-[4px_4px_0px_#000]">
+                                <label class="block font-bold mb-2 text-sm">📅 KAPAN MAU MAIN?</label>
+                                <div id="date-scroll" class="date-scroll-container mb-3"></div>
+                                <div class="flex items-center gap-2">
+                                    <label class="font-bold text-xs">PILIH JAM:</label>
+                                    <input type="time" id="time-input" required class="mario-input p-2 flex-1 text-center font-black" onchange="APP_LOGIC.checkUnitsAvailability()">
                                 </div>
                             </div>
-                        </div>
 
-                        <button type="submit" id="btn-submit-order" class="w-full mario-btn mario-btn-yellow p-4 text-xl mt-6 uppercase">
-                            🚀 GAS BOOKING SEKARANG!
-                        </button>
-                    </form>
-                </div>
-            </section>
+                            <div>
+                                <label class="block font-bold mb-1">PILIHAN AMUNISI (<span id="type-label">Paket</span>)</label>
+                                <div class="relative mb-3">
+                                    <select id="product" onchange="APP_LOGIC.checkUnitsAvailability()" class="mario-input appearance-none cursor-pointer"></select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black">▼</div>
+                                </div>
+                            </div>
+
+                            <div id="unit-status-container" class="bg-gray-100 border-2 border-black p-3 rounded-lg hidden">
+                                <p class="text-[10px] font-black uppercase text-center mb-2">📡 Status Unit (Tgl <span id="lbl-tgl-cek">-</span>)</p>
+                                <div id="unit-status-list" class="space-y-1 max-h-32 overflow-y-auto custom-scroll pr-1">
+                                    <p class="text-xs text-center font-bold text-gray-500">Pilih Jam dulu Bos...</p>
+                                </div>
+                            </div>
+
+                            <div id="antar-jemput-container" class="hidden p-4 bg-[#FFE8B3] border-3 border-black rounded-xl mt-4">
+                                <label class="block font-bold mb-3 text-center">METODE LOGISTIK 🛵</label>
+                                <div class="flex gap-2 mb-3">
+                                    <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="mario-btn mario-btn-gray flex-1 py-2 text-sm">Antar ke Lokasi</button>
+                                    <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm">Ambil di Markas</button>
+                                </div>
+                                <div id="address-container" class="hidden">
+                                    <textarea id="address" class="mario-input" rows="2" placeholder="Ketik alamat lengkap pengantaran..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black mt-8 relative shadow-[4px_4px_0px_0px_#000]">
+                                <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-4 py-1 rounded-sm border-4 border-black transform rotate-6 animate-wiggle shadow-[2px_2px_0px_0px_#000]">PENAWARAN TERBATAS! 🔥</div>
+                                <p class="font-bold text-red-200 text-sm uppercase tracking-wider mb-1">Ringkasan Biaya</p>
+                                <div class="flex flex-col gap-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-semibold text-red-200">Harga Normal:</span>
+                                        <span id="fake-price" class="text-lg text-red-300 line-through decoration-black decoration-4 font-black">Rp 0</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border-2 border-red-800">
+                                        <span class="text-sm font-bold text-yellow-300 animate-pulse">✨ ANDA HEMAT:</span>
+                                        <span id="hemat-price" class="text-md font-black text-yellow-300">Rp 0</span>
+                                    </div>
+                                    <div class="flex items-end justify-between mt-2 pt-2 border-t-2 border-red-500/50">
+                                        <span class="text-md font-bold">Total Bayar:</span>
+                                        <span id="real-price" class="text-3xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" id="btn-submit-order" class="w-full mario-btn mario-btn-yellow p-4 text-xl mt-6 uppercase">
+                                🚀 GAS BOOKING SEKARANG!
+                            </button>
+                        </form>
+                    </div>
+                </section>
+            </div>
         </div>
-    </div>
+    </div> 
+
+    <footer class="w-full bg-zinc-200 py-10 flex flex-col items-center justify-center font-beuna border-t-4 border-black shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] mt-auto z-10">
+        <p class="text-[9px] text-gray-500 font-medium uppercase tracking-[0.25em] mb-6 text-center px-4">Dari Anak Muda Aceh Untuk Anak Muda Aceh</p>
+        <a href="https://beuna.xyz" target="_blank" class="flex flex-col items-center justify-center group transition-all duration-300 hover:scale-105 opacity-90 hover:opacity-100 cursor-pointer">
+            <span class="text-[8px] text-gray-400 font-semibold uppercase tracking-[0.2em] mb-2">Developed By</span>
+            <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/beuna-agency/main/beuna%20logo%20png.png" alt="Beuna Agency Logo" class="h-6 mb-2 object-contain filter drop-shadow-sm">
+            <span class="text-[10px] font-black text-black uppercase tracking-[0.3em]">System Specialist</span>
+        </a>
+    </footer>
 
     <div id="loyalty-modal" class="modal-overlay hidden">
         <div class="mario-card p-6 w-full max-w-sm animate-pop text-center relative overflow-hidden bg-white">
             <div class="absolute -right-10 -top-10 opacity-10 text-9xl">🎮</div>
             <h2 class="text-2xl font-black mb-2 uppercase text-[#FF6B00]">YEAY! BERHASIL! 🎉</h2>
-            <p class="font-bold text-gray-700 text-sm mb-6 leading-relaxed">Kami senang Bang <span id="member-name" class="text-black font-black bg-yellow-300 px-2 py-0.5 rounded uppercase"></span> menjadi sahabat kami.</p>
+            <p class="font-bold text-gray-700 text-sm mb-4 leading-relaxed">Kami senang Bang <span id="member-name" class="text-black font-black bg-yellow-300 px-2 py-0.5 rounded uppercase"></span> menjadi sahabat kami.</p>
             
             <div class="bg-[#F3F4F6] border-4 border-black p-4 rounded-xl mb-6 shadow-[4px_4px_0px_#000] relative">
                 <div class="mb-3 border-b-2 border-dashed border-gray-400 pb-3">
@@ -181,9 +218,14 @@
                 </div>
             </div>
 
-            <button onclick="APP_LOGIC.proceedToWA()" class="w-full mario-btn bg-[#25D366] text-white border-white p-4 text-lg uppercase shadow-[4px_4px_0px_#000]">
+            <button onclick="APP_LOGIC.proceedToWA()" class="w-full mario-btn bg-[#25D366] text-white border-white p-4 text-lg uppercase shadow-[4px_4px_0px_#000] mb-6">
                 LANJUT KE WHATSAPP 🚀
             </button>
+            
+            <div class="pt-4 border-t border-gray-200 flex flex-col items-center justify-center font-beuna">
+                <span class="text-[8px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-1.5">System By</span>
+                <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/beuna-agency/main/beuna%20logo%20png.png" alt="Beuna" class="h-3.5 object-contain opacity-90">
+            </div>
         </div>
     </div>
 
@@ -210,23 +252,21 @@
         };
 
         const APP_LOGIC = {
-            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null },
+            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null, allLogs: [], selectedDateStr: "" },
 
             initObserver: () => {
-                // Ninja Scroll Observer: Ngilangin tombol sticky kalau udah sampai di form
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         const stickyCta = document.getElementById('sticky-cta');
                         if (entry.isIntersecting) {
                             stickyCta.classList.add('opacity-0');
-                            setTimeout(() => stickyCta.classList.add('hidden'), 300); // hidden setelah transisi
+                            setTimeout(() => stickyCta.classList.add('hidden'), 300);
                         } else {
                             stickyCta.classList.remove('hidden');
                             setTimeout(() => stickyCta.classList.remove('opacity-0'), 10);
                         }
                     });
                 }, { threshold: 0.1 }); 
-
                 observer.observe(document.getElementById('booking-area-container'));
             },
 
@@ -243,20 +283,27 @@
 
             formatRupiah: (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n),
 
-            // --- LEADERBOARD LOGIC ---
-            fetchLeaderboard: async () => {
+            fetchData: async () => {
                 try {
-                    const res = await fetch(CONFIG.webhook_url, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'get_leaderboard' })
-                    });
-                    const data = await res.json();
-                    if(data && data.length > 0 && data[0].leaderboard) {
-                        APP_LOGIC.state.leaderboardData = data[0].leaderboard;
+                    // Fetch Leaderboard
+                    const resLB = fetch(CONFIG.webhook_url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'get_leaderboard' }) });
+                    // Fetch ALL Logs (Untuk cek ketersediaan unit) -> Pura-pura login pakai role dummy biar n8n ngasih semua data log
+                    const resLogs = fetch(CONFIG.webhook_url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'get_dashboard', role: 'admin', branch: 'ALL' }) });
+                    
+                    const [lbResponse, logsResponse] = await Promise.all([resLB, resLogs]);
+                    
+                    const lbData = await lbResponse.json();
+                    if(lbData && lbData.length > 0 && lbData[0].leaderboard) {
+                        APP_LOGIC.state.leaderboardData = lbData[0].leaderboard;
                         document.getElementById('leaderboard-section').classList.remove('hidden');
                         APP_LOGIC.renderPodium();
                     }
-                } catch(e) { console.log('Gagal ambil data sultan'); }
+
+                    const logsData = await logsResponse.json();
+                    if(logsData) {
+                        APP_LOGIC.state.allLogs = Array.isArray(logsData) ? logsData.map(i => i.json !== undefined ? i.json : i).filter(i => i.tagihan_arena !== undefined) : [];
+                    }
+                } catch(e) { console.log('Gagal ambil data dari server'); }
             },
 
             renderPodium: () => {
@@ -276,48 +323,132 @@
                 const rank3 = sultans[2] || null;
 
                 let podiumHtml = '';
-                
-                if (rank2) {
-                    podiumHtml += `
-                    <div class="podium-rank rank-2" style="order: 1;">
-                        <span class="podium-medal">🥈</span>
-                        <p class="podium-name">${rank2.name}</p>
-                    </div>`;
-                }
-
-                if (rank1) {
-                    podiumHtml += `
-                    <div class="podium-rank rank-1" style="order: 2;">
-                        <div class="crown">👑</div>
-                        <span class="podium-medal mt-2">🥇</span>
-                        <p class="podium-name text-white drop-shadow-md">${rank1.name}</p>
-                    </div>`;
-                }
-
-                if (rank3) {
-                    podiumHtml += `
-                    <div class="podium-rank rank-3" style="order: 3;">
-                        <span class="podium-medal">🥉</span>
-                        <p class="podium-name">${rank3.name}</p>
-                    </div>`;
-                }
-
+                if (rank2) podiumHtml += `<div class="podium-rank rank-2" style="order: 1;"><span class="podium-medal">🥈</span><p class="podium-name">${rank2.name}</p></div>`;
+                if (rank1) podiumHtml += `<div class="podium-rank rank-1" style="order: 2;"><div class="crown">👑</div><span class="podium-medal mt-2">🥇</span><p class="podium-name text-white drop-shadow-md">${rank1.name}</p></div>`;
+                if (rank3) podiumHtml += `<div class="podium-rank rank-3" style="order: 3;"><span class="podium-medal">🥉</span><p class="podium-name">${rank3.name}</p></div>`;
                 podiumDiv.innerHTML = podiumHtml;
 
                 let listHtml = '';
                 for(let i=3; i<5; i++) {
                     if(sultans[i]) {
-                        listHtml += `
-                        <div class="flex items-center justify-between bg-white border-2 border-black rounded-lg p-2 shadow-[2px_2px_0px_0px_#000]">
-                            <div class="flex items-center gap-2">
-                                <span class="bg-gray-200 text-black font-black text-xs px-2 py-1 rounded">#${i+1}</span>
-                                <span class="font-bold text-sm uppercase">${sultans[i].name}</span>
-                            </div>
-                        </div>`;
+                        listHtml += `<div class="flex items-center justify-between bg-white border-2 border-black rounded-lg p-2 shadow-[2px_2px_0px_0px_#000]"><div class="flex items-center gap-2"><span class="bg-gray-200 text-black font-black text-xs px-2 py-1 rounded">#${i+1}</span><span class="font-bold text-sm uppercase">${sultans[i].name}</span></div></div>`;
                     }
                 }
                 listDiv.innerHTML = listHtml;
             },
+
+            // --- FUNGSI TANGGAL & UNIT CERDAS ---
+            initDatePicker: () => {
+                const scrollContainer = document.getElementById('date-scroll');
+                const daysName = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                let html = '';
+                
+                const now = new Date();
+                // Set default selected ke Hari Ini
+                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+                APP_LOGIC.state.selectedDateStr = now.toISOString().substring(0,10);
+
+                for(let i=0; i<7; i++) {
+                    let d = new Date();
+                    d.setDate(d.getDate() + i);
+                    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+                    let dateStr = d.toISOString().substring(0,10);
+                    
+                    let label = i === 0 ? 'HARI INI' : (i === 1 ? 'BESOK' : daysName[d.getDay()].toUpperCase());
+                    let selectedClass = i === 0 ? 'selected' : '';
+                    
+                    html += `<button type="button" onclick="APP_LOGIC.selectDate(this, '${dateStr}')" class="date-btn ${selectedClass}">${label}<br><span class="text-[10px] font-normal text-gray-500">${d.getDate()}/${d.getMonth()+1}</span></button>`;
+                }
+                scrollContainer.innerHTML = html;
+            },
+
+            selectDate: (btnEl, dateStr) => {
+                document.querySelectorAll('.date-btn').forEach(btn => btn.classList.remove('selected'));
+                btnEl.classList.add('selected');
+                APP_LOGIC.state.selectedDateStr = dateStr;
+                APP_LOGIC.checkUnitsAvailability();
+            },
+
+            checkUnitsAvailability: () => {
+                const targetDate = APP_LOGIC.state.selectedDateStr;
+                const timeInput = document.getElementById('time-input').value;
+                const pkgSel = document.getElementById('product');
+                const statusContainer = document.getElementById('unit-status-container');
+                const statusList = document.getElementById('unit-status-list');
+                
+                document.getElementById('lbl-tgl-cek').innerText = targetDate;
+                
+                if (!timeInput) {
+                    statusContainer.classList.add('hidden');
+                    return;
+                }
+
+                // Cek cabang yg dipilih untuk tentuin Unit yg nampil
+                let units = [];
+                let b = String(APP_LOGIC.state.region).toLowerCase();
+                if(b.includes('sabang')) units = [1, 2];
+                else if(b.includes('banda')) units = [3, 4, 5, 6, 7];
+                else if(b.includes('timur') || b.includes('atim')) units = [8, 9];
+
+                const reqStart = new Date(`${targetDate}T${timeInput}`);
+                
+                // Kalkulasi Durasi dari Paket yg Dipilih
+                const itemName = CONFIG.data[APP_LOGIC.state.type][pkgSel.value].name;
+                let durationHours = 0;
+                
+                if (itemName.includes('3 Jam')) durationHours = 3;
+                else if (itemName.includes('4 Jam')) durationHours = 4;
+                else if (itemName.includes('5 Jam')) durationHours = 5;
+                else if (itemName.includes('24 Jam') || itemName.includes('24H')) durationHours = 24;
+                else if (itemName.includes('Malam')) durationHours = 10;
+                else if (itemName.includes('Pagi')) durationHours = 7;
+                else if (itemName.includes('Sore')) durationHours = 6.66; // 6 Jam 40 Menit
+
+                const reqEnd = new Date(reqStart.getTime() + durationHours * 60 * 60 * 1000);
+
+                let listHtml = '';
+                units.forEach(uNum => {
+                    // Cek di logs apakah ada yang bersinggungan di unit ini pada hari yg sama
+                    const unitLogs = APP_LOGIC.state.allLogs.filter(l => {
+                        const logNum = String(l.unit_arena).replace(/\D/g, ''); 
+                        const stat = String(l.status_unit_arena).toLowerCase();
+                        const lDate = (l.jam_mulai_sewa||'').substring(0,10);
+                        return logNum === String(uNum) && lDate === targetDate && ['playing','main','booked','book'].includes(stat);
+                    });
+
+                    let isClash = false;
+                    let finishTimeStr = '';
+
+                    unitLogs.forEach(l => {
+                        if (!l.jam_mulai_sewa) return;
+                        const lStart = new Date(l.jam_mulai_sewa.replace(' ', 'T'));
+                        
+                        // Hitung End Time Log yang udah ada di database (Simplifikasi asumsi rata-rata 5 jam kalau nama paketnya aneh)
+                        let lDur = 5; 
+                        let pName = String(l.paket_arena);
+                        if (pName.includes('3 Jam')) lDur = 3; else if (pName.includes('4 Jam')) lDur = 4; else if (pName.includes('5 Jam')) lDur = 5; else if (pName.includes('24 Jam')) lDur = 24; else if (pName.includes('Malam')) lDur = 10; else if (pName.includes('Pagi')) lDur = 7; else if (pName.includes('Sore')) lDur = 6.66;
+                        
+                        const lEnd = new Date(lStart.getTime() + lDur * 60 * 60 * 1000);
+
+                        // Rumus Cek Bentrokan (A overlap B jika StartA < EndB DAN EndA > StartB)
+                        if (reqStart < lEnd && reqEnd > lStart) {
+                            isClash = true;
+                            finishTimeStr = lEnd.toTimeString().substring(0,5); // Ambil format HH:MM
+                        }
+                    });
+
+                    if (isClash) {
+                        listHtml += `<div class="flex justify-between bg-red-100 p-2 rounded border border-red-300"><span class="text-[10px] font-black text-red-800">🔴 UNIT ${uNum}</span><span class="text-[10px] font-bold text-red-600">Dipakai (Kosong: ±${finishTimeStr})</span></div>`;
+                    } else {
+                        listHtml += `<div class="flex justify-between bg-green-100 p-2 rounded border border-green-300"><span class="text-[10px] font-black text-green-800">🟢 UNIT ${uNum}</span><span class="text-[10px] font-bold text-green-600">Kosong Jam Segini</span></div>`;
+                    }
+                });
+
+                statusList.innerHTML = listHtml;
+                statusContainer.classList.remove('hidden');
+                APP_LOGIC.updatePriceUI();
+            },
+            // --- END FUNGSI TANGGAL ---
 
             selectRegion: (regionName) => {
                 APP_LOGIC.state.region = regionName;
@@ -331,7 +462,10 @@
                 const antarContainer = document.getElementById('antar-jemput-container');
                 if (regionName === 'Banda') { antarContainer.classList.remove('hidden'); APP_LOGIC.setDelivery('ambil'); } 
                 else { antarContainer.classList.add('hidden'); APP_LOGIC.state.deliveryMode = "ambil"; document.getElementById('address').removeAttribute('required'); }
-                APP_LOGIC.updateDropdown(); window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                APP_LOGIC.initDatePicker(); // Reset kalender saat masuk
+                APP_LOGIC.updateDropdown(); 
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             },
 
             setDelivery: (mode) => {
@@ -352,7 +486,7 @@
             updateDropdown: () => {
                 const items = CONFIG.data[APP_LOGIC.state.type];
                 document.getElementById('product').innerHTML = items.map((item, index) => `<option value="${index}">${item.name}${item.time !== "Bebas" ? ` (${item.time})` : ""}</option>`).join('');
-                APP_LOGIC.updatePriceUI();
+                APP_LOGIC.checkUnitsAvailability(); // Check ulang tiap ganti paket
             },
 
             updatePriceUI: () => {
@@ -367,8 +501,12 @@
 
             submitForm: async (e) => {
                 e.preventDefault();
+                
+                const timeInput = document.getElementById('time-input').value;
+                if(!timeInput) { alert('Bos, tolong isi pilihan Jam Main-nya dulu ya!'); return; }
+
                 const btnSubmit = document.getElementById('btn-submit-order');
-                btnSubmit.innerHTML = 'MENGECEK STATUS MEMBER... ⏳';
+                btnSubmit.innerHTML = 'MENGECEK STATUS... ⏳';
                 btnSubmit.disabled = true;
                 
                 const name = document.getElementById('name').value;
@@ -392,8 +530,7 @@
                 else if (totalBookings >= 4 && totalBookings <= 6) { tier = "Cees Kental 👊"; tierColor = "text-orange-600 bg-orange-100 border-orange-500"; }
                 else if (totalBookings >= 7) { tier = "Keluarga Arena Prioritas 👑"; tierColor = "text-purple-600 bg-purple-100 border-purple-500"; }
 
-                const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-                const formattedDate = now.toISOString().slice(0,16).replace('T', ' ') + ':00';
+                const formattedDate = APP_LOGIC.state.selectedDateStr + ' ' + timeInput + ':00';
                 
                 fetch(CONFIG.webhook_url, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -401,7 +538,7 @@
                 }).catch(e => console.log('Pending error'));
 
                 let msg = `🍄 *BOS, ADA BOOKING BARU!* 🍄\n\n📍 *Markas:* ${APP_LOGIC.state.region === 'Banda' ? 'Banda Aceh' : APP_LOGIC.state.region}\n👤 *Nama:* ${name}\n📱 *No WA:* ${waNumber}\n💎 *Status:* ${tier}\n\n🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
-                if(item.time !== "Bebas") msg += `⏰ *Waktu:* ${item.time}\n`;
+                msg += `⏰ *WAKTU MAIN:* ${formattedDate}\n`;
                 msg += `💰 *Total Harga:* ${APP_LOGIC.formatRupiah(item.price)} (Dapat Diskon)\n\n`;
                 if (APP_LOGIC.state.region === 'Banda') {
                     if (APP_LOGIC.state.deliveryMode === 'antar') msg += `🛵 *Logistik:* Minta Diantar\n🏠 *Alamat Pengantaran:* ${address}\n\n`;
@@ -427,10 +564,9 @@
         document.getElementById('orderForm').addEventListener('submit', APP_LOGIC.submitForm);
         document.addEventListener('DOMContentLoaded', () => {
             APP_LOGIC.initMarquee();
-            APP_LOGIC.fetchLeaderboard(); 
-            APP_LOGIC.initObserver(); // Aktifkan radar ninja buat tombol sticky
+            APP_LOGIC.fetchData(); // Narik data Leaderboard & Log Master
+            APP_LOGIC.initObserver(); 
         });
-
     </script>
 </body>
 </html>
