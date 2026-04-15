@@ -14,59 +14,72 @@
         :root { --mario-orange: #FF6B00; --mario-black: #000000; --mario-yellow: #FFD700; }
         body { font-family: 'Fredoka', sans-serif; background-color: var(--mario-orange); color: var(--mario-black); -webkit-font-smoothing: antialiased; background-image: radial-gradient(rgba(0,0,0,0.05) 2px, transparent 2px); background-size: 20px 20px; overflow-x: hidden; }
         .mario-card { background-color: white; border: 4px solid var(--mario-black); border-radius: 16px; box-shadow: 8px 8px 0px 0px var(--mario-black); }
-        .mario-btn { background-color: white; border: 4px solid var(--mario-black); border-radius: 12px; box-shadow: 4px 4px 0px 0px var(--mario-black); transition: all 0.1s ease-in-out; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
+        .mario-btn { background-color: white; border: 4px solid var(--mario-black); border-radius: 12px; box-shadow: 4px 4px 0px 0px var(--mario-black); transition: all 0.15s ease-in-out; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
         .mario-btn:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px 0px var(--mario-black); }
         .mario-btn-yellow { background-color: var(--mario-yellow); }
-        .mario-btn-gray { background-color: #E5E7EB; color: #6B7280; box-shadow: 2px 2px 0px 0px var(--mario-black); }
-        .mario-input { width: 100%; background-color: #F9FAFB; border: 3px solid var(--mario-black); border-radius: 8px; padding: 12px; font-weight: 600; outline: none; transition: all 0.2s; }
-        .mario-input:focus { background-color: #ffffff; border-color: var(--mario-orange); box-shadow: 2px 2px 0px 0px var(--mario-orange); transform: translateY(-2px); }
+        .mario-btn-gray { background-color: #E5E7EB; color: #6B7280; box-shadow: 2px 2px 0px 0px var(--mario-black); border-color: #9CA3AF;}
+        .mario-input { width: 100%; background-color: #F9FAFB; border: 3px solid var(--mario-black); border-radius: 10px; padding: 14px; font-weight: 600; outline: none; transition: all 0.2s; }
+        .mario-input:focus { background-color: #ffffff; border-color: var(--mario-orange); box-shadow: 3px 3px 0px 0px var(--mario-orange); transform: translateY(-2px); }
+        
         .hidden { display: none !important; }
         .animate-pop { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .animate-fade { animation: fadeIn 0.2s ease-in-out; }
+        .animate-fade { animation: fadeIn 0.25s ease-out forwards; }
         .marquee-wrapper { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; overflow: hidden; padding: 10px 0; }
         .marquee-track { display: flex; width: max-content; animation: scroll 35s linear infinite; gap: 16px; padding-left: 16px; }
-        .marquee-track:hover { animation-play-state: paused; }
         
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
         @keyframes wiggle { 0%, 7% { transform: rotateZ(0); } 15% { transform: rotateZ(-5deg); } 20% { transform: rotateZ(3deg); } 25% { transform: rotateZ(-5deg); } 30% { transform: rotateZ(2deg); } 35%, 100% { transform: rotateZ(0); } }
+        @keyframes throb { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        .animate-throb { animation: throb 1.5s ease-in-out infinite; }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
 
+        /* Custom Dropdown Styling */
+        select.mario-input {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+            background-repeat: no-repeat;
+            background-position: right 12px top 50%;
+            background-size: 16px auto;
+            padding-right: 40px;
+        }
+        
+        .font-beuna { font-family: 'Inter', sans-serif; }
+        
+        /* Modern Form Elements */
+        .glass-panel { background: rgba(255, 255, 255, 0.9); border: 2px solid var(--mario-black); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        .step-indicator { transition: all 0.3s ease; position: relative; }
+        .step-indicator.active { color: var(--mario-orange); border-bottom-color: var(--mario-orange); }
+        .step-indicator.active::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 8px; height: 8px; background: var(--mario-orange); border-radius: 50%; }
+
+        /* Leaderboard Styling */
         .podium-container { display: flex; align-items: flex-end; justify-content: center; gap: 8px; padding-top: 20px; width: 100%; }
         .podium-rank { border: 3px solid var(--mario-black); border-bottom: 0; border-top-left-radius: 8px; border-top-right-radius: 8px; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 10px; align-items: center; position: relative; width: 30%; }
         .rank-1 { height: 140px; background: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%); z-index: 10; box-shadow: 0px -4px 10px rgba(255, 215, 0, 0.5); }
         .rank-2 { height: 100px; background: linear-gradient(180deg, #E2E8F0 0%, #94A3B8 100%); }
         .rank-3 { height: 80px; background: linear-gradient(180deg, #FDBA74 0%, #B45309 100%); }
         .crown { position: absolute; top: -30px; font-size: 30px; filter: drop-shadow(2px 2px 0px black); animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         .podium-name { font-size: 11px; font-weight: 900; text-align: center; text-transform: uppercase; margin-bottom: 4px; line-height: 1.1; word-break: break-word; padding: 0 4px; }
         .podium-medal { font-size: 20px; filter: drop-shadow(1px 1px 0px black); margin-bottom: 4px; }
-        
-        .font-beuna { font-family: 'Inter', sans-serif; }
-
-        /* Horizontal Scroll Date Picker */
-        .date-scroll-container { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; scroll-snap-type: x mandatory; }
-        .date-scroll-container::-webkit-scrollbar { height: 0px; } 
-        .date-btn { flex: 0 0 auto; scroll-snap-align: start; padding: 10px 16px; border: 3px solid var(--mario-black); border-radius: 12px; background: #F9FAFB; font-weight: bold; font-size: 13px; cursor: pointer; transition: all 0.2s; min-width: 90px; text-align: center; }
-        .date-btn.selected { background: var(--mario-yellow); box-shadow: 3px 3px 0px 0px var(--mario-black); transform: translateY(-3px); }
-        
-        /* Wizard Steps */
-        .step-indicator { transition: all 0.3s ease; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <div class="flex-grow w-full p-4 md:p-8 flex flex-col items-center pb-20 relative">
+    <div class="flex-grow w-full p-4 md:p-8 flex flex-col items-center pb-24 relative">
         <div id="app" class="max-w-md w-full mx-auto animate-pop">
             
-            <header class="text-center mb-4">
-                <div class="inline-block p-2 bg-white border-4 border-black rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4">
-                    <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" alt="Arena Playbox" class="h-20 w-20 object-contain rounded-full">
+            <header class="text-center mb-6">
+                <div class="inline-block p-2 bg-white border-4 border-black rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4 transform transition-transform hover:scale-105">
+                    <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" alt="Arena Playbox" class="h-20 w-20 object-contain rounded-xl">
                 </div>
-                <h1 class="text-3xl font-black text-white uppercase" style="text-shadow: 3px 3px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;">ARENA PLAYBOX!</h1>
-                <div class="mt-3 bg-black text-white px-4 py-2 rounded-lg border-2 border-white inline-block transform -rotate-2">
-                    <p class="text-sm font-bold tracking-wide">"HAI NYOE RAKAN PLAYBOX ANDALAN GEUTANYOE"</p>
+                <h1 class="text-3xl font-black text-white uppercase tracking-tight" style="text-shadow: 3px 3px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;">ARENA PLAYBOX!</h1>
+                <div class="mt-3 bg-black text-white px-4 py-2 rounded-xl border-2 border-white inline-block transform -rotate-1 shadow-lg">
+                    <p class="text-sm font-bold tracking-wide text-yellow-300">"HAI NYOE RAKAN PLAYBOX ANDALAN GEUTANYOE"</p>
                 </div>
             </header>
 
@@ -88,127 +101,118 @@
             </section>
 
             <section id="testimonial-step" class="mb-8 mt-2">
-                <div class="text-center mb-2"><span class="bg-black text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-white shadow-[2px_2px_0px_0px_#FFD700]">KATA MEREKA 🍄</span></div>
+                <div class="text-center mb-3"><span class="bg-black text-yellow-300 px-4 py-1.5 rounded-full text-xs font-black border-2 border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)]">KATA MEREKA 💬</span></div>
                 <div class="marquee-wrapper"><div id="marquee-track" class="marquee-track"></div></div>
             </section>
 
             <div id="booking-area-container">
                 <section id="region-step" class="mario-card p-6 relative z-10">
-                    <h2 class="text-xl font-bold mb-4 text-center border-b-4 border-black pb-2">PILIH MARKASMU:</h2>
+                    <div class="flex items-center justify-center gap-2 mb-5 border-b-4 border-black pb-3">
+                        <span class="text-2xl">🗺️</span>
+                        <h2 class="text-xl font-black text-center uppercase">Pilih Markasmu</h2>
+                    </div>
                     <div class="grid grid-cols-1 gap-4">
-                        <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">📍 SABANG</button>
-                        <button onclick="APP_LOGIC.selectRegion('Banda')" class="mario-btn mario-btn-yellow p-4 text-lg">📍 BANDA ACEH</button>
-                        <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">📍 ACEH TIMUR</button>
+                        <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg bg-blue-50 border-blue-500 hover:bg-blue-100">📍 SABANG</button>
+                        <button onclick="APP_LOGIC.selectRegion('Banda')" class="mario-btn mario-btn-yellow p-4 text-lg transform scale-105 shadow-[6px_6px_0px_#000]">📍 BANDA ACEH</button>
+                        <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg bg-green-50 border-green-500 hover:bg-green-100">📍 ACEH TIMUR</button>
                     </div>
                 </section>
 
                 <section id="booking-step" class="hidden relative z-10">
-                    <div class="flex items-center justify-between mb-4">
-                        <button type="button" onclick="location.reload()" class="bg-white border-2 border-black rounded-lg px-3 py-1 text-xs font-bold shadow-[2px_2px_0px_#000]">← KEMBALI</button>
-                        <span class="bg-black text-white font-black px-3 py-1.5 rounded-lg text-[10px]" id="region-badge">📍 BANDA ACEH</span>
+                    <div class="flex items-center justify-between mb-4 px-1">
+                        <button type="button" onclick="location.reload()" class="bg-white border-2 border-black rounded-lg px-3 py-1.5 text-xs font-bold shadow-[2px_2px_0px_#000] active:translate-y-0.5 active:shadow-none transition-all">← KEMBALI</button>
+                        <div class="flex items-center gap-1 bg-black text-white px-3 py-1.5 rounded-lg border-2 border-white shadow-[2px_2px_0px_#000]">
+                            <span class="text-xs">📍</span>
+                            <span class="font-black text-[10px] uppercase" id="region-badge">BANDA ACEH</span>
+                        </div>
                     </div>
 
-                    <div class="mario-card p-4 md:p-6">
+                    <div class="mario-card p-5">
                         
                         <div class="flex justify-between items-center mb-6">
-                            <div class="step-indicator w-1/3 text-center border-b-4 border-black pb-2 text-[10px] font-black text-yellow-500" id="ind-1">1. PAKET</div>
-                            <div class="step-indicator w-1/3 text-center border-b-4 border-gray-200 pb-2 text-[10px] font-black text-gray-400" id="ind-2">2. JADWAL</div>
-                            <div class="step-indicator w-1/3 text-center border-b-4 border-gray-200 pb-2 text-[10px] font-black text-gray-400" id="ind-3">3. CHECKOUT</div>
+                            <div class="step-indicator active w-1/2 text-center border-b-4 border-gray-300 pb-2 text-xs font-black text-gray-400" id="ind-1">1. PAKET</div>
+                            <div class="step-indicator w-1/2 text-center border-b-4 border-gray-300 pb-2 text-xs font-black text-gray-400" id="ind-2">2. DATA DIRI</div>
                         </div>
 
                         <form id="orderForm">
                             
                             <div id="step-1" class="animate-fade">
-                                <h3 class="text-lg font-black mb-4 text-center uppercase">🎮 Mau Main Apa?</h3>
-                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-sm mb-4">
-                                    <div class="flex gap-2 mb-4">
-                                        <button type="button" id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm">PAKET</button>
-                                        <button type="button" id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn mario-btn-gray flex-1 py-2 text-sm">REGULAR</button>
+                                <div class="flex items-center justify-center gap-2 mb-4">
+                                    <span class="text-2xl">🎮</span>
+                                    <h3 class="text-xl font-black text-center uppercase">Mau Main Apa?</h3>
+                                </div>
+                                
+                                <div class="glass-panel">
+                                    <div class="flex gap-2 mb-5 p-1 bg-gray-200 rounded-xl border-2 border-black">
+                                        <button type="button" id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm shadow-none border-none rounded-lg">PAKET</button>
+                                        <button type="button" id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn flex-1 py-2 text-sm shadow-none border-none bg-transparent text-gray-600 rounded-lg">REGULAR</button>
                                     </div>
-                                    <label class="block font-bold mb-2 text-xs">PILIH AMUNISI:</label>
-                                    <div class="relative">
-                                        <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="mario-input appearance-none cursor-pointer text-sm"></select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black">▼</div>
+                                    
+                                    <div class="space-y-1">
+                                        <label class="block font-bold text-xs text-gray-600 ml-1">PILIH AMUNISI:</label>
+                                        <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="mario-input text-sm font-black"></select>
                                     </div>
                                 </div>
-                                <button type="button" onclick="APP_LOGIC.goToStep(2)" class="w-full mario-btn bg-black text-white p-3 text-sm uppercase">Lanjut: Pilih Jadwal ➔</button>
+                                <button type="button" onclick="APP_LOGIC.goToStep(2)" class="w-full mario-btn bg-black text-white border-black p-4 text-sm uppercase shadow-[4px_4px_0px_var(--mario-yellow)]">Selanjutnya ➔</button>
                             </div>
 
                             <div id="step-2" class="hidden animate-fade">
-                                <h3 class="text-lg font-black mb-4 text-center uppercase">📅 Kapan Mau Main?</h3>
-                                
-                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-sm mb-4">
-                                    <p class="text-[10px] font-bold text-gray-500 mb-2">GESER UNTUK PILIH TANGGAL:</p>
-                                    <div id="date-scroll" class="date-scroll-container mb-4"></div>
-                                    
-                                    <div class="flex items-center gap-3 bg-white p-3 border-2 border-black rounded-xl shadow-[2px_2px_0px_#000] mb-4">
-                                        <div class="bg-yellow-400 p-2 rounded-lg border-2 border-black">⏰</div>
-                                        <div class="flex-1">
-                                            <label class="text-[10px] font-black text-gray-600 block mb-1">PILIH JAM MULAI:</label>
-                                            <input type="time" id="time-input" required class="w-full bg-transparent font-black text-lg outline-none" onchange="APP_LOGIC.checkUnitsAvailability()">
-                                        </div>
-                                    </div>
-
-                                    <div id="unit-status-container" class="hidden border-t-2 border-dashed border-gray-300 pt-3">
-                                        <p class="text-[10px] font-black text-center mb-2">STATUS UNIT (<span id="lbl-tgl-cek" class="text-[#FF6B00]"></span>)</p>
-                                        <div id="unit-status-list" class="grid grid-cols-2 gap-2"></div>
-                                    </div>
+                                <div class="flex items-center justify-center gap-2 mb-4">
+                                    <span class="text-2xl">👤</span>
+                                    <h3 class="text-xl font-black text-center uppercase">Data Penyewa</h3>
                                 </div>
                                 
-                                <div class="flex gap-2">
-                                    <button type="button" onclick="APP_LOGIC.goToStep(1)" class="mario-btn bg-gray-200 text-gray-700 p-3 text-sm w-1/3">Kembali</button>
-                                    <button type="button" onclick="APP_LOGIC.goToStep(3)" class="mario-btn bg-black text-white p-3 text-sm uppercase flex-1">Lanjut: Data Diri ➔</button>
-                                </div>
-                            </div>
-
-                            <div id="step-3" class="hidden animate-fade">
-                                <h3 class="text-lg font-black mb-4 text-center uppercase">👤 Isi Data & Checkout</h3>
-                                
-                                <div id="antar-jemput-container" class="hidden bg-[#FFE8B3] border-2 border-yellow-600 rounded-xl p-4 mb-4 shadow-[2px_2px_0px_#ca8a04]">
-                                    <label class="block font-black text-[10px] uppercase mb-2 text-yellow-900">🛵 LOGISTIK PENGIRIMAN</label>
-                                    <div class="flex gap-2 mb-3">
-                                        <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="mario-btn mario-btn-gray flex-1 py-2 text-xs">Antar ke Lokasi</button>
-                                        <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="mario-btn mario-btn-yellow flex-1 py-2 text-xs">Ambil Sendiri</button>
-                                    </div>
-                                    <div id="address-container" class="hidden">
-                                        <textarea id="address" class="mario-input text-sm" rows="2" placeholder="Ketik alamat lengkap kost / rumah..."></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-sm mb-4 space-y-3">
+                                <div class="glass-panel space-y-4">
                                     <div>
-                                        <label class="text-[10px] font-bold text-gray-600 block mb-1">NAMA LENGKAP</label>
+                                        <label class="text-xs font-bold text-gray-600 block mb-1.5 ml-1">NAMA PANGGILAN</label>
                                         <input type="text" id="name" required class="mario-input text-sm" placeholder="Cth: Bang Kapluk">
                                     </div>
                                     <div>
-                                        <label class="text-[10px] font-bold text-gray-600 block mb-1">NOMOR WHATSAPP (AKTIF)</label>
+                                        <label class="text-xs font-bold text-gray-600 block mb-1.5 ml-1">NOMOR WHATSAPP (AKTIF)</label>
                                         <input type="number" id="wa-number" required class="mario-input text-sm" placeholder="08xxxxxxxxxx">
                                     </div>
                                 </div>
 
-                                <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black mb-4 relative shadow-[4px_4px_0px_0px_#000]">
-                                    <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-3 py-1 rounded-sm border-2 border-black transform rotate-6 shadow-[2px_2px_0px_0px_#000] text-[10px]">PENAWARAN TERBATAS! 🔥</div>
-                                    <p class="font-bold text-red-200 text-xs uppercase tracking-wider mb-1">Total Biaya Rental</p>
-                                    <div class="flex flex-col gap-1">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-xs font-semibold text-red-200">Harga Normal:</span>
-                                            <span id="fake-price" class="text-sm text-red-300 line-through decoration-black decoration-2 font-black">Rp 0</span>
+                                <div id="antar-jemput-container" class="hidden glass-panel bg-[#FFE8B3] border-yellow-600">
+                                    <label class="flex items-center gap-2 font-black text-xs uppercase mb-3 text-yellow-900 border-b-2 border-yellow-500/50 pb-2">
+                                        <span>🛵</span> LOGISTIK PENGIRIMAN
+                                    </label>
+                                    <div class="flex gap-2 mb-3">
+                                        <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="mario-btn mario-btn-gray flex-1 py-2 text-xs border-2 shadow-sm">Antar ke Lokasi</button>
+                                        <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="mario-btn mario-btn-yellow flex-1 py-2 text-xs border-2 shadow-sm">Ambil Sendiri</button>
+                                    </div>
+                                    <div id="address-container" class="hidden animate-fade">
+                                        <textarea id="address" class="mario-input text-sm" rows="2" placeholder="Ketik alamat lengkap kost / rumah..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="bg-blue-50 border-2 border-blue-400 rounded-xl p-3 mb-5 text-center flex items-center gap-3">
+                                    <div class="text-2xl animate-bounce">📱</div>
+                                    <p class="text-[10px] font-bold text-blue-800 text-left leading-relaxed">Jadwal main akan dikoordinasikan langsung oleh Admin kami di WhatsApp setelah ini.</p>
+                                </div>
+
+                                <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black mb-5 relative shadow-[4px_4px_0px_0px_#000]">
+                                    <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-3 py-1 rounded-md border-2 border-black transform rotate-3 shadow-[2px_2px_0px_0px_#000] text-[10px] tracking-wide animate-pulse">PROMO AKTIF 🔥</div>
+                                    <div class="flex flex-col gap-1.5">
+                                        <div class="flex items-center justify-between opacity-80">
+                                            <span class="text-xs font-semibold">Harga Normal:</span>
+                                            <span id="fake-price" class="text-sm line-through decoration-black decoration-2 font-black">Rp 0</span>
                                         </div>
-                                        <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border-2 border-red-800">
-                                            <span class="text-[10px] font-bold text-yellow-300 animate-pulse">✨ ANDA HEMAT:</span>
+                                        <div class="flex items-center justify-between bg-black/25 p-2 rounded-lg border border-red-400/30">
+                                            <span class="text-[10px] font-bold text-yellow-300">✨ ANDA HEMAT:</span>
                                             <span id="hemat-price" class="text-xs font-black text-yellow-300">Rp 0</span>
                                         </div>
-                                        <div class="flex items-end justify-between mt-2 pt-2 border-t-2 border-red-500/50">
-                                            <span class="text-sm font-bold">Bayar Nanti:</span>
-                                            <span id="real-price" class="text-2xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
+                                        <div class="flex items-end justify-between mt-1 pt-3 border-t-2 border-red-500/50">
+                                            <span class="text-sm font-bold opacity-90">Bayar Nanti:</span>
+                                            <span id="real-price" class="text-3xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="flex gap-2">
-                                    <button type="button" onclick="APP_LOGIC.goToStep(2)" class="mario-btn bg-gray-200 text-gray-700 p-3 text-sm w-1/4">←</button>
-                                    <button type="submit" id="btn-submit-order" class="mario-btn mario-btn-yellow p-3 text-sm font-black uppercase flex-1 shadow-[4px_4px_0px_#000]">
-                                        🚀 GAS BOOKING SEKARANG!
+                                    <button type="button" onclick="APP_LOGIC.goToStep(1)" class="mario-btn bg-gray-100 text-gray-700 p-3 text-sm w-1/4 hover:bg-gray-200">←</button>
+                                    <button type="submit" id="btn-submit-order" class="mario-btn mario-btn-yellow p-3 text-sm font-black uppercase flex-1 shadow-[4px_4px_0px_#000] hover:bg-yellow-300">
+                                        GAS BOOKING 🚀
                                     </button>
                                 </div>
                             </div>
@@ -220,41 +224,42 @@
         </div>
     </div> 
 
-    <footer class="w-full bg-zinc-200 py-10 flex flex-col items-center justify-center font-beuna border-t-4 border-black shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] mt-auto z-10">
-        <p class="text-[9px] text-gray-500 font-medium uppercase tracking-[0.25em] mb-6 text-center px-4">Dari Anak Muda Aceh Untuk Anak Muda Aceh</p>
-        <a href="https://beuna.xyz" target="_blank" class="flex flex-col items-center justify-center group transition-all duration-300 hover:scale-105 opacity-90 hover:opacity-100 cursor-pointer">
-            <span class="text-[8px] text-gray-400 font-semibold uppercase tracking-[0.2em] mb-2">Developed By</span>
-            <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/beuna-agency/main/beuna%20logo%20png.png" alt="Beuna Agency Logo" class="h-6 mb-2 object-contain filter drop-shadow-sm">
-            <span class="text-[10px] font-black text-black uppercase tracking-[0.3em]">System Specialist</span>
+    <footer class="w-full bg-zinc-100 py-8 flex flex-col items-center justify-center font-beuna border-t-4 border-black mt-auto z-10">
+        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-[0.2em] mb-4 text-center px-4">Dari Anak Muda Aceh Untuk Anak Muda Aceh</p>
+        <a href="https://beuna.xyz" target="_blank" class="flex items-center justify-center gap-2 group transition-all duration-300 opacity-80 hover:opacity-100 cursor-pointer bg-white px-4 py-2 rounded-full border-2 border-gray-200 hover:border-black">
+            <span class="text-[8px] text-gray-500 font-bold uppercase tracking-wider">System By</span>
+            <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/beuna-agency/main/beuna%20logo%20png.png" alt="Beuna Agency" class="h-4 object-contain filter grayscale group-hover:grayscale-0 transition-all">
         </a>
     </footer>
 
     <div id="loyalty-modal" class="modal-overlay hidden">
         <div class="mario-card p-6 w-full max-w-sm animate-pop text-center relative overflow-hidden bg-white">
-            <div class="absolute -right-10 -top-10 opacity-10 text-9xl">🎮</div>
-            <h2 class="text-2xl font-black mb-2 uppercase text-[#FF6B00]">YEAY! BERHASIL! 🎉</h2>
-            <p class="font-bold text-gray-700 text-sm mb-4 leading-relaxed">Kami senang Bang <span id="member-name" class="text-black font-black bg-yellow-300 px-2 py-0.5 rounded uppercase"></span> menjadi sahabat kami.</p>
+            <div class="absolute -right-8 -top-8 opacity-5 text-9xl transform rotate-12">🎮</div>
+            <div class="w-16 h-16 bg-green-100 border-4 border-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-[4px_4px_0px_#000]">🎉</div>
+            <h2 class="text-2xl font-black mb-2 uppercase text-black">BERHASIL!</h2>
+            <p class="font-bold text-gray-600 text-sm mb-5 leading-relaxed">Halo Bang <span id="member-name" class="text-black font-black bg-yellow-300 px-2 py-0.5 rounded uppercase"></span>, pesananmu sedang diproses.</p>
             
-            <div class="bg-[#F3F4F6] border-4 border-black p-4 rounded-xl mb-6 shadow-[4px_4px_0px_#000] relative">
-                <div class="mb-3 border-b-2 border-dashed border-gray-400 pb-3">
+            <div class="bg-gray-50 border-4 border-black p-4 rounded-xl mb-6 shadow-[4px_4px_0px_#000] relative transform -rotate-1">
+                <div class="mb-3 border-b-2 border-dashed border-gray-300 pb-3">
                     <p class="text-[10px] font-bold text-gray-500 uppercase">Total Book di Arena</p>
                     <p id="member-total" class="text-3xl font-black text-black">0 Kali</p>
                 </div>
                 <div>
                     <p class="text-[10px] font-bold text-gray-500 uppercase mb-1">Tier Member Kamu</p>
-                    <p id="member-tier" class="text-lg font-black text-green-600 bg-green-100 py-1 rounded-lg border-2 border-green-500 animate-pulse">New Member 🌱</p>
+                    <p id="member-tier" class="text-sm font-black text-green-700 bg-green-100 py-1.5 rounded-lg border-2 border-green-500 inline-block px-4">New Member 🌱</p>
                 </div>
             </div>
 
-            <button onclick="APP_LOGIC.proceedToWA()" class="w-full mario-btn bg-[#25D366] text-white border-white p-4 text-lg uppercase shadow-[4px_4px_0px_#000] mb-6">
-                LANJUT KE WHATSAPP 🚀
+            <button onclick="APP_LOGIC.proceedToWA()" class="w-full mario-btn bg-[#25D366] text-white border-black p-4 text-lg uppercase shadow-[4px_4px_0px_#000] mb-2 hover:bg-[#1ebd5a]">
+                LANJUT KE WHATSAPP ➔
             </button>
-            
-            <div class="pt-4 border-t border-gray-200 flex flex-col items-center justify-center font-beuna">
-                <span class="text-[8px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-1.5">System By</span>
-                <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/beuna-agency/main/beuna%20logo%20png.png" alt="Beuna" class="h-3.5 object-contain opacity-90">
-            </div>
         </div>
+    </div>
+
+    <div id="sticky-cta" class="fixed bottom-6 left-0 right-0 px-4 pointer-events-none z-40 flex justify-center max-w-md mx-auto transition-opacity duration-300">
+        <button onclick="APP_LOGIC.scrollToBooking()" class="mario-btn mario-btn-yellow py-3.5 px-6 text-lg font-black uppercase shadow-[4px_4px_0px_#000] pointer-events-auto animate-throb w-full rounded-full border-4">
+            🚀 GAS BOOKING!
+        </button>
     </div>
 
     <script>
@@ -268,43 +273,194 @@
                 "jawaban gabut ya pasti kami call kakak cantek arena", "keh kop beungeh ke si rusli ji cok mancity keh sabe sabe"
             ],
             data: {
-                Paket: [ { name: "Paket Malam", time: "00:00 - 10:00", price: 50000 }, { name: "Paket Pagi", time: "10:00 - 17:00", price: 45000 }, { name: "Paket Sore", time: "17:00 - 23:40", price: 45000 }, { name: "Paket Sultan 24 Jam", time: "Bebas", price: 115000 } ],
-                Regular: [ { name: "PlayBox - 3 Jam", time: "Bebas", price: 30000 }, { name: "PlayBox - 4 Jam", time: "Bebas", price: 40000 }, { name: "PlayBox - 5 Jam", time: "Bebas", price: 50000 } ]
+                Paket: [ { name: "Paket Malam", price: 50000 }, { name: "Paket Pagi", price: 45000 }, { name: "Paket Sore", price: 45000 }, { name: "Paket Sultan 24 Jam", price: 115000 } ],
+                Regular: [ { name: "PlayBox - 3 Jam", price: 30000 }, { name: "PlayBox - 4 Jam", price: 40000 }, { name: "PlayBox - 5 Jam", price: 50000 } ]
             }
         };
 
         const APP_LOGIC = {
-            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null, allLogs: [], selectedDateStr: "", currentStep: 1 },
+            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", currentStep: 1 },
+
+            initObserver: () => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const stickyCta = document.getElementById('sticky-cta');
+                        if (entry.isIntersecting) {
+                            stickyCta.classList.add('opacity-0');
+                            setTimeout(() => stickyCta.classList.add('hidden'), 300);
+                        } else {
+                            stickyCta.classList.remove('hidden');
+                            setTimeout(() => stickyCta.classList.remove('opacity-0'), 10);
+                        }
+                    });
+                }, { threshold: 0.1 }); 
+                observer.observe(document.getElementById('booking-area-container'));
+            },
+
+            scrollToBooking: () => {
+                const target = document.getElementById('region-step').classList.contains('hidden') ? document.getElementById('booking-step') : document.getElementById('region-step');
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            },
 
             initMarquee: () => {
                 const track = document.getElementById('marquee-track');
-                const cardsHTML = CONFIG.testimonials.map(text => `<div class="bg-[#FFE8B3] border-3 border-black rounded-xl p-4 w-64 flex-shrink-0 flex flex-col justify-center items-center h-32 shadow-[4px_4px_0px_0px_#000]"><div class="text-yellow-500 text-sm mb-2 drop-shadow-[1px_1px_0px_#000]">⭐⭐⭐⭐⭐</div><p class="text-xs font-bold italic text-gray-800 text-center leading-relaxed">"${text}"</p></div>`).join('');
+                const cardsHTML = CONFIG.testimonials.map(text => `
+                    <div class="bg-white border-3 border-black rounded-2xl p-4 w-64 flex-shrink-0 flex flex-col justify-center items-center h-28 shadow-[4px_4px_0px_0px_#FFD700] transform transition-transform hover:-translate-y-1">
+                        <div class="text-yellow-400 text-xs mb-2">⭐⭐⭐⭐⭐</div>
+                        <p class="text-xs font-bold text-gray-700 text-center leading-snug">"${text}"</p>
+                    </div>`).join('');
                 track.innerHTML = cardsHTML + cardsHTML;
             },
 
             formatRupiah: (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n),
 
+            goToStep: (targetStep) => {
+                APP_LOGIC.state.currentStep = targetStep;
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-2').classList.add('hidden');
+                
+                document.getElementById(`step-${targetStep}`).classList.remove('hidden');
+                
+                // Update Indicators styling
+                document.getElementById('ind-1').className = targetStep === 1 
+                    ? 'step-indicator active w-1/2 text-center border-b-4 pb-2 text-xs font-black' 
+                    : 'step-indicator w-1/2 text-center border-b-4 border-gray-300 pb-2 text-xs font-black text-gray-400';
+                    
+                document.getElementById('ind-2').className = targetStep === 2 
+                    ? 'step-indicator active w-1/2 text-center border-b-4 pb-2 text-xs font-black' 
+                    : 'step-indicator w-1/2 text-center border-b-4 border-gray-300 pb-2 text-xs font-black text-gray-400';
+
+                document.getElementById('booking-step').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            },
+
+            selectRegion: (regionName) => {
+                APP_LOGIC.state.region = regionName;
+                document.getElementById('region-step').classList.add('hidden');
+                document.getElementById('testimonial-step').classList.add('hidden');
+                document.getElementById('leaderboard-section').classList.add('hidden');
+                document.getElementById('booking-step').classList.remove('hidden');
+                document.getElementById('booking-step').classList.add('animate-pop');
+                document.getElementById('region-badge').innerText = regionName === 'Banda' ? 'BANDA ACEH' : regionName.toUpperCase();
+                
+                const antarContainer = document.getElementById('antar-jemput-container');
+                if (regionName === 'Banda') { antarContainer.classList.remove('hidden'); APP_LOGIC.setDelivery('ambil'); } 
+                else { antarContainer.classList.add('hidden'); APP_LOGIC.state.deliveryMode = "ambil"; document.getElementById('address').removeAttribute('required'); }
+                
+                APP_LOGIC.updateDropdown(); 
+                APP_LOGIC.goToStep(1);
+            },
+
+            setDelivery: (mode) => {
+                APP_LOGIC.state.deliveryMode = mode;
+                const btnAntar = document.getElementById('btn-antar'); const btnAmbil = document.getElementById('btn-ambil');
+                const addressContainer = document.getElementById('address-container'); const addressInput = document.getElementById('address');
+                
+                if (mode === 'antar') { 
+                    btnAntar.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs border-2 shadow-none'; 
+                    btnAmbil.className = 'mario-btn bg-transparent text-gray-600 border-gray-400 flex-1 py-2 text-xs border-2 shadow-none'; 
+                    addressContainer.classList.remove('hidden'); 
+                    addressInput.setAttribute('required', 'true'); 
+                } else { 
+                    btnAmbil.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs border-2 shadow-none'; 
+                    btnAntar.className = 'mario-btn bg-transparent text-gray-600 border-gray-400 flex-1 py-2 text-xs border-2 shadow-none'; 
+                    addressContainer.classList.add('hidden'); 
+                    addressInput.removeAttribute('required'); 
+                    addressInput.value = ''; 
+                }
+            },
+
+            switchType: (type) => {
+                APP_LOGIC.state.type = type; const isPaket = type === 'Paket';
+                document.getElementById('tab-paket').className = isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2 text-sm shadow-none border-none rounded-lg' : 'mario-btn flex-1 py-2 text-sm shadow-none border-none bg-transparent text-gray-600 rounded-lg';
+                document.getElementById('tab-regular').className = !isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2 text-sm shadow-none border-none rounded-lg' : 'mario-btn flex-1 py-2 text-sm shadow-none border-none bg-transparent text-gray-600 rounded-lg';
+                APP_LOGIC.updateDropdown();
+            },
+
+            updateDropdown: () => {
+                const items = CONFIG.data[APP_LOGIC.state.type];
+                document.getElementById('product').innerHTML = items.map((item, index) => `<option value="${index}">${item.name}</option>`).join('');
+                APP_LOGIC.updatePriceUI();
+            },
+
+            updatePriceUI: () => {
+                const item = CONFIG.data[APP_LOGIC.state.type][document.getElementById('product').value];
+                if (item) {
+                    APP_LOGIC.state.selectedItem = item;
+                    document.getElementById('fake-price').innerText = APP_LOGIC.formatRupiah(item.price * 1.25);
+                    document.getElementById('hemat-price').innerText = APP_LOGIC.formatRupiah((item.price * 1.25) - item.price);
+                    document.getElementById('real-price').innerText = APP_LOGIC.formatRupiah(item.price);
+                }
+            },
+
+            submitForm: async (e) => {
+                e.preventDefault();
+                const btnSubmit = document.getElementById('btn-submit-order');
+                btnSubmit.innerHTML = 'MENGECEK STATUS... ⏳';
+                btnSubmit.disabled = true;
+                
+                const name = document.getElementById('name').value;
+                const waNumber = document.getElementById('wa-number').value;
+                const item = APP_LOGIC.state.selectedItem;
+                const address = document.getElementById('address').value;
+                
+                let pastBookings = 0;
+                try {
+                    const res = await fetch(CONFIG.webhook_url, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'check_member', data: { wa: waNumber } })
+                    });
+                    const checkData = await res.json();
+                    if(Array.isArray(checkData)) pastBookings = checkData.length;
+                } catch(err) {}
+
+                const totalBookings = pastBookings + 1;
+                let tier = "New Member 🌱"; let tierColor = "text-green-700 bg-green-100 border-green-500";
+                if (totalBookings >= 2 && totalBookings <= 3) { tier = "Kawan Akrab 🤝"; tierColor = "text-blue-700 bg-blue-100 border-blue-500"; }
+                else if (totalBookings >= 4 && totalBookings <= 6) { tier = "Cees Kental 👊"; tierColor = "text-orange-700 bg-orange-100 border-orange-500"; }
+                else if (totalBookings >= 7) { tier = "Keluarga Arena Prioritas 👑"; tierColor = "text-purple-700 bg-purple-100 border-purple-500"; }
+
+                const placeholderDate = "Menunggu Konfirmasi";
+                
+                fetch(CONFIG.webhook_url, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'pending_booking', data: { name: name, wa: waNumber, branch: APP_LOGIC.state.region, unit: 'TBD', price: item.price, admin_name: 'Self-Booking', status_unit: 'pending', pembayaran: 'Belum', paket: `${item.name} (${APP_LOGIC.state.type})`, jam_mulai_sewa: placeholderDate } })
+                }).catch(e => console.log('Pending error'));
+
+                let msg = `🍄 *BOS, ADA BOOKING BARU!* 🍄\n\n📍 *Markas:* ${APP_LOGIC.state.region === 'Banda' ? 'Banda Aceh' : APP_LOGIC.state.region}\n👤 *Nama:* ${name}\n📱 *No WA:* ${waNumber}\n💎 *Status:* ${tier}\n\n🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
+                msg += `⏰ *WAKTU MAIN:* (Menunggu Konfirmasi Admin)\n`;
+                msg += `💰 *Total Harga:* ${APP_LOGIC.formatRupiah(item.price)} (Dapat Diskon)\n\n`;
+                if (APP_LOGIC.state.region === 'Banda') {
+                    if (APP_LOGIC.state.deliveryMode === 'antar') msg += `🛵 *Logistik:* Minta Diantar\n🏠 *Alamat Pengantaran:* ${address}\n\n`;
+                    else msg += `🏪 *Logistik:* Ambil Sendiri ke Markas\n\n`;
+                }
+                msg += `Mohon segera konfirmasi Jadwal & Ketersediaan Unit ya Bos! 🚀`;
+
+                APP_LOGIC.state.pendingWaUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+
+                document.getElementById('member-name').innerText = name;
+                document.getElementById('member-total').innerText = totalBookings + " Kali";
+                const tierElement = document.getElementById('member-tier');
+                tierElement.innerText = tier; tierElement.className = `text-sm font-black py-1.5 px-4 rounded-lg border-2 inline-block ${tierColor}`;
+
+                document.getElementById('loyalty-modal').classList.remove('hidden');
+                btnSubmit.innerHTML = 'GAS BOOKING 🚀';
+                btnSubmit.disabled = false;
+            },
+
+            // Load Leaderboard Data API
             fetchData: async () => {
                 try {
                     const resLB = fetch(CONFIG.webhook_url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'get_leaderboard' }) });
-                    const resLogs = fetch(CONFIG.webhook_url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'get_dashboard', role: 'admin', branch: 'ALL' }) });
-                    
-                    const [lbResponse, logsResponse] = await Promise.all([resLB, resLogs]);
-                    
+                    const [lbResponse] = await Promise.all([resLB]);
                     const lbData = await lbResponse.json();
                     if(lbData && lbData.length > 0 && lbData[0].leaderboard) {
                         APP_LOGIC.state.leaderboardData = lbData[0].leaderboard;
                         document.getElementById('leaderboard-section').classList.remove('hidden');
                         APP_LOGIC.renderPodium();
                     }
-
-                    const logsData = await logsResponse.json();
-                    if(logsData) {
-                        APP_LOGIC.state.allLogs = Array.isArray(logsData) ? logsData.map(i => i.json !== undefined ? i.json : i).filter(i => i.tagihan_arena !== undefined) : [];
-                    }
-                } catch(e) { console.log('Gagal ambil data dari server'); }
+                } catch(e) { console.log('Gagal ambil leaderboard'); }
             },
-
+            
             renderPodium: () => {
                 const branch = document.getElementById('lb-branch').value;
                 const podiumDiv = document.getElementById('podium-display');
@@ -330,263 +486,10 @@
                 let listHtml = '';
                 for(let i=3; i<5; i++) {
                     if(sultans[i]) {
-                        listHtml += `<div class="flex items-center justify-between bg-white border-2 border-black rounded-lg p-2 shadow-[2px_2px_0px_0px_#000]"><div class="flex items-center gap-2"><span class="bg-gray-200 text-black font-black text-xs px-2 py-1 rounded">#${i+1}</span><span class="font-bold text-sm uppercase">${sultans[i].name}</span></div></div>`;
+                        listHtml += `<div class="flex items-center justify-between bg-white border-2 border-black rounded-xl p-2.5 shadow-sm"><div class="flex items-center gap-3"><span class="bg-gray-100 border border-gray-300 text-black font-black text-xs px-2.5 py-1 rounded-md">#${i+1}</span><span class="font-bold text-sm uppercase text-gray-700">${sultans[i].name}</span></div></div>`;
                     }
                 }
                 listDiv.innerHTML = listHtml;
-            },
-
-            // --- WIZARD FORM LOGIC ---
-            goToStep: (targetStep) => {
-                // Validasi Langkah 2 ke Langkah 3
-                if (targetStep === 3) {
-                    const timeInput = document.getElementById('time-input').value;
-                    if(!timeInput) { alert('Bos, tolong diisi jam mulainya dulu ya!'); return; }
-                }
-
-                APP_LOGIC.state.currentStep = targetStep;
-                
-                // Hide all steps
-                document.getElementById('step-1').classList.add('hidden');
-                document.getElementById('step-2').classList.add('hidden');
-                document.getElementById('step-3').classList.add('hidden');
-                
-                // Show target step
-                document.getElementById(`step-${targetStep}`).classList.remove('hidden');
-                
-                // Update Indicators
-                for(let i=1; i<=3; i++) {
-                    const ind = document.getElementById(`ind-${i}`);
-                    if(i === targetStep) {
-                        ind.className = 'step-indicator w-1/3 text-center border-b-4 border-black pb-2 text-[10px] font-black text-yellow-500';
-                    } else if (i < targetStep) {
-                        ind.className = 'step-indicator w-1/3 text-center border-b-4 border-black pb-2 text-[10px] font-black text-black'; 
-                    } else {
-                        ind.className = 'step-indicator w-1/3 text-center border-b-4 border-gray-200 pb-2 text-[10px] font-black text-gray-400';
-                    }
-                }
-                
-                // Scroll up sedikit biar nyaman
-                document.getElementById('booking-step').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            },
-
-            initDatePicker: () => {
-                const scrollContainer = document.getElementById('date-scroll');
-                const daysName = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-                let html = '';
-                
-                const now = new Date();
-                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-                APP_LOGIC.state.selectedDateStr = now.toISOString().substring(0,10);
-
-                for(let i=0; i<7; i++) {
-                    let d = new Date();
-                    d.setDate(d.getDate() + i);
-                    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-                    let dateStr = d.toISOString().substring(0,10);
-                    
-                    let label = i === 0 ? 'HARI INI' : (i === 1 ? 'BESOK' : daysName[d.getDay()].toUpperCase());
-                    let selectedClass = i === 0 ? 'selected' : '';
-                    
-                    html += `<button type="button" onclick="APP_LOGIC.selectDate(this, '${dateStr}')" class="date-btn ${selectedClass}">${label}<br><span class="text-[10px] font-normal text-gray-500">${d.getDate()}/${d.getMonth()+1}</span></button>`;
-                }
-                scrollContainer.innerHTML = html;
-            },
-
-            selectDate: (btnEl, dateStr) => {
-                document.querySelectorAll('.date-btn').forEach(btn => btn.classList.remove('selected'));
-                btnEl.classList.add('selected');
-                APP_LOGIC.state.selectedDateStr = dateStr;
-                APP_LOGIC.checkUnitsAvailability();
-            },
-
-            checkUnitsAvailability: () => {
-                const targetDate = APP_LOGIC.state.selectedDateStr;
-                const timeInput = document.getElementById('time-input').value;
-                const pkgSel = document.getElementById('product');
-                const statusContainer = document.getElementById('unit-status-container');
-                const statusList = document.getElementById('unit-status-list');
-                
-                document.getElementById('lbl-tgl-cek').innerText = targetDate;
-                
-                if (!timeInput) {
-                    statusContainer.classList.add('hidden');
-                    return;
-                }
-
-                let units = [];
-                let b = String(APP_LOGIC.state.region).toLowerCase();
-                if(b.includes('sabang')) units = [1, 2];
-                else if(b.includes('banda')) units = [3, 4, 5, 6, 7];
-                else if(b.includes('timur') || b.includes('atim')) units = [8, 9];
-
-                const reqStart = new Date(`${targetDate}T${timeInput}`);
-                
-                const itemName = CONFIG.data[APP_LOGIC.state.type][pkgSel.value].name;
-                let durationHours = 0;
-                
-                if (itemName.includes('3 Jam')) durationHours = 3;
-                else if (itemName.includes('4 Jam')) durationHours = 4;
-                else if (itemName.includes('5 Jam')) durationHours = 5;
-                else if (itemName.includes('24 Jam') || itemName.includes('24H')) durationHours = 24;
-                else if (itemName.includes('Malam')) durationHours = 10;
-                else if (itemName.includes('Pagi')) durationHours = 7;
-                else if (itemName.includes('Sore')) durationHours = 6.66;
-
-                const reqEnd = new Date(reqStart.getTime() + durationHours * 60 * 60 * 1000);
-
-                let listHtml = '';
-                units.forEach(uNum => {
-                    const unitLogs = APP_LOGIC.state.allLogs.filter(l => {
-                        const logNum = String(l.unit_arena).replace(/\D/g, ''); 
-                        const stat = String(l.status_unit_arena).toLowerCase();
-                        const lDate = (l.jam_mulai_sewa||'').substring(0,10);
-                        return logNum === String(uNum) && lDate === targetDate && ['playing','main','booked','book'].includes(stat);
-                    });
-
-                    let isClash = false;
-                    let finishTimeStr = '';
-
-                    unitLogs.forEach(l => {
-                        if (!l.jam_mulai_sewa) return;
-                        const lStart = new Date(l.jam_mulai_sewa.replace(' ', 'T'));
-                        
-                        let lDur = 5; 
-                        let pName = String(l.paket_arena);
-                        if (pName.includes('3 Jam')) lDur = 3; else if (pName.includes('4 Jam')) lDur = 4; else if (pName.includes('5 Jam')) lDur = 5; else if (pName.includes('24 Jam')) lDur = 24; else if (pName.includes('Malam')) lDur = 10; else if (pName.includes('Pagi')) lDur = 7; else if (pName.includes('Sore')) lDur = 6.66;
-                        
-                        const lEnd = new Date(lStart.getTime() + lDur * 60 * 60 * 1000);
-
-                        if (reqStart < lEnd && reqEnd > lStart) {
-                            isClash = true;
-                            finishTimeStr = lEnd.toTimeString().substring(0,5);
-                        }
-                    });
-
-                    if (isClash) {
-                        listHtml += `<div class="bg-red-50 border-2 border-red-300 p-2 rounded-lg text-center shadow-sm"><p class="text-[10px] font-black text-red-800">🔴 UNIT ${uNum}</p><p class="text-[9px] font-bold text-red-600">Kosong ±${finishTimeStr}</p></div>`;
-                    } else {
-                        listHtml += `<div class="bg-green-50 border-2 border-green-300 p-2 rounded-lg text-center shadow-sm"><p class="text-[10px] font-black text-green-800">🟢 UNIT ${uNum}</p><p class="text-[9px] font-bold text-green-600">Aman Bos!</p></div>`;
-                    }
-                });
-
-                statusList.innerHTML = listHtml;
-                statusContainer.classList.remove('hidden');
-                APP_LOGIC.updatePriceUI(); 
-            },
-
-            selectRegion: (regionName) => {
-                APP_LOGIC.state.region = regionName;
-                document.getElementById('region-step').classList.add('hidden');
-                document.getElementById('testimonial-step').classList.add('hidden');
-                document.getElementById('leaderboard-section').classList.add('hidden'); 
-                document.getElementById('booking-step').classList.remove('hidden');
-                document.getElementById('booking-step').classList.add('animate-pop');
-                document.getElementById('region-badge').innerText = `📍 ${regionName === 'Banda' ? 'BANDA ACEH' : regionName.toUpperCase()}`;
-                
-                const antarContainer = document.getElementById('antar-jemput-container');
-                if (regionName === 'Banda') { antarContainer.classList.remove('hidden'); APP_LOGIC.setDelivery('ambil'); } 
-                else { antarContainer.classList.add('hidden'); APP_LOGIC.state.deliveryMode = "ambil"; document.getElementById('address').removeAttribute('required'); }
-                
-                APP_LOGIC.initDatePicker(); 
-                APP_LOGIC.updateDropdown(); 
-                
-                // Set form ke langkah 1
-                APP_LOGIC.goToStep(1);
-            },
-
-            setDelivery: (mode) => {
-                APP_LOGIC.state.deliveryMode = mode;
-                const btnAntar = document.getElementById('btn-antar'); const btnAmbil = document.getElementById('btn-ambil');
-                const addressContainer = document.getElementById('address-container'); const addressInput = document.getElementById('address');
-                if (mode === 'antar') { btnAntar.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; btnAmbil.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; addressContainer.classList.remove('hidden'); addressInput.setAttribute('required', 'true'); } 
-                else { btnAmbil.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; btnAntar.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; addressContainer.classList.add('hidden'); addressInput.removeAttribute('required'); addressInput.value = ''; }
-            },
-
-            switchType: (type) => {
-                APP_LOGIC.state.type = type; const isPaket = type === 'Paket';
-                document.getElementById('tab-paket').className = isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2 text-sm' : 'mario-btn mario-btn-gray flex-1 py-2 text-sm';
-                document.getElementById('tab-regular').className = !isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2 text-sm' : 'mario-btn mario-btn-gray flex-1 py-2 text-sm';
-                APP_LOGIC.updateDropdown();
-            },
-
-            updateDropdown: () => {
-                const items = CONFIG.data[APP_LOGIC.state.type];
-                document.getElementById('product').innerHTML = items.map((item, index) => `<option value="${index}">${item.name}${item.time !== "Bebas" ? ` (${item.time})` : ""}</option>`).join('');
-                APP_LOGIC.checkUnitsAvailability(); 
-            },
-
-            updatePriceUI: () => {
-                const item = CONFIG.data[APP_LOGIC.state.type][document.getElementById('product').value];
-                if (item) {
-                    APP_LOGIC.state.selectedItem = item;
-                    document.getElementById('fake-price').innerText = APP_LOGIC.formatRupiah(item.price * 1.25);
-                    document.getElementById('hemat-price').innerText = APP_LOGIC.formatRupiah((item.price * 1.25) - item.price);
-                    document.getElementById('real-price').innerText = APP_LOGIC.formatRupiah(item.price);
-                }
-            },
-
-            submitForm: async (e) => {
-                e.preventDefault();
-                
-                const timeInput = document.getElementById('time-input').value;
-                if(!timeInput) { 
-                    alert('Bos, tolong kembali ke Langkah 2 dan isi pilihan Jam Main-nya dulu ya!'); 
-                    APP_LOGIC.goToStep(2);
-                    return; 
-                }
-
-                const btnSubmit = document.getElementById('btn-submit-order');
-                btnSubmit.innerHTML = 'MENGECEK STATUS... ⏳';
-                btnSubmit.disabled = true;
-                
-                const name = document.getElementById('name').value;
-                const waNumber = document.getElementById('wa-number').value;
-                const item = APP_LOGIC.state.selectedItem;
-                const address = document.getElementById('address').value;
-                
-                let pastBookings = 0;
-                try {
-                    const res = await fetch(CONFIG.webhook_url, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'check_member', data: { wa: waNumber } })
-                    });
-                    const checkData = await res.json();
-                    if(Array.isArray(checkData)) pastBookings = checkData.length;
-                } catch(err) { console.log("Gagal cek member"); }
-
-                const totalBookings = pastBookings + 1;
-                let tier = "New Member 🌱"; let tierColor = "text-green-600 bg-green-100 border-green-500";
-                if (totalBookings >= 2 && totalBookings <= 3) { tier = "Kawan Akrab 🤝"; tierColor = "text-blue-600 bg-blue-100 border-blue-500"; }
-                else if (totalBookings >= 4 && totalBookings <= 6) { tier = "Cees Kental 👊"; tierColor = "text-orange-600 bg-orange-100 border-orange-500"; }
-                else if (totalBookings >= 7) { tier = "Keluarga Arena Prioritas 👑"; tierColor = "text-purple-600 bg-purple-100 border-purple-500"; }
-
-                const formattedDate = APP_LOGIC.state.selectedDateStr + ' ' + timeInput + ':00';
-                
-                fetch(CONFIG.webhook_url, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'pending_booking', data: { name: name, wa: waNumber, branch: APP_LOGIC.state.region, unit: 'TBD', price: item.price, admin_name: 'Self-Booking', status_unit: 'pending', pembayaran: 'Belum', paket: `${item.name} (${APP_LOGIC.state.type})`, jam_mulai_sewa: formattedDate } })
-                }).catch(e => console.log('Pending error'));
-
-                let msg = `🍄 *BOS, ADA BOOKING BARU!* 🍄\n\n📍 *Markas:* ${APP_LOGIC.state.region === 'Banda' ? 'Banda Aceh' : APP_LOGIC.state.region}\n👤 *Nama:* ${name}\n📱 *No WA:* ${waNumber}\n💎 *Status:* ${tier}\n\n🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
-                msg += `⏰ *WAKTU MAIN:* ${formattedDate}\n`;
-                msg += `💰 *Total Harga:* ${APP_LOGIC.formatRupiah(item.price)} (Dapat Diskon)\n\n`;
-                if (APP_LOGIC.state.region === 'Banda') {
-                    if (APP_LOGIC.state.deliveryMode === 'antar') msg += `🛵 *Logistik:* Minta Diantar\n🏠 *Alamat Pengantaran:* ${address}\n\n`;
-                    else msg += `🏪 *Logistik:* Ambil Sendiri ke Markas\n\n`;
-                }
-                msg += `Mohon segera diproses ya! 🚀`;
-
-                APP_LOGIC.state.pendingWaUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
-
-                document.getElementById('member-name').innerText = name;
-                document.getElementById('member-total').innerText = totalBookings + " Kali";
-                const tierElement = document.getElementById('member-tier');
-                tierElement.innerText = tier; tierElement.className = `text-lg font-black py-1 rounded-lg border-2 animate-pulse ${tierColor}`;
-
-                document.getElementById('loyalty-modal').classList.remove('hidden');
-                btnSubmit.innerHTML = '🚀 GAS BOOKING SEKARANG!';
-                btnSubmit.disabled = false;
             },
 
             proceedToWA: () => { window.location.href = APP_LOGIC.state.pendingWaUrl; }
@@ -595,7 +498,8 @@
         document.getElementById('orderForm').addEventListener('submit', APP_LOGIC.submitForm);
         document.addEventListener('DOMContentLoaded', () => {
             APP_LOGIC.initMarquee();
-            APP_LOGIC.fetchData(); 
+            APP_LOGIC.fetchData();
+            APP_LOGIC.initObserver(); 
         });
     </script>
 </body>
