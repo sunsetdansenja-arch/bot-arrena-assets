@@ -30,8 +30,7 @@
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
-        @keyframes wiggle { 0%, 7% { transform: rotateZ(0); } 15% { transform: rotateZ(-5deg); } 20% { transform: rotateZ(3deg); } 25% { transform: rotateZ(-5deg); } 30% { transform: rotateZ(2deg); } 35%, 100% { transform: rotateZ(0); } }
-
+        
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
 
         .podium-container { display: flex; align-items: flex-end; justify-content: center; gap: 8px; padding-top: 20px; width: 100%; }
@@ -43,16 +42,11 @@
         .podium-name { font-size: 11px; font-weight: 900; text-align: center; text-transform: uppercase; margin-bottom: 4px; line-height: 1.1; word-break: break-word; padding: 0 4px; }
         .podium-medal { font-size: 20px; filter: drop-shadow(1px 1px 0px black); margin-bottom: 4px; }
         
-        .font-beuna { font-family: 'Inter', sans-serif; }
-
         /* Horizontal Scroll Date Picker */
         .date-scroll-container { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; scroll-snap-type: x mandatory; }
         .date-scroll-container::-webkit-scrollbar { height: 0px; } 
         .date-btn { flex: 0 0 auto; scroll-snap-align: start; padding: 10px 16px; border: 3px solid var(--mario-black); border-radius: 12px; background: #F9FAFB; font-weight: bold; font-size: 13px; cursor: pointer; transition: all 0.2s; min-width: 90px; text-align: center; }
         .date-btn.selected { background: var(--mario-yellow); box-shadow: 3px 3px 0px 0px var(--mario-black); transform: translateY(-3px); }
-        
-        /* Wizard Steps */
-        .step-indicator { transition: all 0.3s ease; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -91,7 +85,6 @@
                 <div class="text-center mb-2"><span class="bg-black text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-white shadow-[2px_2px_0px_0px_#FFD700]">KATA MEREKA 🍄</span></div>
                 <div class="marquee-wrapper"><div id="marquee-track" class="marquee-track"></div></div>
             </section>
-
             <div id="booking-area-container">
                 <section id="region-step" class="mario-card p-6 relative z-10">
                     <h2 class="text-xl font-bold mb-4 text-center border-b-4 border-black pb-2">PILIH MARKASMU:</h2>
@@ -104,65 +97,40 @@
 
                 <section id="booking-step" class="hidden relative z-10">
                     <div class="flex items-center justify-between mb-4">
-                        <button type="button" onclick="location.reload()" class="bg-white border-2 border-black rounded-lg px-3 py-1 text-xs font-bold shadow-[2px_2px_0px_#000]">← KEMBALI</button>
+                        <button type="button" onclick="location.reload()" class="bg-white border-2 border-black rounded-lg px-3 py-1 text-xs font-bold shadow-[2px_2px_0px_#000] hover:bg-gray-100">← KEMBALI</button>
                         <span class="bg-black text-white font-black px-3 py-1.5 rounded-lg text-[10px]" id="region-badge">📍 BANDA ACEH</span>
                     </div>
 
-                    <div class="mario-card p-4 md:p-6">
-                        
-                        <div class="flex justify-between items-center mb-6">
-                            <div class="step-indicator w-1/3 text-center border-b-4 border-black pb-2 text-[10px] font-black text-yellow-500" id="ind-1">1. PAKET</div>
-                            <div class="step-indicator w-1/3 text-center border-b-4 border-gray-200 pb-2 text-[10px] font-black text-gray-400" id="ind-2">2. JADWAL</div>
-                            <div class="step-indicator w-1/3 text-center border-b-4 border-gray-200 pb-2 text-[10px] font-black text-gray-400" id="ind-3">3. CHECKOUT</div>
-                        </div>
-
-                        <form id="orderForm">
+                    <div class="mario-card p-4 md:p-6 animate-fade">
+                        <form id="orderForm" class="space-y-6">
                             
-                            <div id="step-1" class="animate-fade">
-                                <h3 class="text-lg font-black mb-4 text-center uppercase">🎮 Mau Main Apa?</h3>
-                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-sm mb-4">
+                            <div>
+                                <h3 class="text-sm font-black mb-3 uppercase border-b-2 border-dashed border-gray-300 pb-1 text-gray-700">1. Pilih Paket Main</h3>
+                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-[2px_2px_0px_0px_#000]">
                                     <div class="flex gap-2 mb-4">
                                         <button type="button" id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm">PAKET</button>
                                         <button type="button" id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn mario-btn-gray flex-1 py-2 text-sm">REGULAR</button>
                                     </div>
-                                    <label class="block font-bold mb-2 text-xs">PILIH AMUNISI:</label>
                                     <div class="relative">
                                         <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="mario-input appearance-none cursor-pointer text-sm"></select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black">▼</div>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black text-xl">▼</div>
                                     </div>
-                                </div>
-                                <button type="button" onclick="APP_LOGIC.goToStep(2)" class="w-full mario-btn bg-black text-white p-3 text-sm uppercase">Lanjut: Pilih Jadwal ➔</button>
-                            </div>
-
-                            <div id="step-2" class="hidden animate-fade">
-                                <h3 class="text-lg font-black mb-4 text-center uppercase">📅 Kapan Mau Main?</h3>
-                                
-                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-sm mb-4">
-                                    <p class="text-[10px] font-bold text-gray-500 mb-2">GESER UNTUK PILIH TANGGAL:</p>
-                                    <div id="date-scroll" class="date-scroll-container mb-4"></div>
-                                    
-                                    <div class="flex items-center gap-3 bg-white p-3 border-2 border-black rounded-xl shadow-[2px_2px_0px_#000] mb-4">
-                                        <div class="bg-yellow-400 p-2 rounded-lg border-2 border-black">⏰</div>
-                                        <div class="flex-1">
-                                            <label class="text-[10px] font-black text-gray-600 block mb-1">PILIH JAM MULAI:</label>
-                                            <input type="time" id="time-input" required class="w-full bg-transparent font-black text-lg outline-none" onchange="APP_LOGIC.checkUnitsAvailability()">
-                                        </div>
-                                    </div>
-
-                                    <div id="unit-status-container" class="hidden border-t-2 border-dashed border-gray-300 pt-3">
-                                        <p class="text-[10px] font-black text-center mb-2">STATUS UNIT (<span id="lbl-tgl-cek" class="text-[#FF6B00]"></span>)</p>
-                                        <div id="unit-status-list" class="grid grid-cols-2 gap-2"></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex gap-2">
-                                    <button type="button" onclick="APP_LOGIC.goToStep(1)" class="mario-btn bg-gray-200 text-gray-700 p-3 text-sm w-1/3">Kembali</button>
-                                    <button type="button" onclick="APP_LOGIC.goToStep(3)" class="mario-btn bg-black text-white p-3 text-sm uppercase flex-1">Lanjut: Data Diri ➔</button>
                                 </div>
                             </div>
 
-                            <div id="step-3" class="hidden animate-fade">
-                                <h3 class="text-lg font-black mb-4 text-center uppercase">👤 Isi Data & Checkout</h3>
+                            <div>
+                                <h3 class="text-sm font-black mb-3 uppercase border-b-2 border-dashed border-gray-300 pb-1 text-gray-700">2. Rencana Tanggal Main</h3>
+                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-[2px_2px_0px_0px_#000]">
+                                    <p class="text-[10px] font-bold text-gray-500 mb-2">GESER KANAN-KIRI UNTUK PILIH:</p>
+                                    <div id="date-scroll" class="date-scroll-container"></div>
+                                    <p class="text-[10px] text-orange-600 font-bold mt-2 text-center bg-orange-100 p-1 rounded border border-orange-300">
+                                        *Jam main akan dikonfirmasi Admin via WhatsApp setelah Booking.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="text-sm font-black mb-3 uppercase border-b-2 border-dashed border-gray-300 pb-1 text-gray-700">3. Data Pemain</h3>
                                 
                                 <div id="antar-jemput-container" class="hidden bg-[#FFE8B3] border-2 border-yellow-600 rounded-xl p-4 mb-4 shadow-[2px_2px_0px_#ca8a04]">
                                     <label class="block font-black text-[10px] uppercase mb-2 text-yellow-900">🛵 LOGISTIK PENGIRIMAN</label>
@@ -175,7 +143,7 @@
                                     </div>
                                 </div>
 
-                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-sm mb-4 space-y-3">
+                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-[2px_2px_0px_0px_#000] space-y-3">
                                     <div>
                                         <label class="text-[10px] font-bold text-gray-600 block mb-1">NAMA LENGKAP</label>
                                         <input type="text" id="name" required class="mario-input text-sm" placeholder="Cth: Bang Kapluk">
@@ -185,34 +153,30 @@
                                         <input type="number" id="wa-number" required class="mario-input text-sm" placeholder="08xxxxxxxxxx">
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black mb-4 relative shadow-[4px_4px_0px_0px_#000]">
-                                    <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-3 py-1 rounded-sm border-2 border-black transform rotate-6 shadow-[2px_2px_0px_0px_#000] text-[10px]">PENAWARAN TERBATAS! 🔥</div>
-                                    <p class="font-bold text-red-200 text-xs uppercase tracking-wider mb-1">Total Biaya Rental</p>
-                                    <div class="flex flex-col gap-1">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-xs font-semibold text-red-200">Harga Normal:</span>
-                                            <span id="fake-price" class="text-sm text-red-300 line-through decoration-black decoration-2 font-black">Rp 0</span>
-                                        </div>
-                                        <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border-2 border-red-800">
-                                            <span class="text-[10px] font-bold text-yellow-300 animate-pulse">✨ ANDA HEMAT:</span>
-                                            <span id="hemat-price" class="text-xs font-black text-yellow-300">Rp 0</span>
-                                        </div>
-                                        <div class="flex items-end justify-between mt-2 pt-2 border-t-2 border-red-500/50">
-                                            <span class="text-sm font-bold">Bayar Nanti:</span>
-                                            <span id="real-price" class="text-2xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
-                                        </div>
+                            <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black relative shadow-[4px_4px_0px_0px_#000]">
+                                <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-3 py-1 rounded-sm border-2 border-black transform rotate-6 shadow-[2px_2px_0px_0px_#000] text-[10px]">PENAWARAN TERBATAS! 🔥</div>
+                                <p class="font-bold text-red-200 text-xs uppercase tracking-wider mb-1">Total Biaya Rental</p>
+                                <div class="flex flex-col gap-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-semibold text-red-200">Harga Normal:</span>
+                                        <span id="fake-price" class="text-sm text-red-300 line-through decoration-black decoration-2 font-black">Rp 0</span>
                                     </div>
-                                </div>
-
-                                <div class="flex gap-2">
-                                    <button type="button" onclick="APP_LOGIC.goToStep(2)" class="mario-btn bg-gray-200 text-gray-700 p-3 text-sm w-1/4">←</button>
-                                    <button type="submit" id="btn-submit-order" class="mario-btn mario-btn-yellow p-3 text-sm font-black uppercase flex-1 shadow-[4px_4px_0px_#000]">
-                                        🚀 GAS BOOKING SEKARANG!
-                                    </button>
+                                    <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border-2 border-red-800 my-1">
+                                        <span class="text-[10px] font-bold text-yellow-300 animate-pulse">✨ ANDA HEMAT:</span>
+                                        <span id="hemat-price" class="text-xs font-black text-yellow-300">Rp 0</span>
+                                    </div>
+                                    <div class="flex items-end justify-between mt-1 pt-2 border-t-2 border-red-500/50">
+                                        <span class="text-sm font-bold">Bayar Nanti:</span>
+                                        <span id="real-price" class="text-2xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
+                                    </div>
                                 </div>
                             </div>
 
+                            <button type="submit" id="btn-submit-order" class="w-full mario-btn mario-btn-yellow p-4 text-base font-black uppercase shadow-[4px_4px_0px_#000]">
+                                🚀 GAS BOOKING SEKARANG!
+                            </button>
                         </form>
                     </div>
                 </section>
@@ -274,7 +238,7 @@
         };
 
         const APP_LOGIC = {
-            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null, allLogs: [], selectedDateStr: "", currentStep: 1 },
+            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null, allLogs: [], selectedDateStr: "" },
 
             initMarquee: () => {
                 const track = document.getElementById('marquee-track');
@@ -336,40 +300,6 @@
                 listDiv.innerHTML = listHtml;
             },
 
-            // --- WIZARD FORM LOGIC ---
-            goToStep: (targetStep) => {
-                // Validasi Langkah 2 ke Langkah 3
-                if (targetStep === 3) {
-                    const timeInput = document.getElementById('time-input').value;
-                    if(!timeInput) { alert('Bos, tolong diisi jam mulainya dulu ya!'); return; }
-                }
-
-                APP_LOGIC.state.currentStep = targetStep;
-                
-                // Hide all steps
-                document.getElementById('step-1').classList.add('hidden');
-                document.getElementById('step-2').classList.add('hidden');
-                document.getElementById('step-3').classList.add('hidden');
-                
-                // Show target step
-                document.getElementById(`step-${targetStep}`).classList.remove('hidden');
-                
-                // Update Indicators
-                for(let i=1; i<=3; i++) {
-                    const ind = document.getElementById(`ind-${i}`);
-                    if(i === targetStep) {
-                        ind.className = 'step-indicator w-1/3 text-center border-b-4 border-black pb-2 text-[10px] font-black text-yellow-500';
-                    } else if (i < targetStep) {
-                        ind.className = 'step-indicator w-1/3 text-center border-b-4 border-black pb-2 text-[10px] font-black text-black'; 
-                    } else {
-                        ind.className = 'step-indicator w-1/3 text-center border-b-4 border-gray-200 pb-2 text-[10px] font-black text-gray-400';
-                    }
-                }
-                
-                // Scroll up sedikit biar nyaman
-                document.getElementById('booking-step').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            },
-
             initDatePicker: () => {
                 const scrollContainer = document.getElementById('date-scroll');
                 const daysName = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -397,110 +327,52 @@
                 document.querySelectorAll('.date-btn').forEach(btn => btn.classList.remove('selected'));
                 btnEl.classList.add('selected');
                 APP_LOGIC.state.selectedDateStr = dateStr;
-                APP_LOGIC.checkUnitsAvailability();
-            },
-
-            checkUnitsAvailability: () => {
-                const targetDate = APP_LOGIC.state.selectedDateStr;
-                const timeInput = document.getElementById('time-input').value;
-                const pkgSel = document.getElementById('product');
-                const statusContainer = document.getElementById('unit-status-container');
-                const statusList = document.getElementById('unit-status-list');
-                
-                document.getElementById('lbl-tgl-cek').innerText = targetDate;
-                
-                if (!timeInput) {
-                    statusContainer.classList.add('hidden');
-                    return;
-                }
-
-                let units = [];
-                let b = String(APP_LOGIC.state.region).toLowerCase();
-                if(b.includes('sabang')) units = [1, 2];
-                else if(b.includes('banda')) units = [3, 4, 5, 6, 7];
-                else if(b.includes('timur') || b.includes('atim')) units = [8, 9];
-
-                const reqStart = new Date(`${targetDate}T${timeInput}`);
-                
-                const itemName = CONFIG.data[APP_LOGIC.state.type][pkgSel.value].name;
-                let durationHours = 0;
-                
-                if (itemName.includes('3 Jam')) durationHours = 3;
-                else if (itemName.includes('4 Jam')) durationHours = 4;
-                else if (itemName.includes('5 Jam')) durationHours = 5;
-                else if (itemName.includes('24 Jam') || itemName.includes('24H')) durationHours = 24;
-                else if (itemName.includes('Malam')) durationHours = 10;
-                else if (itemName.includes('Pagi')) durationHours = 7;
-                else if (itemName.includes('Sore')) durationHours = 6.66;
-
-                const reqEnd = new Date(reqStart.getTime() + durationHours * 60 * 60 * 1000);
-
-                let listHtml = '';
-                units.forEach(uNum => {
-                    const unitLogs = APP_LOGIC.state.allLogs.filter(l => {
-                        const logNum = String(l.unit_arena).replace(/\D/g, ''); 
-                        const stat = String(l.status_unit_arena).toLowerCase();
-                        const lDate = (l.jam_mulai_sewa||'').substring(0,10);
-                        return logNum === String(uNum) && lDate === targetDate && ['playing','main','booked','book'].includes(stat);
-                    });
-
-                    let isClash = false;
-                    let finishTimeStr = '';
-
-                    unitLogs.forEach(l => {
-                        if (!l.jam_mulai_sewa) return;
-                        const lStart = new Date(l.jam_mulai_sewa.replace(' ', 'T'));
-                        
-                        let lDur = 5; 
-                        let pName = String(l.paket_arena);
-                        if (pName.includes('3 Jam')) lDur = 3; else if (pName.includes('4 Jam')) lDur = 4; else if (pName.includes('5 Jam')) lDur = 5; else if (pName.includes('24 Jam')) lDur = 24; else if (pName.includes('Malam')) lDur = 10; else if (pName.includes('Pagi')) lDur = 7; else if (pName.includes('Sore')) lDur = 6.66;
-                        
-                        const lEnd = new Date(lStart.getTime() + lDur * 60 * 60 * 1000);
-
-                        if (reqStart < lEnd && reqEnd > lStart) {
-                            isClash = true;
-                            finishTimeStr = lEnd.toTimeString().substring(0,5);
-                        }
-                    });
-
-                    if (isClash) {
-                        listHtml += `<div class="bg-red-50 border-2 border-red-300 p-2 rounded-lg text-center shadow-sm"><p class="text-[10px] font-black text-red-800">🔴 UNIT ${uNum}</p><p class="text-[9px] font-bold text-red-600">Kosong ±${finishTimeStr}</p></div>`;
-                    } else {
-                        listHtml += `<div class="bg-green-50 border-2 border-green-300 p-2 rounded-lg text-center shadow-sm"><p class="text-[10px] font-black text-green-800">🟢 UNIT ${uNum}</p><p class="text-[9px] font-bold text-green-600">Aman Bos!</p></div>`;
-                    }
-                });
-
-                statusList.innerHTML = listHtml;
-                statusContainer.classList.remove('hidden');
-                APP_LOGIC.updatePriceUI(); 
             },
 
             selectRegion: (regionName) => {
                 APP_LOGIC.state.region = regionName;
+                
+                // Hide landing sections
                 document.getElementById('region-step').classList.add('hidden');
                 document.getElementById('testimonial-step').classList.add('hidden');
                 document.getElementById('leaderboard-section').classList.add('hidden'); 
+                
+                // Show booking form
                 document.getElementById('booking-step').classList.remove('hidden');
                 document.getElementById('booking-step').classList.add('animate-pop');
                 document.getElementById('region-badge').innerText = `📍 ${regionName === 'Banda' ? 'BANDA ACEH' : regionName.toUpperCase()}`;
                 
                 const antarContainer = document.getElementById('antar-jemput-container');
-                if (regionName === 'Banda') { antarContainer.classList.remove('hidden'); APP_LOGIC.setDelivery('ambil'); } 
-                else { antarContainer.classList.add('hidden'); APP_LOGIC.state.deliveryMode = "ambil"; document.getElementById('address').removeAttribute('required'); }
+                if (regionName === 'Banda') { 
+                    antarContainer.classList.remove('hidden'); 
+                    APP_LOGIC.setDelivery('ambil'); 
+                } else { 
+                    antarContainer.classList.add('hidden'); 
+                    APP_LOGIC.state.deliveryMode = "ambil"; 
+                    document.getElementById('address').removeAttribute('required'); 
+                }
                 
                 APP_LOGIC.initDatePicker(); 
                 APP_LOGIC.updateDropdown(); 
-                
-                // Set form ke langkah 1
-                APP_LOGIC.goToStep(1);
             },
 
             setDelivery: (mode) => {
                 APP_LOGIC.state.deliveryMode = mode;
                 const btnAntar = document.getElementById('btn-antar'); const btnAmbil = document.getElementById('btn-ambil');
                 const addressContainer = document.getElementById('address-container'); const addressInput = document.getElementById('address');
-                if (mode === 'antar') { btnAntar.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; btnAmbil.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; addressContainer.classList.remove('hidden'); addressInput.setAttribute('required', 'true'); } 
-                else { btnAmbil.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; btnAntar.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; addressContainer.classList.add('hidden'); addressInput.removeAttribute('required'); addressInput.value = ''; }
+                
+                if (mode === 'antar') { 
+                    btnAntar.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; 
+                    btnAmbil.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; 
+                    addressContainer.classList.remove('hidden'); 
+                    addressInput.setAttribute('required', 'true'); 
+                } else { 
+                    btnAmbil.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; 
+                    btnAntar.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; 
+                    addressContainer.classList.add('hidden'); 
+                    addressInput.removeAttribute('required'); 
+                    addressInput.value = ''; 
+                }
             },
 
             switchType: (type) => {
@@ -513,7 +385,7 @@
             updateDropdown: () => {
                 const items = CONFIG.data[APP_LOGIC.state.type];
                 document.getElementById('product').innerHTML = items.map((item, index) => `<option value="${index}">${item.name}${item.time !== "Bebas" ? ` (${item.time})` : ""}</option>`).join('');
-                APP_LOGIC.checkUnitsAvailability(); 
+                APP_LOGIC.updatePriceUI(); 
             },
 
             updatePriceUI: () => {
@@ -529,13 +401,6 @@
             submitForm: async (e) => {
                 e.preventDefault();
                 
-                const timeInput = document.getElementById('time-input').value;
-                if(!timeInput) { 
-                    alert('Bos, tolong kembali ke Langkah 2 dan isi pilihan Jam Main-nya dulu ya!'); 
-                    APP_LOGIC.goToStep(2);
-                    return; 
-                }
-
                 const btnSubmit = document.getElementById('btn-submit-order');
                 btnSubmit.innerHTML = 'MENGECEK STATUS... ⏳';
                 btnSubmit.disabled = true;
@@ -561,7 +426,8 @@
                 else if (totalBookings >= 4 && totalBookings <= 6) { tier = "Cees Kental 👊"; tierColor = "text-orange-600 bg-orange-100 border-orange-500"; }
                 else if (totalBookings >= 7) { tier = "Keluarga Arena Prioritas 👑"; tierColor = "text-purple-600 bg-purple-100 border-purple-500"; }
 
-                const formattedDate = APP_LOGIC.state.selectedDateStr + ' ' + timeInput + ':00';
+                // Inject Dummy Time 00:00:00 untuk V5.10 Backend
+                const formattedDate = APP_LOGIC.state.selectedDateStr + ' 00:00:00';
                 
                 fetch(CONFIG.webhook_url, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -569,13 +435,15 @@
                 }).catch(e => console.log('Pending error'));
 
                 let msg = `🍄 *BOS, ADA BOOKING BARU!* 🍄\n\n📍 *Markas:* ${APP_LOGIC.state.region === 'Banda' ? 'Banda Aceh' : APP_LOGIC.state.region}\n👤 *Nama:* ${name}\n📱 *No WA:* ${waNumber}\n💎 *Status:* ${tier}\n\n🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
-                msg += `⏰ *WAKTU MAIN:* ${formattedDate}\n`;
+                msg += `📅 *Rencana Main:* ${APP_LOGIC.state.selectedDateStr}\n⏰ *Jam:* (Tolong hubungi saya ya min untuk atur jam mainnya)\n`;
                 msg += `💰 *Total Harga:* ${APP_LOGIC.formatRupiah(item.price)} (Dapat Diskon)\n\n`;
+                
                 if (APP_LOGIC.state.region === 'Banda') {
                     if (APP_LOGIC.state.deliveryMode === 'antar') msg += `🛵 *Logistik:* Minta Diantar\n🏠 *Alamat Pengantaran:* ${address}\n\n`;
                     else msg += `🏪 *Logistik:* Ambil Sendiri ke Markas\n\n`;
                 }
-                msg += `Mohon segera diproses ya! 🚀`;
+                
+                msg += `Mohon segera konfirmasi ketersediaan unit dan jam main ya! 🚀`;
 
                 APP_LOGIC.state.pendingWaUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
 
