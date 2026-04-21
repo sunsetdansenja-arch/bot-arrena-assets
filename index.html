@@ -8,67 +8,133 @@
     <link rel="icon" href="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
-        :root { --mario-orange: #FF6B00; --mario-black: #000000; --mario-yellow: #FFD700; }
-        body { font-family: 'Fredoka', sans-serif; background-color: var(--mario-orange); color: var(--mario-black); -webkit-font-smoothing: antialiased; background-image: radial-gradient(rgba(0,0,0,0.05) 2px, transparent 2px); background-size: 20px 20px; overflow-x: hidden; }
-        .mario-card { background-color: white; border: 4px solid var(--mario-black); border-radius: 16px; box-shadow: 8px 8px 0px 0px var(--mario-black); }
-        .mario-btn { background-color: white; border: 4px solid var(--mario-black); border-radius: 12px; box-shadow: 4px 4px 0px 0px var(--mario-black); transition: all 0.1s ease-in-out; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
-        .mario-btn:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px 0px var(--mario-black); }
-        .mario-btn-yellow { background-color: var(--mario-yellow); }
-        .mario-btn-gray { background-color: #E5E7EB; color: #6B7280; box-shadow: 2px 2px 0px 0px var(--mario-black); }
-        .mario-input { width: 100%; background-color: #F9FAFB; border: 3px solid var(--mario-black); border-radius: 8px; padding: 12px; font-weight: 600; outline: none; transition: all 0.2s; }
-        .mario-input:focus { background-color: #ffffff; border-color: var(--mario-orange); box-shadow: 2px 2px 0px 0px var(--mario-orange); transform: translateY(-2px); }
+        /* TEMA ARCADE POP */
+        :root { 
+            --arcade-cyan: #22D3EE; 
+            --arcade-pink: #F472B6; 
+            --arcade-yellow: #FDE047; 
+            --arcade-black: #0F172A;
+            --arcade-bg: #ECFEFF; /* Cyan sangat terang buat background */
+        }
+        
+        body { 
+            font-family: 'Fredoka', sans-serif; 
+            background-color: var(--arcade-bg); 
+            color: var(--arcade-black); 
+            -webkit-font-smoothing: antialiased; 
+            background-image: radial-gradient(rgba(34, 211, 238, 0.2) 2px, transparent 2px); 
+            background-size: 24px 24px; 
+            overflow-x: hidden; 
+        }
+        
+        /* KOMPONEN NEO-BRUTALISM */
+        .arcade-card { 
+            background-color: white; 
+            border: 4px solid var(--arcade-black); 
+            border-radius: 24px; 
+            box-shadow: 6px 6px 0px 0px var(--arcade-black); 
+        }
+        
+        .arcade-btn { 
+            background-color: white; 
+            border: 3px solid var(--arcade-black); 
+            border-radius: 16px; 
+            box-shadow: 4px 4px 0px 0px var(--arcade-black); 
+            transition: all 0.15s ease-in-out; 
+            font-weight: 700; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+        }
+        .arcade-btn:active { 
+            transform: translate(4px, 4px); 
+            box-shadow: 0px 0px 0px 0px var(--arcade-black); 
+        }
+        
+        .btn-yellow { background-color: var(--arcade-yellow); }
+        .btn-pink { background-color: var(--arcade-pink); color: white; }
+        .btn-cyan { background-color: var(--arcade-cyan); }
+        .btn-gray { background-color: #F1F5F9; color: #64748B; box-shadow: 2px 2px 0px 0px var(--arcade-black); }
+
+        .arcade-input { 
+            width: 100%; 
+            background-color: #F8FAFC; 
+            border: 3px solid var(--arcade-black); 
+            border-radius: 12px; 
+            padding: 14px; 
+            font-family: 'Inter', sans-serif;
+            font-weight: 600; 
+            outline: none; 
+            transition: all 0.2s; 
+        }
+        .arcade-input:focus { 
+            background-color: #ffffff; 
+            border-color: var(--arcade-pink); 
+            box-shadow: 3px 3px 0px 0px var(--arcade-pink); 
+            transform: translateY(-2px); 
+        }
+        
         .hidden { display: none !important; }
-        .animate-pop { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .animate-fade { animation: fadeIn 0.2s ease-in-out; }
+        .animate-pop { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        
+        /* MARQUEE TESTIMONIAL */
         .marquee-wrapper { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; overflow: hidden; padding: 10px 0; }
         .marquee-track { display: flex; width: max-content; animation: scroll 35s linear infinite; gap: 16px; padding-left: 16px; }
         .marquee-track:hover { animation-play-state: paused; }
-        
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        
         @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
-        
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
 
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(6px); }
+
+        /* PODIUM LEADERBOARD */
         .podium-container { display: flex; align-items: flex-end; justify-content: center; gap: 8px; padding-top: 20px; width: 100%; }
-        .podium-rank { border: 3px solid var(--mario-black); border-bottom: 0; border-top-left-radius: 8px; border-top-right-radius: 8px; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 10px; align-items: center; position: relative; width: 30%; }
-        .rank-1 { height: 140px; background: linear-gradient(180deg, #FFD700 0%, #D4AF37 100%); z-index: 10; box-shadow: 0px -4px 10px rgba(255, 215, 0, 0.5); }
-        .rank-2 { height: 100px; background: linear-gradient(180deg, #E2E8F0 0%, #94A3B8 100%); }
-        .rank-3 { height: 80px; background: linear-gradient(180deg, #FDBA74 0%, #B45309 100%); }
-        .crown { position: absolute; top: -30px; font-size: 30px; filter: drop-shadow(2px 2px 0px black); animation: bounce 2s infinite; }
+        .podium-rank { border: 3px solid var(--arcade-black); border-bottom: 0; border-top-left-radius: 12px; border-top-right-radius: 12px; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 10px; align-items: center; position: relative; width: 30%; }
+        .rank-1 { height: 140px; background: var(--arcade-yellow); z-index: 10; box-shadow: 0px -4px 15px rgba(253, 224, 71, 0.6); }
+        .rank-2 { height: 100px; background: #CBD5E1; }
+        .rank-3 { height: 80px; background: #FDBA74; }
+        .crown { position: absolute; top: -32px; font-size: 32px; filter: drop-shadow(2px 2px 0px var(--arcade-black)); animation: bounce 2s infinite; }
         .podium-name { font-size: 11px; font-weight: 900; text-align: center; text-transform: uppercase; margin-bottom: 4px; line-height: 1.1; word-break: break-word; padding: 0 4px; }
-        .podium-medal { font-size: 20px; filter: drop-shadow(1px 1px 0px black); margin-bottom: 4px; }
         
-        /* Horizontal Scroll Date Picker */
-        .date-scroll-container { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; scroll-snap-type: x mandatory; }
+        /* DATE PICKER SCROLL */
+        .date-scroll-container { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 12px; scroll-snap-type: x mandatory; margin-top: 8px;}
         .date-scroll-container::-webkit-scrollbar { height: 0px; } 
-        .date-btn { flex: 0 0 auto; scroll-snap-align: start; padding: 10px 16px; border: 3px solid var(--mario-black); border-radius: 12px; background: #F9FAFB; font-weight: bold; font-size: 13px; cursor: pointer; transition: all 0.2s; min-width: 90px; text-align: center; }
-        .date-btn.selected { background: var(--mario-yellow); box-shadow: 3px 3px 0px 0px var(--mario-black); transform: translateY(-3px); }
+        .date-btn { flex: 0 0 auto; scroll-snap-align: start; padding: 12px 16px; border: 3px solid var(--arcade-black); border-radius: 16px; background: white; font-weight: bold; font-size: 13px; cursor: pointer; transition: all 0.2s; min-width: 95px; text-align: center; box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.1); }
+        .date-btn.selected { background: var(--arcade-cyan); border-color: var(--arcade-black); box-shadow: 4px 4px 0px 0px var(--arcade-black); transform: translateY(-3px); color: var(--arcade-black); }
+
+        .section-label { display: inline-block; background: var(--arcade-black); color: white; padding: 6px 16px; border-radius: 99px; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border: 2px solid white; box-shadow: 3px 3px 0px 0px var(--arcade-pink); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <div class="flex-grow w-full p-4 md:p-8 flex flex-col items-center pb-20 relative">
+    <div class="flex-grow w-full p-4 md:p-6 flex flex-col items-center pb-20 relative">
         <div id="app" class="max-w-md w-full mx-auto animate-pop">
             
-            <header class="text-center mb-4">
-                <div class="inline-block p-2 bg-white border-4 border-black rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4">
+            <header class="text-center mb-6 mt-2">
+                <div class="inline-block p-2 bg-white border-4 border-black rounded-full shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-4">
                     <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" alt="Arena Playbox" class="h-20 w-20 object-contain rounded-full">
                 </div>
-                <h1 class="text-3xl font-black text-white uppercase" style="text-shadow: 3px 3px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;">ARENA PLAYBOX!</h1>
-                <div class="mt-3 bg-black text-white px-4 py-2 rounded-lg border-2 border-white inline-block transform -rotate-2">
-                    <p class="text-sm font-bold tracking-wide">"HAI NYOE RAKAN PLAYBOX ANDALAN GEUTANYOE"</p>
+                <h1 class="text-3xl font-black uppercase text-white" style="text-shadow: 3px 3px 0px #0F172A, -1px -1px 0px #0F172A, 1px -1px 0px #0F172A, -1px 1px 0px #0F172A, 1px 1px 0px #0F172A;">
+                    ARENA PLAYBOX
+                </h1>
+                <div class="mt-3 bg-[var(--arcade-pink)] text-white px-5 py-2 rounded-xl border-3 border-black inline-block transform -rotate-2 shadow-[3px_3px_0px_0px_#0F172A]">
+                    <p class="text-xs font-bold tracking-wider">BOOKING ANTI RIBET! 🎮</p>
                 </div>
             </header>
 
-            <section id="leaderboard-section" class="mario-card p-4 mb-6 relative overflow-hidden hidden">
-                <div class="absolute -right-6 -top-6 opacity-10 text-9xl">👑</div>
-                <h2 class="text-lg font-black text-center border-b-4 border-black pb-2 mb-4 uppercase text-[#FF6B00]">🏆 TOP 5 SULTAN BULAN INI</h2>
+            <section id="leaderboard-section" class="arcade-card p-5 mb-8 relative overflow-hidden hidden bg-white">
+                <div class="absolute -right-4 -top-4 opacity-10 text-8xl">👑</div>
+                <div class="text-center mb-4 relative z-10">
+                    <span class="bg-[var(--arcade-yellow)] text-black px-4 py-1.5 rounded-full text-[10px] font-black border-2 border-black shadow-[2px_2px_0px_0px_#000] uppercase tracking-widest">
+                        Top 5 Sultan Bulan Ini
+                    </span>
+                </div>
                 <div class="flex justify-center mb-4 relative z-10">
-                    <select id="lb-branch" onchange="APP_LOGIC.renderPodium()" class="mario-input w-full p-2 text-xs font-black bg-yellow-100 border-yellow-500 cursor-pointer text-center">
+                    <select id="lb-branch" onchange="APP_LOGIC.renderPodium()" class="arcade-input w-full p-2 text-xs font-black bg-gray-50 border-gray-300 cursor-pointer text-center">
                         <option value="ALL">🌍 SEMUA MARKAS (GLOBAL)</option>
                         <option value="Banda">📍 BANDA ACEH</option>
                         <option value="Sabang">📍 SABANG</option>
@@ -76,148 +142,141 @@
                     </select>
                 </div>
                 <div id="podium-display" class="podium-container border-b-4 border-black pb-0 relative z-10">
-                    <p class="text-xs font-bold text-gray-500 animate-pulse w-full text-center">Menarik data klasemen sultan...</p>
+                    <p class="text-xs font-bold text-gray-500 animate-pulse w-full text-center py-4">Memuat data sultan...</p>
                 </div>
-                <div id="list-display" class="mt-3 space-y-2 relative z-10 px-2"></div>
+                <div id="list-display" class="mt-3 space-y-2 relative z-10 px-1"></div>
             </section>
 
-            <section id="testimonial-step" class="mb-8 mt-2">
-                <div class="text-center mb-2"><span class="bg-black text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-white shadow-[2px_2px_0px_0px_#FFD700]">KATA MEREKA 🍄</span></div>
+            <section id="testimonial-step" class="mb-8">
+                <div class="text-center mb-3">
+                    <span class="bg-black text-white px-4 py-1.5 rounded-full text-[10px] font-bold border-2 border-white shadow-[2px_2px_0px_0px_var(--arcade-cyan)] tracking-widest">
+                        KATA MEREKA 💬
+                    </span>
+                </div>
                 <div class="marquee-wrapper"><div id="marquee-track" class="marquee-track"></div></div>
             </section>
-            <div id="booking-area-container">
-                <section id="region-step" class="mario-card p-6 relative z-10">
-                    <h2 class="text-xl font-bold mb-4 text-center border-b-4 border-black pb-2">PILIH MARKASMU:</h2>
-                    <div class="grid grid-cols-1 gap-4">
-                        <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">📍 SABANG</button>
-                        <button onclick="APP_LOGIC.selectRegion('Banda')" class="mario-btn mario-btn-yellow p-4 text-lg">📍 BANDA ACEH</button>
-                        <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">📍 ACEH TIMUR</button>
+
+            <form id="orderForm" class="space-y-6">
+                
+                <div class="arcade-card p-5 bg-white">
+                    <span class="section-label">1. Pilih Markas</span>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button type="button" id="reg-sabang" onclick="APP_LOGIC.selectRegion('Sabang')" class="arcade-btn btn-gray p-3 text-xs">SABANG</button>
+                        <button type="button" id="reg-banda" onclick="APP_LOGIC.selectRegion('Banda')" class="arcade-btn btn-gray p-3 text-xs">BANDA ACEH</button>
+                        <button type="button" id="reg-atim" onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="arcade-btn btn-gray p-3 text-xs">ATIM</button>
                     </div>
-                </section>
+                </div>
 
-                <section id="booking-step" class="hidden relative z-10">
-                    <div class="flex items-center justify-between mb-4">
-                        <button type="button" onclick="location.reload()" class="bg-white border-2 border-black rounded-lg px-3 py-1 text-xs font-bold shadow-[2px_2px_0px_#000] hover:bg-gray-100">← KEMBALI</button>
-                        <span class="bg-black text-white font-black px-3 py-1.5 rounded-lg text-[10px]" id="region-badge">📍 BANDA ACEH</span>
+                <div id="main-form-content" class="space-y-6 hidden animate-fade">
+                    
+                    <div class="arcade-card p-5 bg-white">
+                        <span class="section-label">2. Amunisi Main</span>
+                        <div class="flex gap-2 mb-4">
+                            <button type="button" id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="arcade-btn btn-yellow flex-1 py-2.5 text-sm">PAKET</button>
+                            <button type="button" id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="arcade-btn btn-gray flex-1 py-2.5 text-sm">REGULAR</button>
+                        </div>
+                        <div class="relative">
+                            <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="arcade-input appearance-none cursor-pointer text-sm font-bold bg-[#F8FAFC]"></select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black text-lg text-gray-500">▼</div>
+                        </div>
                     </div>
 
-                    <div class="mario-card p-4 md:p-6 animate-fade">
-                        <form id="orderForm" class="space-y-6">
-                            
-                            <div>
-                                <h3 class="text-sm font-black mb-3 uppercase border-b-2 border-dashed border-gray-300 pb-1 text-gray-700">1. Pilih Paket Main</h3>
-                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-[2px_2px_0px_0px_#000]">
-                                    <div class="flex gap-2 mb-4">
-                                        <button type="button" id="tab-paket" onclick="APP_LOGIC.switchType('Paket')" class="mario-btn mario-btn-yellow flex-1 py-2 text-sm">PAKET</button>
-                                        <button type="button" id="tab-regular" onclick="APP_LOGIC.switchType('Regular')" class="mario-btn mario-btn-gray flex-1 py-2 text-sm">REGULAR</button>
-                                    </div>
-                                    <div class="relative">
-                                        <select id="product" onchange="APP_LOGIC.updatePriceUI()" class="mario-input appearance-none cursor-pointer text-sm"></select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black text-xl">▼</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3 class="text-sm font-black mb-3 uppercase border-b-2 border-dashed border-gray-300 pb-1 text-gray-700">2. Rencana Tanggal Main</h3>
-                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-[2px_2px_0px_0px_#000]">
-                                    <p class="text-[10px] font-bold text-gray-500 mb-2">GESER KANAN-KIRI UNTUK PILIH:</p>
-                                    <div id="date-scroll" class="date-scroll-container"></div>
-                                    <p class="text-[10px] text-orange-600 font-bold mt-2 text-center bg-orange-100 p-1 rounded border border-orange-300">
-                                        *Jam main akan dikonfirmasi Admin via WhatsApp setelah Booking.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3 class="text-sm font-black mb-3 uppercase border-b-2 border-dashed border-gray-300 pb-1 text-gray-700">3. Data Pemain</h3>
-                                
-                                <div id="antar-jemput-container" class="hidden bg-[#FFE8B3] border-2 border-yellow-600 rounded-xl p-4 mb-4 shadow-[2px_2px_0px_#ca8a04]">
-                                    <label class="block font-black text-[10px] uppercase mb-2 text-yellow-900">🛵 LOGISTIK PENGIRIMAN</label>
-                                    <div class="flex gap-2 mb-3">
-                                        <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="mario-btn mario-btn-gray flex-1 py-2 text-xs">Antar ke Lokasi</button>
-                                        <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="mario-btn mario-btn-yellow flex-1 py-2 text-xs">Ambil Sendiri</button>
-                                    </div>
-                                    <div id="address-container" class="hidden">
-                                        <textarea id="address" class="mario-input text-sm" rows="2" placeholder="Ketik alamat lengkap kost / rumah..."></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-[2px_2px_0px_0px_#000] space-y-3">
-                                    <div>
-                                        <label class="text-[10px] font-bold text-gray-600 block mb-1">NAMA LENGKAP</label>
-                                        <input type="text" id="name" required class="mario-input text-sm" placeholder="Cth: Bang Kapluk">
-                                    </div>
-                                    <div>
-                                        <label class="text-[10px] font-bold text-gray-600 block mb-1">NOMOR WHATSAPP (AKTIF)</label>
-                                        <input type="number" id="wa-number" required class="mario-input text-sm" placeholder="08xxxxxxxxxx">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-[#DC2626] text-white p-5 rounded-xl border-4 border-black relative shadow-[4px_4px_0px_0px_#000]">
-                                <div class="absolute -top-4 -right-2 bg-yellow-400 text-black font-black px-3 py-1 rounded-sm border-2 border-black transform rotate-6 shadow-[2px_2px_0px_0px_#000] text-[10px]">PENAWARAN TERBATAS! 🔥</div>
-                                <p class="font-bold text-red-200 text-xs uppercase tracking-wider mb-1">Total Biaya Rental</p>
-                                <div class="flex flex-col gap-1">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-xs font-semibold text-red-200">Harga Normal:</span>
-                                        <span id="fake-price" class="text-sm text-red-300 line-through decoration-black decoration-2 font-black">Rp 0</span>
-                                    </div>
-                                    <div class="flex items-center justify-between bg-black/20 p-2 rounded-lg border-2 border-red-800 my-1">
-                                        <span class="text-[10px] font-bold text-yellow-300 animate-pulse">✨ ANDA HEMAT:</span>
-                                        <span id="hemat-price" class="text-xs font-black text-yellow-300">Rp 0</span>
-                                    </div>
-                                    <div class="flex items-end justify-between mt-1 pt-2 border-t-2 border-red-500/50">
-                                        <span class="text-sm font-bold">Bayar Nanti:</span>
-                                        <span id="real-price" class="text-2xl font-black text-yellow-400 drop-shadow-md">Rp 0</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="submit" id="btn-submit-order" class="w-full mario-btn mario-btn-yellow p-4 text-base font-black uppercase shadow-[4px_4px_0px_#000]">
-                                🚀 GAS BOOKING SEKARANG!
-                            </button>
-                        </form>
+                    <div class="arcade-card p-5 bg-white">
+                        <span class="section-label">3. Rencana Tanggal</span>
+                        <div id="date-scroll" class="date-scroll-container"></div>
+                        <div class="bg-cyan-50 border-2 border-cyan-400 p-3 rounded-xl text-center mt-2 flex items-center gap-3">
+                            <span class="text-2xl">⏰</span>
+                            <p class="text-[10px] text-cyan-800 font-bold text-left leading-relaxed">
+                                Jam main akan dikonfirmasi Admin via WhatsApp setelah proses Booking selesai.
+                            </p>
+                        </div>
                     </div>
-                </section>
-            </div>
+
+                    <div class="arcade-card p-5 bg-white">
+                        <span class="section-label">4. Data Pemain</span>
+                        
+                        <div id="antar-jemput-container" class="hidden bg-yellow-50 border-3 border-yellow-400 rounded-xl p-4 mb-5 shadow-[3px_3px_0px_0px_#ca8a04]">
+                            <label class="block font-black text-[11px] uppercase mb-3 text-yellow-800 tracking-wider">🛵 Logistik (Banda)</label>
+                            <div class="flex gap-2 mb-3">
+                                <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="arcade-btn btn-gray flex-1 py-2 text-xs">Antar ke Lokasi</button>
+                                <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="arcade-btn btn-yellow flex-1 py-2 text-xs">Ambil Sendiri</button>
+                            </div>
+                            <div id="address-container" class="hidden">
+                                <textarea id="address" class="arcade-input text-sm" rows="2" placeholder="Ketik alamat lengkap kost / rumah..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-[11px] font-bold text-gray-500 block mb-1.5 ml-1">NAMA PANGGILAN</label>
+                                <input type="text" id="name" required class="arcade-input text-sm" placeholder="Cth: Bang Jago">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-bold text-gray-500 block mb-1.5 ml-1">NOMOR WHATSAPP (AKTIF)</label>
+                                <input type="number" id="wa-number" required class="arcade-input text-sm" placeholder="08xxxxxxxxxx">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arcade-card p-6 bg-[var(--arcade-black)] text-white relative">
+                        <div class="absolute -top-4 -right-2 bg-[var(--arcade-yellow)] text-black font-black px-4 py-1.5 rounded-lg border-3 border-black transform rotate-3 shadow-[3px_3px_0px_0px_#000] text-[10px] tracking-widest">
+                            HARGA SPESIAL! ✨
+                        </div>
+                        
+                        <p class="font-bold text-gray-400 text-[10px] uppercase tracking-widest mb-2 mt-2">Ringkasan Biaya</p>
+                        
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold text-gray-300">Harga Normal:</span>
+                            <span id="fake-price" class="text-sm text-gray-400 line-through decoration-red-500 decoration-2 font-black">Rp 0</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between bg-white/10 p-2.5 rounded-xl border border-white/20 my-3">
+                            <span class="text-[11px] font-black text-[var(--arcade-pink)] animate-pulse">HEMAT:</span>
+                            <span id="hemat-price" class="text-xs font-black text-[var(--arcade-pink)]">Rp 0</span>
+                        </div>
+                        
+                        <div class="flex items-end justify-between mt-4 pt-4 border-t-2 border-dashed border-gray-600">
+                            <span class="text-sm font-bold text-gray-300">Bayar Nanti:</span>
+                            <span id="real-price" class="text-3xl font-black text-[var(--arcade-cyan)] drop-shadow-md">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btn-submit-order" class="w-full arcade-btn btn-pink p-5 text-lg uppercase tracking-wider">
+                        🚀 GAS BOOKING!
+                    </button>
+                </div>
+            </form>
         </div>
     </div> 
 
-    <footer class="w-full bg-zinc-200 py-10 flex flex-col items-center justify-center font-beuna border-t-4 border-black shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] mt-auto z-10">
-        <p class="text-[9px] text-gray-500 font-medium uppercase tracking-[0.25em] mb-6 text-center px-4">Dari Anak Muda Aceh Untuk Anak Muda Aceh</p>
-        <a href="https://beuna.xyz" target="_blank" class="flex flex-col items-center justify-center group transition-all duration-300 hover:scale-105 opacity-90 hover:opacity-100 cursor-pointer">
-            <span class="text-[8px] text-gray-400 font-semibold uppercase tracking-[0.2em] mb-2">Developed By</span>
-            <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/beuna-agency/main/beuna%20logo%20png.png" alt="Beuna Agency Logo" class="h-6 mb-2 object-contain filter drop-shadow-sm">
-            <span class="text-[10px] font-black text-black uppercase tracking-[0.3em]">System Specialist</span>
+    <footer class="w-full bg-white py-8 flex flex-col items-center justify-center font-beuna border-t-4 border-black z-10">
+        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-[0.25em] mb-4 text-center px-4">Dari Anak Muda Aceh Untuk Anak Muda Aceh</p>
+        <a href="https://beuna.xyz" target="_blank" class="flex flex-col items-center justify-center group transition-all duration-300 opacity-80 hover:opacity-100 cursor-pointer">
+            <span class="text-[8px] text-gray-400 font-bold uppercase tracking-[0.2em] mb-1.5">System By</span>
+            <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/beuna-agency/main/beuna%20logo%20png.png" alt="Beuna Agency Logo" class="h-5 mb-1.5 object-contain grayscale">
         </a>
     </footer>
 
     <div id="loyalty-modal" class="modal-overlay hidden">
-        <div class="mario-card p-6 w-full max-w-sm animate-pop text-center relative overflow-hidden bg-white">
-            <div class="absolute -right-10 -top-10 opacity-10 text-9xl">🎮</div>
-            <h2 class="text-2xl font-black mb-2 uppercase text-[#FF6B00]">YEAY! BERHASIL! 🎉</h2>
-            <p class="font-bold text-gray-700 text-sm mb-4 leading-relaxed">Kami senang Bang <span id="member-name" class="text-black font-black bg-yellow-300 px-2 py-0.5 rounded uppercase"></span> menjadi sahabat kami.</p>
+        <div class="arcade-card p-6 w-full max-w-sm animate-pop text-center relative overflow-hidden bg-white">
+            <div class="absolute -right-8 -top-8 opacity-10 text-9xl">👾</div>
+            <h2 class="text-2xl font-black mb-2 uppercase text-[var(--arcade-pink)]">YEAY! BERHASIL! 🎉</h2>
+            <p class="font-semibold text-gray-600 text-sm mb-5 leading-relaxed">Booking Bang <span id="member-name" class="text-black font-black bg-[var(--arcade-yellow)] px-2 py-0.5 rounded-md uppercase"></span> siap diproses.</p>
             
-            <div class="bg-[#F3F4F6] border-4 border-black p-4 rounded-xl mb-6 shadow-[4px_4px_0px_#000] relative">
-                <div class="mb-3 border-b-2 border-dashed border-gray-400 pb-3">
-                    <p class="text-[10px] font-bold text-gray-500 uppercase">Total Book di Arena</p>
-                    <p id="member-total" class="text-3xl font-black text-black">0 Kali</p>
+            <div class="bg-gray-50 border-3 border-black p-4 rounded-2xl mb-6 shadow-[4px_4px_0px_#000] relative">
+                <div class="mb-3 border-b-2 border-dashed border-gray-300 pb-3">
+                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Total Booking Kamu</p>
+                    <p id="member-total" class="text-3xl font-black text-black mt-1">0 Kali</p>
                 </div>
                 <div>
-                    <p class="text-[10px] font-bold text-gray-500 uppercase mb-1">Tier Member Kamu</p>
-                    <p id="member-tier" class="text-lg font-black text-green-600 bg-green-100 py-1 rounded-lg border-2 border-green-500 animate-pulse">New Member 🌱</p>
+                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">Status Sultan</p>
+                    <p id="member-tier" class="text-sm font-black text-[var(--arcade-cyan)] bg-cyan-50 py-1.5 rounded-xl border-2 border-[var(--arcade-cyan)]">New Member 🌱</p>
                 </div>
             </div>
 
-            <button onclick="APP_LOGIC.proceedToWA()" class="w-full mario-btn bg-[#25D366] text-white border-white p-4 text-lg uppercase shadow-[4px_4px_0px_#000] mb-6">
-                LANJUT KE WHATSAPP 🚀
+            <button onclick="APP_LOGIC.proceedToWA()" class="w-full arcade-btn btn-cyan p-4 text-base uppercase">
+                LANJUT KE WHATSAPP ➔
             </button>
-            
-            <div class="pt-4 border-t border-gray-200 flex flex-col items-center justify-center font-beuna">
-                <span class="text-[8px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-1.5">System By</span>
-                <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/beuna-agency/main/beuna%20logo%20png.png" alt="Beuna" class="h-3.5 object-contain opacity-90">
-            </div>
         </div>
     </div>
 
@@ -231,18 +290,28 @@
                 "bang lebeh mangat lom menyoe gem jih jeut rikwest beuhh", "anak anak senang buat hari libur main playbox",
                 "jawaban gabut ya pasti kami call kakak cantek arena", "keh kop beungeh ke si rusli ji cok mancity keh sabe sabe"
             ],
+            // UPDATE DATA SESUAI PERMINTAAN (HAPUS 4 JAM)
             data: {
-                Paket: [ { name: "Paket Malam", time: "00:00 - 10:00", price: 50000 }, { name: "Paket Pagi", time: "10:00 - 17:00", price: 45000 }, { name: "Paket Sore", time: "17:00 - 23:40", price: 45000 }, { name: "Paket Sultan 24 Jam", time: "Bebas", price: 115000 } ],
-                Regular: [ { name: "PlayBox - 3 Jam", time: "Bebas", price: 30000 }, { name: "PlayBox - 4 Jam", time: "Bebas", price: 40000 }, { name: "PlayBox - 5 Jam", time: "Bebas", price: 50000 } ]
+                Paket: [ 
+                    { name: "Paket Malam", time: "00:00 - 10:00", price: 50000 }, 
+                    { name: "Paket Pagi", time: "10:00 - 17:00", price: 45000 }, 
+                    { name: "Paket Sore", time: "17:00 - 23:40", price: 45000 }, 
+                    { name: "Paket Sultan 24 Jam", time: "Bebas", price: 115000 } 
+                ],
+                Regular: [ 
+                    { name: "PlayBox - 3 Jam", time: "Bebas", price: 30000 }, 
+                    { name: "PlayBox - 5 Jam", time: "Bebas", price: 50000 } 
+                ]
             }
         };
 
         const APP_LOGIC = {
-            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null, allLogs: [], selectedDateStr: "" },
+            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null, selectedDateStr: "" },
 
             initMarquee: () => {
                 const track = document.getElementById('marquee-track');
-                const cardsHTML = CONFIG.testimonials.map(text => `<div class="bg-[#FFE8B3] border-3 border-black rounded-xl p-4 w-64 flex-shrink-0 flex flex-col justify-center items-center h-32 shadow-[4px_4px_0px_0px_#000]"><div class="text-yellow-500 text-sm mb-2 drop-shadow-[1px_1px_0px_#000]">⭐⭐⭐⭐⭐</div><p class="text-xs font-bold italic text-gray-800 text-center leading-relaxed">"${text}"</p></div>`).join('');
+                // Kartu testimonial tema arcade
+                const cardsHTML = CONFIG.testimonials.map(text => `<div class="bg-[var(--arcade-yellow)] border-3 border-black rounded-2xl p-4 w-64 flex-shrink-0 flex flex-col justify-center items-center h-32 shadow-[4px_4px_0px_0px_#000]"><div class="text-[var(--arcade-pink)] text-sm mb-2 drop-shadow-[1px_1px_0px_#000]">⭐⭐⭐⭐⭐</div><p class="text-xs font-bold text-gray-900 text-center leading-relaxed">"${text}"</p></div>`).join('');
                 track.innerHTML = cardsHTML + cardsHTML;
             },
 
@@ -250,23 +319,14 @@
 
             fetchData: async () => {
                 try {
-                    const resLB = fetch(CONFIG.webhook_url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'get_leaderboard' }) });
-                    const resLogs = fetch(CONFIG.webhook_url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'get_dashboard', role: 'admin', branch: 'ALL' }) });
-                    
-                    const [lbResponse, logsResponse] = await Promise.all([resLB, resLogs]);
-                    
-                    const lbData = await lbResponse.json();
+                    const resLB = await fetch(CONFIG.webhook_url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'get_leaderboard' }) });
+                    const lbData = await resLB.json();
                     if(lbData && lbData.length > 0 && lbData[0].leaderboard) {
                         APP_LOGIC.state.leaderboardData = lbData[0].leaderboard;
                         document.getElementById('leaderboard-section').classList.remove('hidden');
                         APP_LOGIC.renderPodium();
                     }
-
-                    const logsData = await logsResponse.json();
-                    if(logsData) {
-                        APP_LOGIC.state.allLogs = Array.isArray(logsData) ? logsData.map(i => i.json !== undefined ? i.json : i).filter(i => i.tagihan_arena !== undefined) : [];
-                    }
-                } catch(e) { console.log('Gagal ambil data dari server'); }
+                } catch(e) { console.log('Gagal ambil leaderboard'); }
             },
 
             renderPodium: () => {
@@ -276,25 +336,22 @@
                 
                 if(!APP_LOGIC.state.leaderboardData || !APP_LOGIC.state.leaderboardData[branch] || APP_LOGIC.state.leaderboardData[branch].length === 0) {
                     podiumDiv.innerHTML = '<p class="text-xs font-bold text-gray-500 py-6 w-full text-center">Belum ada sultan bulan ini... Yuk main!</p>';
-                    listDiv.innerHTML = '';
-                    return;
+                    listDiv.innerHTML = ''; return;
                 }
 
                 const sultans = APP_LOGIC.state.leaderboardData[branch];
-                const rank2 = sultans[1] || null;
-                const rank1 = sultans[0] || null;
-                const rank3 = sultans[2] || null;
+                const rank2 = sultans[1] || null; const rank1 = sultans[0] || null; const rank3 = sultans[2] || null;
 
                 let podiumHtml = '';
                 if (rank2) podiumHtml += `<div class="podium-rank rank-2" style="order: 1;"><span class="podium-medal">🥈</span><p class="podium-name">${rank2.name}</p></div>`;
-                if (rank1) podiumHtml += `<div class="podium-rank rank-1" style="order: 2;"><div class="crown">👑</div><span class="podium-medal mt-2">🥇</span><p class="podium-name text-white drop-shadow-md">${rank1.name}</p></div>`;
-                if (rank3) podiumHtml += `<div class="podium-rank rank-3" style="order: 3;"><span class="podium-medal">🥉</span><p class="podium-name">${rank3.name}</p></div>`;
+                if (rank1) podiumHtml += `<div class="podium-rank rank-1" style="order: 2;"><div class="crown">👑</div><span class="podium-medal mt-2">🥇</span><p class="podium-name text-[var(--arcade-black)] drop-shadow-sm">${rank1.name}</p></div>`;
+                if (rank3) podiumHtml += `<div class="podium-rank rank-3" style="order: 3;"><span class="podium-medal">🥉</span><p class="podium-name text-white">${rank3.name}</p></div>`;
                 podiumDiv.innerHTML = podiumHtml;
 
                 let listHtml = '';
                 for(let i=3; i<5; i++) {
                     if(sultans[i]) {
-                        listHtml += `<div class="flex items-center justify-between bg-white border-2 border-black rounded-lg p-2 shadow-[2px_2px_0px_0px_#000]"><div class="flex items-center gap-2"><span class="bg-gray-200 text-black font-black text-xs px-2 py-1 rounded">#${i+1}</span><span class="font-bold text-sm uppercase">${sultans[i].name}</span></div></div>`;
+                        listHtml += `<div class="flex items-center justify-between bg-[#F8FAFC] border-2 border-black rounded-xl p-2.5 shadow-[2px_2px_0px_0px_#000]"><div class="flex items-center gap-3"><span class="bg-[var(--arcade-black)] text-white font-black text-[10px] px-2 py-1 rounded-md">#${i+1}</span><span class="font-bold text-xs uppercase text-gray-700">${sultans[i].name}</span></div></div>`;
                     }
                 }
                 listDiv.innerHTML = listHtml;
@@ -310,15 +367,13 @@
                 APP_LOGIC.state.selectedDateStr = now.toISOString().substring(0,10);
 
                 for(let i=0; i<7; i++) {
-                    let d = new Date();
-                    d.setDate(d.getDate() + i);
-                    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+                    let d = new Date(); d.setDate(d.getDate() + i); d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
                     let dateStr = d.toISOString().substring(0,10);
                     
                     let label = i === 0 ? 'HARI INI' : (i === 1 ? 'BESOK' : daysName[d.getDay()].toUpperCase());
                     let selectedClass = i === 0 ? 'selected' : '';
                     
-                    html += `<button type="button" onclick="APP_LOGIC.selectDate(this, '${dateStr}')" class="date-btn ${selectedClass}">${label}<br><span class="text-[10px] font-normal text-gray-500">${d.getDate()}/${d.getMonth()+1}</span></button>`;
+                    html += `<button type="button" onclick="APP_LOGIC.selectDate(this, '${dateStr}')" class="date-btn flex flex-col items-center justify-center ${selectedClass}"><span>${label}</span><span class="text-[10px] font-medium opacity-70 mt-0.5">${d.getDate()}/${d.getMonth()+1}</span></button>`;
                 }
                 scrollContainer.innerHTML = html;
             },
@@ -332,23 +387,22 @@
             selectRegion: (regionName) => {
                 APP_LOGIC.state.region = regionName;
                 
-                // Hide landing sections
-                document.getElementById('region-step').classList.add('hidden');
-                document.getElementById('testimonial-step').classList.add('hidden');
-                document.getElementById('leaderboard-section').classList.add('hidden'); 
-                
-                // Show booking form
-                document.getElementById('booking-step').classList.remove('hidden');
-                document.getElementById('booking-step').classList.add('animate-pop');
-                document.getElementById('region-badge').innerText = `📍 ${regionName === 'Banda' ? 'BANDA ACEH' : regionName.toUpperCase()}`;
+                // Update Button Visuals
+                ['Sabang', 'Banda', 'Aceh Timur'].forEach(r => {
+                    const btnId = r === 'Banda' ? 'reg-banda' : (r === 'Sabang' ? 'reg-sabang' : 'reg-atim');
+                    const btn = document.getElementById(btnId);
+                    if (r === regionName) { btn.className = 'arcade-btn btn-cyan p-3 text-xs'; } 
+                    else { btn.className = 'arcade-btn btn-gray p-3 text-xs'; }
+                });
+
+                // Tampilkan form utama kalau sebelumnya disembunyikan
+                document.getElementById('main-form-content').classList.remove('hidden');
                 
                 const antarContainer = document.getElementById('antar-jemput-container');
                 if (regionName === 'Banda') { 
-                    antarContainer.classList.remove('hidden'); 
-                    APP_LOGIC.setDelivery('ambil'); 
+                    antarContainer.classList.remove('hidden'); APP_LOGIC.setDelivery('ambil'); 
                 } else { 
-                    antarContainer.classList.add('hidden'); 
-                    APP_LOGIC.state.deliveryMode = "ambil"; 
+                    antarContainer.classList.add('hidden'); APP_LOGIC.state.deliveryMode = "ambil"; 
                     document.getElementById('address').removeAttribute('required'); 
                 }
                 
@@ -362,23 +416,20 @@
                 const addressContainer = document.getElementById('address-container'); const addressInput = document.getElementById('address');
                 
                 if (mode === 'antar') { 
-                    btnAntar.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; 
-                    btnAmbil.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; 
-                    addressContainer.classList.remove('hidden'); 
-                    addressInput.setAttribute('required', 'true'); 
+                    btnAntar.className = 'arcade-btn btn-yellow flex-1 py-2.5 text-xs'; 
+                    btnAmbil.className = 'arcade-btn btn-gray flex-1 py-2.5 text-xs'; 
+                    addressContainer.classList.remove('hidden'); addressInput.setAttribute('required', 'true'); 
                 } else { 
-                    btnAmbil.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; 
-                    btnAntar.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; 
-                    addressContainer.classList.add('hidden'); 
-                    addressInput.removeAttribute('required'); 
-                    addressInput.value = ''; 
+                    btnAmbil.className = 'arcade-btn btn-yellow flex-1 py-2.5 text-xs'; 
+                    btnAntar.className = 'arcade-btn btn-gray flex-1 py-2.5 text-xs'; 
+                    addressContainer.classList.add('hidden'); addressInput.removeAttribute('required'); addressInput.value = ''; 
                 }
             },
 
             switchType: (type) => {
                 APP_LOGIC.state.type = type; const isPaket = type === 'Paket';
-                document.getElementById('tab-paket').className = isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2 text-sm' : 'mario-btn mario-btn-gray flex-1 py-2 text-sm';
-                document.getElementById('tab-regular').className = !isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2 text-sm' : 'mario-btn mario-btn-gray flex-1 py-2 text-sm';
+                document.getElementById('tab-paket').className = isPaket ? 'arcade-btn btn-yellow flex-1 py-2.5 text-sm' : 'arcade-btn btn-gray flex-1 py-2.5 text-sm';
+                document.getElementById('tab-regular').className = !isPaket ? 'arcade-btn btn-yellow flex-1 py-2.5 text-sm' : 'arcade-btn btn-gray flex-1 py-2.5 text-sm';
                 APP_LOGIC.updateDropdown();
             },
 
@@ -402,7 +453,7 @@
                 e.preventDefault();
                 
                 const btnSubmit = document.getElementById('btn-submit-order');
-                btnSubmit.innerHTML = 'MENGECEK STATUS... ⏳';
+                btnSubmit.innerHTML = 'MENYIAPKAN DATA... ⏳';
                 btnSubmit.disabled = true;
                 
                 const name = document.getElementById('name').value;
@@ -421,12 +472,12 @@
                 } catch(err) { console.log("Gagal cek member"); }
 
                 const totalBookings = pastBookings + 1;
-                let tier = "New Member 🌱"; let tierColor = "text-green-600 bg-green-100 border-green-500";
-                if (totalBookings >= 2 && totalBookings <= 3) { tier = "Kawan Akrab 🤝"; tierColor = "text-blue-600 bg-blue-100 border-blue-500"; }
-                else if (totalBookings >= 4 && totalBookings <= 6) { tier = "Cees Kental 👊"; tierColor = "text-orange-600 bg-orange-100 border-orange-500"; }
-                else if (totalBookings >= 7) { tier = "Keluarga Arena Prioritas 👑"; tierColor = "text-purple-600 bg-purple-100 border-purple-500"; }
+                let tier = "New Member 🌱"; let tierColor = "text-[var(--arcade-cyan)] border-[var(--arcade-cyan)]";
+                if (totalBookings >= 2 && totalBookings <= 3) { tier = "Kawan Akrab 🤝"; tierColor = "text-blue-500 border-blue-500"; }
+                else if (totalBookings >= 4 && totalBookings <= 6) { tier = "Cees Kental 👊"; tierColor = "text-orange-500 border-orange-500"; }
+                else if (totalBookings >= 7) { tier = "Keluarga Prioritas 👑"; tierColor = "text-[var(--arcade-pink)] border-[var(--arcade-pink)]"; }
 
-                // Inject Dummy Time 00:00:00 untuk V5.10 Backend
+                // WAKTU DUMMY AGAR N8N ADMIN V5.10 AMAN 100%
                 const formattedDate = APP_LOGIC.state.selectedDateStr + ' 00:00:00';
                 
                 fetch(CONFIG.webhook_url, {
@@ -434,7 +485,7 @@
                     body: JSON.stringify({ action: 'pending_booking', data: { name: name, wa: waNumber, branch: APP_LOGIC.state.region, unit: 'TBD', price: item.price, admin_name: 'Self-Booking', status_unit: 'pending', pembayaran: 'Belum', paket: `${item.name} (${APP_LOGIC.state.type})`, jam_mulai_sewa: formattedDate } })
                 }).catch(e => console.log('Pending error'));
 
-                let msg = `🍄 *BOS, ADA BOOKING BARU!* 🍄\n\n📍 *Markas:* ${APP_LOGIC.state.region === 'Banda' ? 'Banda Aceh' : APP_LOGIC.state.region}\n👤 *Nama:* ${name}\n📱 *No WA:* ${waNumber}\n💎 *Status:* ${tier}\n\n🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
+                let msg = `👾 *BOS, ADA BOOKING BARU!* 👾\n\n📍 *Markas:* ${APP_LOGIC.state.region === 'Banda' ? 'Banda Aceh' : APP_LOGIC.state.region}\n👤 *Nama:* ${name}\n📱 *No WA:* ${waNumber}\n💎 *Status:* ${tier}\n\n🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
                 msg += `📅 *Rencana Main:* ${APP_LOGIC.state.selectedDateStr}\n⏰ *Jam:* (Tolong hubungi saya ya min untuk atur jam mainnya)\n`;
                 msg += `💰 *Total Harga:* ${APP_LOGIC.formatRupiah(item.price)} (Dapat Diskon)\n\n`;
                 
@@ -450,10 +501,10 @@
                 document.getElementById('member-name').innerText = name;
                 document.getElementById('member-total').innerText = totalBookings + " Kali";
                 const tierElement = document.getElementById('member-tier');
-                tierElement.innerText = tier; tierElement.className = `text-lg font-black py-1 rounded-lg border-2 animate-pulse ${tierColor}`;
+                tierElement.innerText = tier; tierElement.className = `text-sm font-black bg-white px-3 py-1.5 rounded-xl border-2 shadow-sm ${tierColor}`;
 
                 document.getElementById('loyalty-modal').classList.remove('hidden');
-                btnSubmit.innerHTML = '🚀 GAS BOOKING SEKARANG!';
+                btnSubmit.innerHTML = '🚀 GAS BOOKING!';
                 btnSubmit.disabled = false;
             },
 
