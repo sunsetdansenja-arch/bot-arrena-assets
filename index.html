@@ -10,6 +10,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '940031212257643');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=940031212257643&ev=PageView&noscript=1"
+    /></noscript>
     <style>
         :root { --mario-orange: #FF6B00; --mario-black: #000000; --mario-yellow: #FFD700; }
         body { font-family: 'Fredoka', sans-serif; background-color: var(--mario-orange); color: var(--mario-black); -webkit-font-smoothing: antialiased; background-image: radial-gradient(rgba(0,0,0,0.05) 2px, transparent 2px); background-size: 20px 20px; overflow-x: hidden; }
@@ -428,6 +443,15 @@
 
                 // Inject Dummy Time 00:00:00 untuk V5.10 Backend
                 const formattedDate = APP_LOGIC.state.selectedDateStr + ' 00:00:00';
+                
+                // TRACKING META PIXEL - LEAD
+                if(typeof fbq !== 'undefined') {
+                    fbq('track', 'Lead', {
+                        content_name: item.name,
+                        value: item.price,
+                        currency: 'IDR'
+                    });
+                }
                 
                 fetch(CONFIG.webhook_url, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
