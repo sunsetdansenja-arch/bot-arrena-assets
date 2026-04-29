@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     
+    <!-- Meta Pixel Code -->
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -25,6 +26,8 @@
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=940031212257643&ev=PageView&noscript=1"
     /></noscript>
+    <!-- End Meta Pixel Code -->
+
     <style>
         :root { --mario-orange: #FF6B00; --mario-black: #000000; --mario-yellow: #FFD700; }
         body { font-family: 'Fredoka', sans-serif; background-color: var(--mario-orange); color: var(--mario-black); -webkit-font-smoothing: antialiased; background-image: radial-gradient(rgba(0,0,0,0.05) 2px, transparent 2px); background-size: 20px 20px; overflow-x: hidden; }
@@ -69,14 +72,21 @@
     <div class="flex-grow w-full p-4 md:p-8 flex flex-col items-center pb-20 relative">
         <div id="app" class="max-w-md w-full mx-auto animate-pop">
             
-            <header class="text-center mb-4">
+            <header class="text-center mb-4 flex flex-col items-center">
                 <div class="inline-block p-2 bg-white border-4 border-black rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4">
                     <img src="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" alt="Arena Playbox" class="h-20 w-20 object-contain rounded-full">
                 </div>
                 <h1 class="text-3xl font-black text-white uppercase" style="text-shadow: 3px 3px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;">ARENA PLAYBOX!</h1>
-                <div class="mt-3 bg-black text-white px-4 py-2 rounded-lg border-2 border-white inline-block transform -rotate-2">
+                
+                <div class="mt-3 bg-black text-white px-4 py-2 rounded-lg border-2 border-white inline-block transform -rotate-2 mb-4">
                     <p class="text-sm font-bold tracking-wide">"HAI NYOE RAKAN PLAYBOX ANDALAN GEUTANYOE"</p>
                 </div>
+
+                <!-- TOMBOL INSTAGRAM -->
+                <a href="https://www.instagram.com/arena_playbox/" target="_blank" class="inline-flex items-center gap-2 bg-white text-black font-black px-4 py-2 rounded-xl border-4 border-black shadow-[4px_4px_0px_#000] hover:translate-y-1 hover:shadow-[0px_0px_0px_#000] transition-all text-xs uppercase tracking-wider group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-pink-500 group-hover:text-purple-600 transition-colors"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    @arena_playbox
+                </a>
             </header>
 
             <section id="leaderboard-section" class="mario-card p-4 mb-6 relative overflow-hidden hidden">
@@ -441,7 +451,6 @@
                 else if (totalBookings >= 4 && totalBookings <= 6) { tier = "Cees Kental 👊"; tierColor = "text-orange-600 bg-orange-100 border-orange-500"; }
                 else if (totalBookings >= 7) { tier = "Keluarga Arena Prioritas 👑"; tierColor = "text-purple-600 bg-purple-100 border-purple-500"; }
 
-                // Inject Dummy Time 00:00:00 untuk V5.10 Backend
                 const formattedDate = APP_LOGIC.state.selectedDateStr + ' 00:00:00';
                 
                 // TRACKING META PIXEL - LEAD
