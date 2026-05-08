@@ -62,6 +62,9 @@
         .date-scroll-container::-webkit-scrollbar { height: 0px; } 
         .date-btn { flex: 0 0 auto; scroll-snap-align: start; padding: 10px 16px; border: 3px solid var(--mario-black); border-radius: 12px; background: #F9FAFB; font-weight: bold; font-size: 13px; cursor: pointer; transition: all 0.2s; min-width: 90px; text-align: center; }
         .date-btn.selected { background: var(--mario-yellow); box-shadow: 3px 3px 0px 0px var(--mario-black); transform: translateY(-3px); }
+        
+        .faq-content { transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out; max-height: 0; overflow: hidden; }
+        .faq-content.open { max-height: 200px; padding-top: 12px; padding-bottom: 12px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -106,17 +109,25 @@
                 <div class="text-center mb-2"><span class="bg-black text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-white shadow-[2px_2px_0px_0px_#FFD700]">KATA MEREKA 🍄</span></div>
                 <div class="marquee-wrapper"><div id="marquee-track" class="marquee-track"></div></div>
             </section>
+            
             <div id="booking-area-container">
-                <section id="region-step" class="mario-card p-6 relative z-10">
+                <section id="region-step" class="mario-card p-6 mb-6 relative z-10">
                     <h2 class="text-xl font-bold mb-4 text-center border-b-4 border-black pb-2">PILIH MARKASMU:</h2>
                     <div class="grid grid-cols-1 gap-4">
                         <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">📍 SABANG</button>
                         <button onclick="APP_LOGIC.selectRegion('Banda')" class="mario-btn mario-btn-yellow p-4 text-lg">📍 BANDA ACEH</button>
                         <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">📍 ACEH TIMUR</button>
                     </div>
+
+                    <div class="mt-8 border-t-2 border-dashed border-gray-300 pt-4">
+                        <p class="text-center text-xs font-bold text-gray-500 mb-2">Masih bingung atau mau nanya dulu?</p>
+                        <button onclick="APP_LOGIC.consultWA()" class="w-full mario-btn bg-[#25D366] text-white p-3 text-sm font-black uppercase shadow-[4px_4px_0px_#000]">
+                            💬 Chat Admin Sekarang
+                        </button>
+                    </div>
                 </section>
 
-                <section id="booking-step" class="hidden relative z-10">
+                <section id="booking-step" class="hidden relative z-10 mb-6">
                     <div class="flex items-center justify-between mb-4">
                         <button type="button" onclick="location.reload()" class="bg-white border-2 border-black rounded-lg px-3 py-1 text-xs font-bold shadow-[2px_2px_0px_#000] hover:bg-gray-100">← KEMBALI</button>
                         <span class="bg-black text-white font-black px-3 py-1.5 rounded-lg text-[10px]" id="region-badge">📍 BANDA ACEH</span>
@@ -195,12 +206,96 @@
                                 </div>
                             </div>
 
-                            <button type="submit" id="btn-submit-order" class="w-full mario-btn mario-btn-yellow p-4 text-base font-black uppercase shadow-[4px_4px_0px_#000]">
-                                🚀 GAS BOOKING SEKARANG!
-                            </button>
+                            <div class="space-y-3">
+                                <button type="submit" id="btn-submit-order" class="w-full mario-btn mario-btn-yellow p-4 text-base font-black uppercase shadow-[4px_4px_0px_#000]">
+                                    🚀 GAS BOOKING SEKARANG!
+                                </button>
+                                
+                                <button type="button" onclick="APP_LOGIC.consultWA()" class="w-full mario-btn bg-white text-green-600 border-green-600 p-3 text-sm font-black uppercase shadow-[4px_4px_0px_#16a34a] hover:bg-green-50">
+                                    💬 Ragu? Tanya Admin Dulu
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </section>
+                
+                <section id="faq-section" class="mario-card p-5 mb-8 relative z-10 w-full animate-fade">
+                    <h2 class="text-lg font-black mb-4 text-center border-b-4 border-black pb-2 uppercase text-[#FF6B00]">Pusat Bantuan (FAQ) 🍄</h2>
+                    <div class="space-y-3">
+                        
+                        <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
+                            <button onclick="APP_LOGIC.toggleFAQ('faq-1', 'icon-1')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
+                                <span class="pr-4">1. Bang, ini PS-nya diantar atau ambil sendiri?</span>
+                                <span id="icon-1" class="transform transition-transform">▼</span>
+                            </button>
+                            <div id="faq-1" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
+                                Khusus buat abang/kakak yang di <b>Banda Aceh</b>, kita bisa antar langsung ke depan pintu (tapi cek kesediaan driver ya). Untuk wilayah <b>Sabang & Aceh Timur</b>, unit bisa diambil mandiri ke Drop Point kita.
+                            </div>
+                        </div>
+
+                        <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
+                            <button onclick="APP_LOGIC.toggleFAQ('faq-2', 'icon-2')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
+                                <span class="pr-4">2. Kalau diantar, ongkirnya berapa Bang?</span>
+                                <span id="icon-2" class="transform transition-transform">▼</span>
+                            </button>
+                            <div id="faq-2" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
+                                Buat yang lokasinya di seputaran radius <b>Darussalam, ongkirnya FREE alias GRATIS tis!</b> Kalau di luar radius itu, kena ongkir tipis-tipis aja bang, nanti dihitungkan sama driver kita.
+                            </div>
+                        </div>
+
+                        <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
+                            <button onclick="APP_LOGIC.toggleFAQ('faq-3', 'icon-3')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
+                                <span class="pr-4">3. Syarat sewa atau jaminannya apa aja nih Bang?</span>
+                                <span id="icon-3" class="transform transition-transform">▼</span>
+                            </button>
+                            <div id="faq-3" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
+                                Aman bang, syaratnya simpel. Nggak usah ninggalin KTP asli, cukup <b>foto KTP</b> aja, plus bersedia kita <b>foto bareng unitnya</b> pas serah terima buat bukti dokumentasi kita.
+                            </div>
+                        </div>
+
+                        <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
+                            <button onclick="APP_LOGIC.toggleFAQ('faq-4', 'icon-4')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
+                                <span class="pr-4">4. Gamenya ada apa aja? Bisa request install?</span>
+                                <span id="icon-4" class="transform transition-transform">▼</span>
+                            </button>
+                            <div id="faq-4" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
+                                Game di dalam PS kita udah <b>FIX (Bawaan)</b> ya bang. TAPI, karena beda unit beda game-nya, abang <b>boleh banget request mau Unit berapa</b> kalau pengen main game tertentu (selama unitnya kosong).
+                            </div>
+                        </div>
+
+                        <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
+                            <button onclick="APP_LOGIC.toggleFAQ('faq-5', 'icon-5')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
+                                <span class="pr-4">5. Pembayarannya gimana? Bisa bayar di akhir?</span>
+                                <span id="icon-5" class="transform transition-transform">▼</span>
+                            </button>
+                            <div id="faq-5" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
+                                Kalau abang mau aman dan unitnya nggak ditikung orang, bisa <b>DP dulu (Booking)</b>. Nanti sisanya dilunasin pas selesai main. Kami jaga kursi abang biar aman sentosa!
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
+                            <button onclick="APP_LOGIC.toggleFAQ('faq-6', 'icon-6')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
+                                <span class="pr-4">6. Kalau telat balikin atau nambah jam, di charge berapa?</span>
+                                <span id="icon-6" class="transform transition-transform">▼</span>
+                            </button>
+                            <div id="faq-6" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
+                                Santai bang. Kalau nanggung belum tamat atau butuh waktu tambahan, kita kena charge sewa normal aja <b>Rp 10.000 / Jam</b>. Sering kok yang nambah jam tipis-tipis karena belum puas main!
+                            </div>
+                        </div>
+                        
+                        <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
+                            <button onclick="APP_LOGIC.toggleFAQ('faq-7', 'icon-7')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
+                                <span class="pr-4">7. Game bola udah update musim terbaru belum Bang?</span>
+                                <span id="icon-7" class="transform transition-transform">▼</span>
+                            </button>
+                            <div id="faq-7" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
+                                Jangan ragu bang! Setiap ada patch atau update pemain terbaru, teknisi Arena Playbox langsung eksekusi. Game bola kita <b>ALWAYS UP TO DATE</b>!
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+                
             </div>
         </div>
     </div> 
@@ -260,6 +355,27 @@
 
         const APP_LOGIC = {
             state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null, allLogs: [], selectedDateStr: "" },
+
+            // FUNGSI FAQ ACCORDION
+            toggleFAQ: (faqId, iconId) => {
+                const content = document.getElementById(faqId);
+                const icon = document.getElementById(iconId);
+                const isOpen = content.classList.contains('open');
+                
+                // Tutup semua FAQ dulu biar rapi (opsional, hapus 3 baris di bawah kalau mau bisa buka banyak sekaligus)
+                document.querySelectorAll('.faq-content').forEach(el => { el.classList.remove('open'); el.classList.add('border-t-2'); });
+                document.querySelectorAll('[id^="icon-"]').forEach(el => el.style.transform = 'rotate(0deg)');
+
+                // Buka yang di-klik
+                if (!isOpen) {
+                    content.classList.add('open');
+                    content.classList.add('border-t-2');
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    content.classList.remove('open');
+                    setTimeout(() => content.classList.remove('border-t-2'), 300);
+                }
+            },
 
             initMarquee: () => {
                 const track = document.getElementById('marquee-track');
@@ -419,6 +535,13 @@
                 }
             },
 
+            // FUNGSI Tombol Konsultasi WA
+            consultWA: () => {
+                const msg = "Halo min, saya mau nanya-nanya dulu nih soal rental PS di Arena Playbox. Boleh minta infonya?";
+                if(typeof fbq !== 'undefined') fbq('trackCustom', 'ConsultWhatsApp');
+                window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+            },
+
             submitForm: async (e) => {
                 e.preventDefault();
                 
@@ -473,7 +596,7 @@
                             pembayaran: 'Belum', 
                             paket: `${item.name} (${APP_LOGIC.state.type})`, 
                             jam_mulai_sewa: formattedDate,
-                            book_channel: 'Auto (Web)' // <--- BARIS INI YANG DITAMBAHKAN BOS
+                            book_channel: 'Auto (Web)'
                         } 
                     })
                 }).catch(e => console.log('Pending error'));
