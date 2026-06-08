@@ -117,6 +117,11 @@
                         <button onclick="APP_LOGIC.selectRegion('Sabang')" class="mario-btn p-4 text-lg">📍 SABANG</button>
                         <button onclick="APP_LOGIC.selectRegion('Banda')" class="mario-btn mario-btn-yellow p-4 text-lg">📍 BANDA ACEH</button>
                         <button onclick="APP_LOGIC.selectRegion('Aceh Timur')" class="mario-btn p-4 text-lg">📍 ACEH TIMUR</button>
+                        
+                        <div class="relative mt-4">
+                            <div class="absolute -top-3 -right-2 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded shadow-[2px_2px_0px_#000] z-10 animate-bounce">BARU! ✨</div>
+                            <button onclick="APP_LOGIC.selectStore()" class="w-full mario-btn bg-[#25D366] text-white p-4 text-lg border-green-800 shadow-[4px_4px_0px_#166534] hover:bg-green-500">🛒 BELI PLAYBOX</button>
+                        </div>
                     </div>
 
                     <div class="mt-8 border-t-2 border-dashed border-gray-300 pt-4">
@@ -124,6 +129,92 @@
                         <button onclick="APP_LOGIC.consultWA()" class="w-full mario-btn bg-[#25D366] text-white p-3 text-sm font-black uppercase shadow-[4px_4px_0px_#000]">
                             💬 Chat Admin Sekarang
                         </button>
+                    </div>
+                </section>
+
+                <section id="store-step" class="hidden relative z-10 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <button type="button" onclick="location.reload()" class="bg-white border-2 border-black rounded-lg px-3 py-1 text-xs font-bold shadow-[2px_2px_0px_#000] hover:bg-gray-100">← KEMBALI</button>
+                        <span class="bg-blue-600 text-white font-black px-3 py-1.5 rounded-lg text-[10px]">🛒 ARENA STORE</span>
+                    </div>
+
+                    <div class="mario-card p-4 md:p-6 animate-fade">
+                        <h2 class="text-xl font-black text-center border-b-4 border-black pb-2 mb-4 uppercase text-blue-600">Beli Playbox</h2>
+                        
+                        <div class="flex gap-2 mb-5">
+                            <button type="button" id="tab-store-paket" onclick="APP_LOGIC.switchStoreMode('paket')" class="mario-btn mario-btn-yellow flex-1 py-2 text-xs">📦 PAKET LENGKAP</button>
+                            <button type="button" id="tab-store-custom" onclick="APP_LOGIC.switchStoreMode('custom')" class="mario-btn mario-btn-gray flex-1 py-2 text-xs">🛠️ RAKIT CUSTOM</button>
+                        </div>
+
+                        <form id="storeForm" class="space-y-6">
+                            <div id="store-view-paket" class="animate-fade">
+                                <label class="text-xs font-bold uppercase block mb-2">Pilih Paket Siap Main</label>
+                                <select id="s-paket" onchange="APP_LOGIC.updateStorePrice()" class="mario-input text-sm border-blue-500 bg-blue-50">
+                                    <option value="p1">Spek Maximum: 27" Slim 1TB + Kipas + Extra Stik (Rp 8.800.000)</option>
+                                    <option value="p2">Spek Perintis: 24" Fat 500GB (Rp 6.800.000)</option>
+                                </select>
+                            </div>
+
+                            <div id="store-view-custom" class="hidden space-y-4 animate-fade">
+                                <div class="bg-blue-50 p-3 rounded-lg border-2 border-blue-200">
+                                    <label class="text-xs font-bold uppercase block mb-1 text-blue-800">1. Box Playbox (Tanpa PS)</label>
+                                    <p class="text-[9px] text-gray-600 mb-2 leading-tight">Include: Monitor 100hz, Speaker, Sistem Kelistrikan. Kompatibel PS2, PS3, PS4.</p>
+                                    <select id="s-box" onchange="APP_LOGIC.updateStorePrice()" class="mario-input text-sm">
+                                        <option value="0">Lewati (Tidak Beli Box)</option>
+                                        <option value="4000000">Box Layar 24 Inch (+Rp 4.000.000)</option>
+                                        <option value="4500000">Box Layar 27 Inch (+Rp 4.500.000)</option>
+                                    </select>
+                                </div>
+
+                                <div class="bg-gray-50 p-3 rounded-lg border-2 border-gray-200">
+                                    <label class="text-xs font-bold uppercase block mb-1">2. Console PlayStation 4</label>
+                                    <p class="text-[9px] text-gray-600 mb-2">Include: 2 Stik Wireless Bawaan.</p>
+                                    <select id="s-ps" onchange="APP_LOGIC.updateStorePrice()" class="mario-input text-sm">
+                                        <option value="0">Lewati (Tidak Beli Console)</option>
+                                        <option value="3000000">PS4 Fat 500GB (+Rp 3.000.000)</option>
+                                        <option value="3600000">PS4 Fat 1TB (+Rp 3.600.000)</option>
+                                        <option value="3500000">PS4 Slim 500GB (+Rp 3.500.000)</option>
+                                        <option value="4100000">PS4 Slim 1TB (+Rp 4.100.000)</option>
+                                    </select>
+                                </div>
+
+                                <div class="bg-yellow-50 p-3 rounded-lg border-2 border-yellow-200">
+                                    <label class="text-xs font-bold uppercase block mb-2 text-yellow-800">3. Add-on / Aksesoris</label>
+                                    <div class="space-y-3">
+                                        <label class="flex items-center gap-3 text-sm font-bold cursor-pointer">
+                                            <input type="checkbox" id="s-addon-kipas" value="350000" onchange="APP_LOGIC.updateStorePrice()" class="w-5 h-5 accent-[#FF6B00]"> 
+                                            Kipas Sirkulasi (+Rp 350.000)
+                                        </label>
+                                        <label class="flex items-center gap-3 text-sm font-bold cursor-pointer">
+                                            <input type="checkbox" id="s-addon-led" value="250000" onchange="APP_LOGIC.updateStorePrice()" class="w-5 h-5 accent-[#FF6B00]"> 
+                                            Lampu LED (+Rp 250.000)
+                                        </label>
+                                        <label class="flex items-center gap-3 text-sm font-bold cursor-pointer">
+                                            <input type="checkbox" id="s-addon-stik" value="150000" onchange="APP_LOGIC.updateStorePrice()" class="w-5 h-5 accent-[#FF6B00]"> 
+                                            Stik Tambahan (+Rp 150.000)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border-t-2 border-dashed border-gray-300 pt-4">
+                                <h3 class="text-sm font-black mb-3 uppercase text-gray-700">Data Pemesan</h3>
+                                <div class="space-y-3">
+                                    <input type="text" id="s-name" required class="mario-input text-sm" placeholder="Nama Lengkap Pemesan">
+                                    <input type="number" id="s-wa" required class="mario-input text-sm" placeholder="Nomor WhatsApp">
+                                    <textarea id="s-address" required class="mario-input text-sm" rows="3" placeholder="Alamat Lengkap Pengiriman..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="bg-black text-white p-4 rounded-xl border-4 border-blue-500 relative shadow-[4px_4px_0px_0px_#000]">
+                                <p class="font-bold text-blue-200 text-xs uppercase tracking-wider mb-1">Total Pembelian</p>
+                                <p id="store-price-tag" class="text-3xl font-black text-green-400 drop-shadow-md">Rp 0</p>
+                            </div>
+
+                            <button type="submit" class="w-full mario-btn bg-green-500 text-white border-green-800 p-4 text-base font-black uppercase shadow-[4px_4px_0px_#064e3b] hover:bg-green-600">
+                                🛠️ KONSUL KE BUILDER
+                            </button>
+                        </form>
                     </div>
                 </section>
 
@@ -164,17 +255,6 @@
                             <div>
                                 <h3 class="text-sm font-black mb-3 uppercase border-b-2 border-dashed border-gray-300 pb-1 text-gray-700">3. Data Pemain</h3>
                                 
-                                <div id="antar-jemput-container" class="hidden bg-[#FFE8B3] border-2 border-yellow-600 rounded-xl p-4 mb-4 shadow-[2px_2px_0px_#ca8a04]">
-                                    <label class="block font-black text-[10px] uppercase mb-2 text-yellow-900">🛵 LOGISTIK PENGIRIMAN</label>
-                                    <div class="flex gap-2 mb-3">
-                                        <button type="button" id="btn-antar" onclick="APP_LOGIC.setDelivery('antar')" class="mario-btn mario-btn-gray flex-1 py-2 text-xs">Antar ke Lokasi</button>
-                                        <button type="button" id="btn-ambil" onclick="APP_LOGIC.setDelivery('ambil')" class="mario-btn mario-btn-yellow flex-1 py-2 text-xs">Ambil Sendiri</button>
-                                    </div>
-                                    <div id="address-container" class="hidden">
-                                        <textarea id="address" class="mario-input text-sm" rows="2" placeholder="Ketik alamat lengkap kost / rumah..."></textarea>
-                                    </div>
-                                </div>
-
                                 <div class="bg-gray-50 border-2 border-black rounded-xl p-4 shadow-[2px_2px_0px_0px_#000] space-y-3">
                                     <div>
                                         <label class="text-[10px] font-bold text-gray-600 block mb-1">NAMA LENGKAP</label>
@@ -229,23 +309,13 @@
                                 <span id="icon-1" class="transform transition-transform">▼</span>
                             </button>
                             <div id="faq-1" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
-                                Khusus buat abang/kakak yang di <b>Banda Aceh</b>, kita bisa antar langsung ke depan pintu (tapi cek kesediaan driver ya). Untuk wilayah <b>Sabang & Aceh Timur</b>, unit bisa diambil mandiri ke Drop Point kita.
-                            </div>
-                        </div>
-
-                        <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
-                            <button onclick="APP_LOGIC.toggleFAQ('faq-2', 'icon-2')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
-                                <span class="pr-4">2. Kalau diantar, ongkirnya berapa Bang?</span>
-                                <span id="icon-2" class="transform transition-transform">▼</span>
-                            </button>
-                            <div id="faq-2" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
-                                Buat yang lokasinya di seputaran radius <b>Darussalam, ongkirnya FREE alias GRATIS tis!</b> Kalau di luar radius itu, kena ongkir tipis-tipis aja bang, nanti dihitungkan sama driver kita.
+                                Saat ini seluruh unit Playbox di <b>Banda Aceh, Sabang, & Aceh Timur</b> sistemnya diambil secara mandiri ke Drop Point markas kita ya bang, biar lebih gampang pilih jadwalnya.
                             </div>
                         </div>
 
                         <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
                             <button onclick="APP_LOGIC.toggleFAQ('faq-3', 'icon-3')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
-                                <span class="pr-4">3. Syarat sewa atau jaminannya apa aja nih Bang?</span>
+                                <span class="pr-4">2. Syarat sewa atau jaminannya apa aja nih Bang?</span>
                                 <span id="icon-3" class="transform transition-transform">▼</span>
                             </button>
                             <div id="faq-3" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
@@ -255,7 +325,7 @@
 
                         <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
                             <button onclick="APP_LOGIC.toggleFAQ('faq-4', 'icon-4')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
-                                <span class="pr-4">4. Gamenya ada apa aja? Bisa request install?</span>
+                                <span class="pr-4">3. Gamenya ada apa aja? Bisa request install?</span>
                                 <span id="icon-4" class="transform transition-transform">▼</span>
                             </button>
                             <div id="faq-4" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
@@ -265,7 +335,7 @@
 
                         <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
                             <button onclick="APP_LOGIC.toggleFAQ('faq-5', 'icon-5')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
-                                <span class="pr-4">5. Pembayarannya gimana? Bisa bayar di akhir?</span>
+                                <span class="pr-4">4. Pembayarannya gimana? Bisa bayar di akhir?</span>
                                 <span id="icon-5" class="transform transition-transform">▼</span>
                             </button>
                             <div id="faq-5" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
@@ -275,7 +345,7 @@
                         
                         <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
                             <button onclick="APP_LOGIC.toggleFAQ('faq-6', 'icon-6')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
-                                <span class="pr-4">6. Kalau telat balikin atau nambah jam, di charge berapa?</span>
+                                <span class="pr-4">5. Kalau telat balikin atau nambah jam, di charge berapa?</span>
                                 <span id="icon-6" class="transform transition-transform">▼</span>
                             </button>
                             <div id="faq-6" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
@@ -285,7 +355,7 @@
                         
                         <div class="border-2 border-black rounded-xl overflow-hidden shadow-[2px_2px_0px_#000] bg-white">
                             <button onclick="APP_LOGIC.toggleFAQ('faq-7', 'icon-7')" class="w-full text-left p-3 font-bold text-xs bg-gray-50 hover:bg-yellow-100 flex justify-between items-center transition-colors">
-                                <span class="pr-4">7. Game bola udah update musim terbaru belum Bang?</span>
+                                <span class="pr-4">6. Game bola udah update musim terbaru belum Bang?</span>
                                 <span id="icon-7" class="transform transition-transform">▼</span>
                             </button>
                             <div id="faq-7" class="faq-content px-3 text-xs border-dashed border-gray-300 bg-gray-50 text-gray-700 font-medium">
@@ -340,6 +410,7 @@
     <script>
         const CONFIG = {
             whatsapp: "6283863557669",
+            builder_whatsapp: "6285359033973", // Nomor WhatsApp khusus Beli Playbox
             webhook_url: "https://n8n-mzbmiib3etk4.kangkung.sumopod.my.id/webhook/86cee1b8-b00d-4aa6-8ff4-23735dc9afe1",
             testimonials: [
                 "akme bereh that jinoe bak sabang kana playbox syit", "long menyoe playbox hana laen, pasti arena",
@@ -354,19 +425,16 @@
         };
 
         const APP_LOGIC = {
-            state: { region: "", type: "Paket", deliveryMode: "ambil", selectedItem: null, pendingWaUrl: "", leaderboardData: null, allLogs: [], selectedDateStr: "" },
+            state: { region: "", type: "Paket", selectedItem: null, pendingWaUrl: "", leaderboardData: null, allLogs: [], selectedDateStr: "", storeMode: "paket", storeTotal: 0 },
 
-            // FUNGSI FAQ ACCORDION
             toggleFAQ: (faqId, iconId) => {
                 const content = document.getElementById(faqId);
                 const icon = document.getElementById(iconId);
                 const isOpen = content.classList.contains('open');
                 
-                // Tutup semua FAQ dulu biar rapi (opsional, hapus 3 baris di bawah kalau mau bisa buka banyak sekaligus)
                 document.querySelectorAll('.faq-content').forEach(el => { el.classList.remove('open'); el.classList.add('border-t-2'); });
                 document.querySelectorAll('[id^="icon-"]').forEach(el => el.style.transform = 'rotate(0deg)');
 
-                // Buka yang di-klik
                 if (!isOpen) {
                     content.classList.add('open');
                     content.classList.add('border-t-2');
@@ -469,48 +537,92 @@
             selectRegion: (regionName) => {
                 APP_LOGIC.state.region = regionName;
                 
-                // Hide landing sections
                 document.getElementById('region-step').classList.add('hidden');
                 document.getElementById('testimonial-step').classList.add('hidden');
                 document.getElementById('leaderboard-section').classList.add('hidden'); 
                 
-                // Show booking form
                 document.getElementById('booking-step').classList.remove('hidden');
                 document.getElementById('booking-step').classList.add('animate-pop');
                 document.getElementById('region-badge').innerText = `📍 ${regionName === 'Banda' ? 'BANDA ACEH' : regionName.toUpperCase()}`;
-                
-                const antarContainer = document.getElementById('antar-jemput-container');
-                if (regionName === 'Banda') { 
-                    antarContainer.classList.remove('hidden'); 
-                    APP_LOGIC.setDelivery('ambil'); 
-                } else { 
-                    antarContainer.classList.add('hidden'); 
-                    APP_LOGIC.state.deliveryMode = "ambil"; 
-                    document.getElementById('address').removeAttribute('required'); 
-                }
                 
                 APP_LOGIC.initDatePicker(); 
                 APP_LOGIC.updateDropdown(); 
             },
 
-            setDelivery: (mode) => {
-                APP_LOGIC.state.deliveryMode = mode;
-                const btnAntar = document.getElementById('btn-antar'); const btnAmbil = document.getElementById('btn-ambil');
-                const addressContainer = document.getElementById('address-container'); const addressInput = document.getElementById('address');
+            // ===================================
+            // FITUR BARU: STORE (BELI PLAYBOX)
+            // ===================================
+            selectStore: () => {
+                document.getElementById('region-step').classList.add('hidden');
+                document.getElementById('testimonial-step').classList.add('hidden');
+                document.getElementById('leaderboard-section').classList.add('hidden');
+                document.getElementById('faq-section').classList.add('hidden'); 
                 
-                if (mode === 'antar') { 
-                    btnAntar.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; 
-                    btnAmbil.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; 
-                    addressContainer.classList.remove('hidden'); 
-                    addressInput.setAttribute('required', 'true'); 
-                } else { 
-                    btnAmbil.className = 'mario-btn mario-btn-yellow flex-1 py-2 text-xs'; 
-                    btnAntar.className = 'mario-btn mario-btn-gray flex-1 py-2 text-xs'; 
-                    addressContainer.classList.add('hidden'); 
-                    addressInput.removeAttribute('required'); 
-                    addressInput.value = ''; 
-                }
+                document.getElementById('store-step').classList.remove('hidden');
+                document.getElementById('store-step').classList.add('animate-pop');
+                APP_LOGIC.switchStoreMode('paket');
             },
+
+            switchStoreMode: (mode) => {
+                APP_LOGIC.state.storeMode = mode;
+                const isPaket = mode === 'paket';
+                
+                document.getElementById('tab-store-paket').className = isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2 text-xs' : 'mario-btn mario-btn-gray flex-1 py-2 text-xs';
+                document.getElementById('tab-store-custom').className = !isPaket ? 'mario-btn mario-btn-yellow flex-1 py-2 text-xs' : 'mario-btn mario-btn-gray flex-1 py-2 text-xs';
+                
+                document.getElementById('store-view-paket').classList.toggle('hidden', !isPaket);
+                document.getElementById('store-view-custom').classList.toggle('hidden', isPaket);
+                APP_LOGIC.updateStorePrice();
+            },
+
+            updateStorePrice: () => {
+                let total = 0;
+                if (APP_LOGIC.state.storeMode === 'paket') {
+                    const p = document.getElementById('s-paket').value;
+                    total = p === 'p1' ? 8800000 : 6800000;
+                } else {
+                    total += Number(document.getElementById('s-box').value);
+                    total += Number(document.getElementById('s-ps').value);
+                    if (document.getElementById('s-addon-kipas').checked) total += 350000;
+                    if (document.getElementById('s-addon-led').checked) total += 250000;
+                    if (document.getElementById('s-addon-stik').checked) total += 150000;
+                }
+                APP_LOGIC.state.storeTotal = total;
+                document.getElementById('store-price-tag').innerText = APP_LOGIC.formatRupiah(total);
+            },
+
+            submitStoreOrder: (e) => {
+                e.preventDefault();
+                const name = document.getElementById('s-name').value;
+                const wa = document.getElementById('s-wa').value;
+                const address = document.getElementById('s-address').value;
+                const total = APP_LOGIC.formatRupiah(APP_LOGIC.state.storeTotal);
+                
+                let details = "";
+                if (APP_LOGIC.state.storeMode === 'paket') {
+                    const p = document.getElementById('s-paket').value;
+                    details = p === 'p1' ? "Paket Spek Maximum: 27 Inch + Slim 1 TB + Kipas + Extra Stick" : "Paket Spek Perintis: 24 Inch + Fat 500 GB";
+                } else {
+                    const box = document.getElementById('s-box');
+                    const ps = document.getElementById('s-ps');
+                    let custom = [];
+                    if(box.value !== "0") custom.push(box.options[box.selectedIndex].text.split(' (')[0]);
+                    if(ps.value !== "0") custom.push(ps.options[ps.selectedIndex].text.split(' (')[0]);
+                    if(document.getElementById('s-addon-kipas').checked) custom.push("Kipas Sirkulasi");
+                    if(document.getElementById('s-addon-led').checked) custom.push("Lampu LED");
+                    if(document.getElementById('s-addon-stik').checked) custom.push("Stik Tambahan");
+                    
+                    details = custom.length > 0 ? custom.join("\n- ") : "Tidak ada item (Cek ulang pesanan)";
+                }
+
+                const msg = `🛒 *HALO BUILDER, SAYA MAU BELI PLAYBOX!* 🛒\n\n👤 *Nama:* ${name}\n📱 *No WA:* ${wa}\n🏠 *Alamat Pengiriman:* ${address}\n\n📦 *Detail Pesanan:*\n- ${details}\n\n💰 *Total Estimasi:* ${total}\n\nMohon info ketersediaan stok, ongkir pengiriman, dan cara pembayarannya ya min!`;
+                
+                if(typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout', { content_name: 'Beli Playbox', value: APP_LOGIC.state.storeTotal, currency: 'IDR' });
+                
+                window.open(`https://wa.me/${CONFIG.builder_whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+            },
+
+            // ===================================
 
             switchType: (type) => {
                 APP_LOGIC.state.type = type; const isPaket = type === 'Paket';
@@ -535,7 +647,6 @@
                 }
             },
 
-            // FUNGSI Tombol Konsultasi WA
             consultWA: () => {
                 const msg = "Halo min, saya mau nanya-nanya dulu nih soal rental PS di Arena Playbox. Boleh minta infonya?";
                 if(typeof fbq !== 'undefined') fbq('trackCustom', 'ConsultWhatsApp');
@@ -552,7 +663,6 @@
                 const name = document.getElementById('name').value;
                 const waNumber = document.getElementById('wa-number').value;
                 const item = APP_LOGIC.state.selectedItem;
-                const address = document.getElementById('address').value;
                 
                 let pastBookings = 0;
                 try {
@@ -572,7 +682,6 @@
 
                 const formattedDate = APP_LOGIC.state.selectedDateStr + ' 00:00:00';
                 
-                // TRACKING META PIXEL - LEAD
                 if(typeof fbq !== 'undefined') {
                     fbq('track', 'Lead', {
                         content_name: item.name,
@@ -604,12 +713,7 @@
                 let msg = `🍄 *BOS, ADA BOOKING BARU!* 🍄\n\n📍 *Markas:* ${APP_LOGIC.state.region === 'Banda' ? 'Banda Aceh' : APP_LOGIC.state.region}\n👤 *Nama:* ${name}\n📱 *No WA:* ${waNumber}\n💎 *Status:* ${tier}\n\n🎮 *Pesanan:* ${item.name} (${APP_LOGIC.state.type})\n`;
                 msg += `📅 *Rencana Main:* ${APP_LOGIC.state.selectedDateStr}\n⏰ *Jam:* (Tolong hubungi saya ya min untuk atur jam mainnya)\n`;
                 msg += `💰 *Total Harga:* ${APP_LOGIC.formatRupiah(item.price)} (Dapat Diskon)\n\n`;
-                
-                if (APP_LOGIC.state.region === 'Banda') {
-                    if (APP_LOGIC.state.deliveryMode === 'antar') msg += `🛵 *Logistik:* Minta Diantar\n🏠 *Alamat Pengantaran:* ${address}\n\n`;
-                    else msg += `🏪 *Logistik:* Ambil Sendiri ke Markas\n\n`;
-                }
-                
+                msg += `🏪 *Logistik:* Ambil Sendiri ke Markas\n\n`;
                 msg += `Mohon segera konfirmasi ketersediaan unit dan jam main ya! 🚀`;
 
                 APP_LOGIC.state.pendingWaUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
@@ -628,6 +732,8 @@
         };
 
         document.getElementById('orderForm').addEventListener('submit', APP_LOGIC.submitForm);
+        document.getElementById('storeForm').addEventListener('submit', APP_LOGIC.submitStoreOrder);
+        
         document.addEventListener('DOMContentLoaded', () => {
             APP_LOGIC.initMarquee();
             APP_LOGIC.fetchData(); 
