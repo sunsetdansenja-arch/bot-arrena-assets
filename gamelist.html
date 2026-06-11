@@ -7,217 +7,378 @@
     
     <link rel="icon" href="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Netflix+Sans:wght@400;500;700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        :root { --mario-orange: #FF6B00; --mario-black: #000000; --mario-yellow: #FFD700; }
+        :root { 
+            --netflix-red: #E50914; 
+            --netflix-black: #141414; 
+            --netflix-dark: #181818;
+            --netflix-gray: #808080;
+            --netflix-light: #e5e5e5;
+        }
+        
         body { 
-            font-family: 'Fredoka', sans-serif; 
-            background-color: var(--mario-orange); 
-            color: var(--mario-black); 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--netflix-black); 
+            color: white; 
             -webkit-font-smoothing: antialiased; 
-            background-image: radial-gradient(rgba(0,0,0,0.05) 2px, transparent 2px); 
-            background-size: 20px 20px; 
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Element Mario Style */
-        .mario-card { background-color: white; border: 3px solid var(--mario-black); border-radius: 12px; box-shadow: 4px 4px 0px 0px var(--mario-black); overflow: hidden; transition: all 0.2s ease;}
-        .mario-card:hover { transform: translateY(-4px); box-shadow: 6px 6px 0px 0px var(--mario-black); border-color: var(--mario-yellow); }
-        
-        .mario-btn { background-color: white; border: 3px solid var(--mario-black); border-radius: 10px; box-shadow: 3px 3px 0px 0px var(--mario-black); transition: all 0.15s ease-in-out; font-weight: 900; text-align: center; cursor: pointer; color: var(--mario-black); display: flex; align-items: center; justify-content: center; gap: 8px;}
-        .mario-btn:active:not(:disabled) { transform: translate(3px, 3px); box-shadow: 0px 0px 0px 0px var(--mario-black); }
+        /* Navbar & Headers */
+        .netflix-nav {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            transition: background-color 0.3s ease;
+        }
+        .netflix-nav.scrolled { background-color: var(--netflix-black); }
 
-        /* Animation */
-        .animate-fade { animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Typography */
+        h1, h2, h3 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+        /* Buttons */
+        .btn-back {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: white;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+        .btn-back:hover { background-color: rgba(109, 109, 110, 0.4); }
+
+        /* Custom Horizontal Scroll for Tabs */
+        .tab-scroll-container { 
+            display: flex; 
+            overflow-x: auto; 
+            -webkit-overflow-scrolling: touch; 
+            gap: 12px;
+            padding-bottom: 8px;
+        }
+        .tab-scroll-container::-webkit-scrollbar { display: none; }
+        
+        .nav-tab { 
+            flex: 0 0 auto; 
+            font-size: 14px; 
+            font-weight: 600; 
+            color: var(--netflix-light); 
+            background: transparent;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .nav-tab:hover { border-color: white; color: white; }
+        .nav-tab.active { background-color: white; color: black; border-color: white; }
 
         /* Tab Panels */
-        .tab-panel { display: none; }
-        .tab-panel.active { display: block; animation: fadeIn 0.4s ease; }
+        .tab-panel { display: none; animation: fadeIn 0.5s ease; }
+        .tab-panel.active { display: block; }
 
-        /* Horizontal Scroll for Mobile Tabs */
-        .tab-scroll-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-        .tab-scroll-container::-webkit-scrollbar { display: none; } /* Hide scrollbar for clean UI */
-        .nav-btn { flex: 0 0 auto; scroll-snap-align: start; min-width: 100px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Tag Styles inside Poster */
-        .tag { font-size: 8px; padding: 4px 6px; border-radius: 4px; font-weight: 900; text-transform: uppercase; border: 2px solid var(--mario-black); box-shadow: 2px 2px 0px #000; letter-spacing: 0.5px;}
-        .tag-multi { background: #3b82f6; color: white; }
-        .tag-aaa { background: #9333ea; color: white; }
-        .tag-coop { background: #10b981; color: white; }
-        .tag-sport { background: var(--mario-yellow); color: var(--mario-black); }
+        /* Netflix Style Game Card */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            padding: 0 4px;
+        }
+        @media (min-width: 768px) { .game-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
+        @media (min-width: 1024px) { .game-grid { grid-template-columns: repeat(6, 1fr); gap: 20px; } }
+
+        .game-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2/3; /* Standard movie poster ratio */
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+            background-color: #222;
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        /* Hover Effects */
+        @media (hover: hover) {
+            .game-card:hover {
+                transform: scale(1.05);
+                z-index: 10;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+            }
+            .game-card:hover .card-overlay { opacity: 1; }
+            .game-card:hover img { filter: brightness(0.7) blur(2px); transform: scale(1.1); }
+        }
+
+        /* Mobile specific active state to mimic hover */
+        .game-card:active { transform: scale(0.98); }
+
+        /* Info Overlay */
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 12px;
+            z-index: 2;
+        }
+
+        /* Show overlay slightly on mobile since no hover */
+        @media (hover: none) {
+            .card-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 60%); padding: 8px; }
+            .card-title { font-size: 11px !important; text-shadow: 1px 1px 2px black; }
+            .tags-container { display: none !important; } /* Hide tags on mobile to keep it clean */
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+
+        .match-score { color: #46d369; font-weight: 700; font-size: 10px; margin-bottom: 4px;}
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .tag {
+            font-size: 8px;
+            font-weight: 600;
+            color: var(--netflix-light);
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 2px 6px;
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            position: relative;
+            width: 100%;
+            height: 45vh;
+            min-height: 300px;
+            background-image: url('https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/game%20poster/GOD%20OF%20WAR.jpg');
+            background-size: cover;
+            background-position: center 20%;
+            margin-bottom: -40px; /* Pull content up */
+        }
+        
+        .hero-vignette {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, var(--netflix-black) 0%, transparent 60%);
+        }
+
+        .hero-content {
+            position: absolute;
+            bottom: 20%;
+            left: 4%;
+            right: 4%;
+            max-width: 600px;
+        }
     </style>
 </head>
-<body class="pb-10">
+<body>
 
-    <!-- HEADER: Fokus Menjawab Customer -->
-    <header class="w-full bg-black p-4 sticky top-0 z-40 border-b-4 border-yellow-400 shadow-xl">
-        <div class="max-w-6xl mx-auto flex justify-between items-center gap-2">
-            <button onclick="window.location.href='https://arena-book.beuna.xyz'" class="mario-btn bg-white text-black p-2 md:px-4 text-[10px] md:text-sm shadow-[2px_2px_0px_#FFD700]">◀ <span class="hidden md:inline">KEMBALI KE </span>BOOKING</button>
-            <div class="text-right">
-                <p class="text-[9px] md:text-xs font-black text-yellow-400 uppercase tracking-widest leading-none">"Kak/Bang, ada game apa aja?"</p>
-                <h1 class="text-base md:text-xl font-black text-white mt-1">INI DAFTAR GAMENYA! 🎮</h1>
-            </div>
+    <!-- NAVBAR -->
+    <header class="netflix-nav fixed w-full top-0 z-50 p-4 lg:px-12 flex justify-between items-center">
+        <div class="flex items-center gap-4 lg:gap-8">
+            <h1 class="text-red-600 font-black text-2xl tracking-tighter" style="font-family: 'Helvetica Neue', Arial, sans-serif;">ARENA</h1>
         </div>
+        <button onclick="window.location.href='https://arena-book.beuna.xyz'" class="btn-back text-xs">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Booking
+        </button>
     </header>
 
-    <div class="max-w-6xl mx-auto px-4 mt-6">
+    <!-- HERO BANNER -->
+    <div class="hero-banner">
+        <div class="hero-vignette"></div>
+        <div class="hero-content">
+            <h2 class="text-4xl md:text-5xl font-black text-white mb-2" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Katalog Game</h2>
+            <p class="text-gray-300 text-xs md:text-sm font-medium leading-snug drop-shadow-md max-w-md mb-4">
+                Pilih unit yang tepat sesuai dengan selera genre kamu. Dari petualangan Heavy AAA hingga keseruan Multiplayer Co-op.
+            </p>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-12 relative z-10 w-full pb-20">
         
-        <!-- PANDUAN CEPAT -->
-        <div class="bg-black text-white p-4 rounded-xl border-4 border-yellow-400 shadow-[6px_6px_0px_#000] mb-6 relative overflow-hidden">
-            <div class="absolute -right-4 -top-4 opacity-20 text-8xl">🕹️</div>
-            <div class="relative z-10">
-                <p class="text-xs md:text-sm font-bold leading-relaxed mb-2">Beda unit, beda koleksi gamenya lho!<br>Silakan pilih tab unit di bawah ini untuk melihat koleksi poster game yang tersedia di dalamnya.</p>
-                <p class="text-[10px] text-yellow-400 font-black uppercase tracking-wider animate-pulse">Geser menu di bawah jika pakai HP ➡️</p>
+        <!-- TABS NAVIGASI UNIT -->
+        <div class="mb-6">
+            <h3 class="text-lg font-bold text-gray-200 mb-3 px-1">Pilih Unit (Console)</h3>
+            <div class="tab-scroll-container">
+                <button onclick="switchTab('unit3', this)" class="nav-tab active">U3 Limo</button>
+                <button onclick="switchTab('unit4', this)" class="nav-tab">U4 Eden</button>
+                <button onclick="switchTab('unit5', this)" class="nav-tab">U5 Pluto</button>
+                <button onclick="switchTab('unit6', this)" class="nav-tab">U6 Falcon</button>
             </div>
         </div>
 
-        <!-- MOBILE FRIENDLY TABS -->
-        <div class="tab-scroll-container bg-white border-4 border-black rounded-xl shadow-[4px_4px_0px_#000] mb-6">
-            <button onclick="switchTab('unit3', this)" class="nav-btn py-3 px-4 text-xs md:text-sm font-black uppercase transition-all bg-black text-white">U3 Limo</button>
-            <button onclick="switchTab('unit4', this)" class="nav-btn py-3 px-4 text-xs md:text-sm font-black uppercase transition-all border-l-4 border-black hover:bg-gray-100">U4 Eden</button>
-            <button onclick="switchTab('unit5', this)" class="nav-btn py-3 px-4 text-xs md:text-sm font-black uppercase transition-all border-l-4 border-black hover:bg-gray-100">U5 Pluto</button>
-            <button onclick="switchTab('unit6', this)" class="nav-btn py-3 px-4 text-xs md:text-sm font-black uppercase transition-all border-l-4 border-black hover:bg-gray-100">U6 Falcon</button>
-        </div>
-
-        <!-- ================= UNIT 3 LIMO PANEL ================= -->
+        <!-- ================= UNIT 3 LIMO ================= -->
         <div id="unit3" class="tab-panel active">
-            <div class="mb-4 text-center">
-                <h2 class="text-xl md:text-2xl font-black uppercase text-black mb-1 bg-white border-4 border-black shadow-[4px_4px_0px_#000] py-2 px-6 rounded-xl inline-block">🎮 UNIT 3 LIMO</h2>
-                <p class="text-[10px] md:text-xs font-bold text-white bg-black px-4 py-1.5 rounded-full inline-block mt-2 shadow-sm border-2 border-white">Koleksi Multiplayer Terlengkap</p>
+            <div class="mb-3 px-1">
+                <h2 class="text-white text-base md:text-lg font-bold">Koleksi Multiplayer Terlengkap</h2>
             </div>
-            <!-- Grid Poster: 2 kolom di HP, 4 kolom di Tablet, 5 kolom di PC -->
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5" id="list-unit3"></div>
+            <div class="game-grid" id="list-unit3"></div>
         </div>
 
-        <!-- ================= UNIT 4 EDEN PANEL ================= -->
+        <!-- ================= UNIT 4 EDEN ================= -->
         <div id="unit4" class="tab-panel">
-            <div class="mb-4 text-center">
-                <h2 class="text-xl md:text-2xl font-black uppercase text-black mb-1 bg-white border-4 border-black shadow-[4px_4px_0px_#000] py-2 px-6 rounded-xl inline-block">🎮 UNIT 4 EDEN</h2>
-                <p class="text-[10px] md:text-xs font-bold text-white bg-black px-4 py-1.5 rounded-full inline-block mt-2 shadow-sm border-2 border-white">Variasi Genre Terluas</p>
+            <div class="mb-3 px-1">
+                <h2 class="text-white text-base md:text-lg font-bold">Variasi Genre Terluas</h2>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5" id="list-unit4"></div>
+            <div class="game-grid" id="list-unit4"></div>
         </div>
 
-        <!-- ================= UNIT 5 PLUTO PANEL ================= -->
+        <!-- ================= UNIT 5 PLUTO ================= -->
         <div id="unit5" class="tab-panel">
-            <div class="mb-4 text-center">
-                <h2 class="text-xl md:text-2xl font-black uppercase text-black mb-1 bg-white border-4 border-black shadow-[4px_4px_0px_#000] py-2 px-6 rounded-xl inline-block">🎮 UNIT 5 PLUTO</h2>
-                <p class="text-[10px] md:text-xs font-bold text-white bg-black px-4 py-1.5 rounded-full inline-block mt-2 shadow-sm border-2 border-white">Fokus Judul Heavy AAA</p>
+            <div class="mb-3 px-1">
+                <h2 class="text-white text-base md:text-lg font-bold">Fokus Judul Heavy AAA</h2>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5" id="list-unit5"></div>
+            <div class="game-grid" id="list-unit5"></div>
         </div>
 
-        <!-- ================= UNIT 6 FALCON PANEL ================= -->
+        <!-- ================= UNIT 6 FALCON ================= -->
         <div id="unit6" class="tab-panel">
-            <div class="mb-4 text-center">
-                <h2 class="text-xl md:text-2xl font-black uppercase text-black mb-1 bg-white border-4 border-black shadow-[4px_4px_0px_#000] py-2 px-6 rounded-xl inline-block">🎮 UNIT 6 FALCON</h2>
-                <p class="text-[10px] md:text-xs font-bold text-white bg-black px-4 py-1.5 rounded-full inline-block mt-2 shadow-sm border-2 border-white">Judul Terpopuler Pilihan</p>
+            <div class="mb-3 px-1">
+                <h2 class="text-white text-base md:text-lg font-bold">Judul Terpopuler & Akses Cepat</h2>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5" id="list-unit6"></div>
+            <div class="game-grid" id="list-unit6"></div>
         </div>
 
     </div>
 
     <!-- Script Data & Logic -->
     <script>
-        // DATABASE GAME: Tambahkan link URL poster di properti 'img'.
-        // Jika 'img' kosong, sistem akan menggunakan gambar generator otomatis sebagai placeholder.
+        // Effect Scroll Navbar
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                document.querySelector('.netflix-nav').classList.add('scrolled');
+            } else {
+                document.querySelector('.netflix-nav').classList.remove('scrolled');
+            }
+        });
+
+        // BASE URL REPO UNTUK POSTER
+        const RAW_URL = "https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/game%20poster/";
+
+        // DATABASE GAME
         const gameDatabase = {
             unit3: [
-                { name: "A Way Out", img: "", tags: ["Co-op", "AAA"] },
+                { name: "A Way Out", img: "A%20Way%20Out'%20review.jpg", tags: ["Co-op", "AAA"] },
                 { name: "Burnout Paradise", img: "", tags: ["Racing"] },
-                { name: "Call of Duty", img: "", tags: ["FPS", "AAA"] },
-                { name: "Crash Team Racing", img: "", tags: ["Racing", "Multi"] },
-                { name: "Cuphead", img: "", tags: ["Co-op", "Indie"] },
+                { name: "Call of Duty", img: "", tags: ["FPS", "AAA"] }, // Terpotong
+                { name: "Crash Team Racing", img: "CTR.jpg", tags: ["Racing", "Multi"] },
+                { name: "Cuphead", img: "cuphead%20by%20mdhr%20studio.jpg", tags: ["Co-op", "Indie"] },
                 { name: "Demon Slayer 2", img: "", tags: ["Fighting", "Anime"] },
-                { name: "EA Sports FC 26", img: "", tags: ["Sport", "Multi"] },
-                { name: "PES 2026", img: "", tags: ["Sport", "Multi"] },
-                { name: "Formula 1 (F1)", img: "", tags: ["Racing", "AAA"] },
-                { name: "Ghost of Tsushima", img: "", tags: ["AAA", "Action"] },
-                { name: "GTA V", img: "", tags: ["AAA", "Open World"] },
-                { name: "Inside", img: "", tags: ["Indie", "Puzzle"] },
-                { name: "It Takes Two", img: "", tags: ["Co-op", "Masterpiece"] },
-                { name: "Limbo", img: "", tags: ["Indie", "Puzzle"] },
-                { name: "Little Nightmares I", img: "", tags: ["Horror", "Indie"] },
-                { name: "Little Nightmares II", img: "", tags: ["Horror", "Indie"] },
-                { name: "Naruto: UNSC", img: "", tags: ["Fighting", "Anime"] },
-                { name: "RDR 2", img: "", tags: ["AAA", "Open World"] },
+                { name: "EA Sports FC 26", img: "FC%2026.jpg", tags: ["Sport", "Multi"] },
+                { name: "PES 2026", img: "PES%2026.jpg", tags: ["Sport", "Multi"] },
+                { name: "Formula 1 (F1)", img: "F1.jpg", tags: ["Racing", "AAA"] },
+                { name: "Ghost of Tsushima", img: "GHOST%20OF%20TSUTSHIMA.jpg", tags: ["AAA", "Action"] },
+                { name: "GTA V", img: "GTA%20V.jpg", tags: ["AAA", "Open World"] },
+                { name: "Inside", img: "INSIDE.jpg", tags: ["Indie", "Puzzle"] },
+                { name: "It Takes Two", img: "IT%20TAKES%20TWO.jpg", tags: ["Co-op", "Masterpiece"] },
+                { name: "Limbo", img: "LIMBO.jpg", tags: ["Indie", "Puzzle"] },
+                { name: "Little Nightmares I", img: "LITLE%20NIGHMARE%20I.jpg", tags: ["Horror", "Indie"] },
+                { name: "Little Nightmares II", img: "LITLE%20NIGHTMARE%20II.jpg", tags: ["Horror", "Indie"] },
+                { name: "Naruto: UNSC", img: "NARUTO.jpg", tags: ["Fighting", "Anime"] },
+                { name: "RDR 2", img: "RDR%202.jpg", tags: ["AAA", "Open World"] },
                 { name: "Resident Evil 6", img: "", tags: ["Horror", "Action"] },
                 { name: "Rocket League", img: "", tags: ["Sport", "Multi"] },
-                { name: "Sniper Elite 3", img: "", tags: ["Action", "AAA"] },
-                { name: "Super Bomberman", img: "", tags: ["Multi", "Fun"] },
+                { name: "Sniper Elite 3", img: "Sniper%20Elite%203%20-%20Ultimate%20Edition%20(PS4).jpg", tags: ["Action", "AAA"] },
+                { name: "Super Bomberman", img: "BOMBERMAN.jpg", tags: ["Multi", "Fun"] },
                 { name: "Trine", img: "", tags: ["Co-op", "Puzzle"] },
-                { name: "EA Sports UFC", img: "", tags: ["Fighting", "Sport"] }
+                { name: "EA Sports UFC", img: "UFC%204.jpg", tags: ["Fighting", "Sport"] }
             ],
             unit4: [
-                { name: "A Way Out", img: "", tags: ["Co-op", "AAA"] },
-                { name: "Crash Team Racing", img: "", tags: ["Racing", "Multi"] },
-                { name: "Devil May Cry 5", img: "", tags: ["AAA", "Action"] },
-                { name: "DreadOut 2", img: "", tags: ["Horror", "Indie"] },
-                { name: "Formula 1 (F1)", img: "", tags: ["Racing", "AAA"] },
-                { name: "EA Sports FC 26", img: "", tags: ["Sport", "Multi"] },
-                { name: "Ghost of Tsushima", img: "", tags: ["AAA", "Action"] },
-                { name: "GTA V", img: "", tags: ["AAA", "Open World"] },
-                { name: "Inside", img: "", tags: ["Indie", "Puzzle"] },
-                { name: "It Takes Two", img: "", tags: ["Co-op", "Masterpiece"] },
-                { name: "Limbo", img: "", tags: ["Indie", "Puzzle"] },
-                { name: "Little Nightmares", img: "", tags: ["Horror", "Indie"] },
-                { name: "Little Nightmares II", img: "", tags: ["Horror", "Indie"] },
-                { name: "MotoGP", img: "", tags: ["Racing"] },
-                { name: "Moving Out 2", img: "", tags: ["Co-op", "Fun"] },
-                { name: "Naruto: UNSC", img: "", tags: ["Fighting", "Anime"] },
-                { name: "Outlast", img: "", tags: ["Horror", "Indie"] },
-                { name: "PES 2026", img: "", tags: ["Sport", "Multi"] },
-                { name: "RDR 2", img: "", tags: ["AAA", "Open World"] },
-                { name: "Resident Evil 3", img: "", tags: ["Horror", "AAA"] },
-                { name: "Silksong", img: "", tags: ["Indie", "Adventure"] },
-                { name: "Sleeping Dogs", img: "", tags: ["AAA", "Action"] },
-                { name: "Street Fighter 6", img: "", tags: ["Fighting", "AAA"] },
-                { name: "Super Bomberman", img: "", tags: ["Multi", "Fun"] },
-                { name: "Tekken 7", img: "", tags: ["Fighting", "AAA"] },
-                { name: "EA Sports UFC 4", img: "", tags: ["Fighting", "Sport"] },
-                { name: "Unravel Two", img: "", tags: ["Co-op", "Indie"] }
+                { name: "A Way Out", img: "A%20Way%20Out'%20review.jpg", tags: ["Co-op", "AAA"] },
+                { name: "Crash Team Racing", img: "CTR.jpg", tags: ["Racing", "Multi"] },
+                { name: "Devil May Cry 5", img: "Devil%20may%20cry%205%20Vergil's%20menu.jpg", tags: ["AAA", "Action"] },
+                { name: "DreadOut 2", img: "Dreadout.jpg", tags: ["Horror", "Indie"] },
+                { name: "Formula 1 (F1)", img: "F1.jpg", tags: ["Racing", "AAA"] },
+                { name: "EA Sports FC 26", img: "FC%2026.jpg", tags: ["Sport", "Multi"] },
+                { name: "Ghost of Tsushima", img: "GHOST%20OF%20TSUTSHIMA.jpg", tags: ["AAA", "Action"] },
+                { name: "GTA V", img: "GTA%20V.jpg", tags: ["AAA", "Open World"] },
+                { name: "Inside", img: "INSIDE.jpg", tags: ["Indie", "Puzzle"] },
+                { name: "It Takes Two", img: "IT%20TAKES%20TWO.jpg", tags: ["Co-op", "Masterpiece"] },
+                { name: "Limbo", img: "LIMBO.jpg", tags: ["Indie", "Puzzle"] },
+                { name: "Little Nightmares", img: "LITLE%20NIGHMARE%20I.jpg", tags: ["Horror", "Indie"] },
+                { name: "Little Nightmares II", img: "LITLE%20NIGHTMARE%20II.jpg", tags: ["Horror", "Indie"] },
+                { name: "MotoGP", img: "MOTO%20GP.jpg", tags: ["Racing"] },
+                { name: "Moving Out 2", img: "MOVING%20OUT%202.jpg", tags: ["Co-op", "Fun"] },
+                { name: "Naruto: UNSC", img: "NARUTO.jpg", tags: ["Fighting", "Anime"] },
+                { name: "Outlast", img: "OUT%20LAST.jpg", tags: ["Horror", "Indie"] },
+                { name: "PES 2026", img: "PES%2026.jpg", tags: ["Sport", "Multi"] },
+                { name: "RDR 2", img: "RDR%202.jpg", tags: ["AAA", "Open World"] },
+                { name: "Resident Evil 3", img: "", tags: ["Horror", "AAA"] }, // Terpotong
+                { name: "Silksong", img: "SILK%20SONG.jpg", tags: ["Indie", "Adventure"] },
+                { name: "Sleeping Dogs", img: "SLEEPING%20DOG.jpg", tags: ["AAA", "Action"] },
+                { name: "Street Fighter 6", img: "STREET%20FIGHTER%206.jpg", tags: ["Fighting", "AAA"] },
+                { name: "Super Bomberman", img: "BOMBERMAN.jpg", tags: ["Multi", "Fun"] },
+                { name: "Tekken 7", img: "TEKKEN%207.jpg", tags: ["Fighting", "AAA"] },
+                { name: "EA Sports UFC 4", img: "UFC%204.jpg", tags: ["Fighting", "Sport"] },
+                { name: "Unravel Two", img: "UNRAVEL%20TWO.jpg", tags: ["Co-op", "Indie"] }
             ],
             unit5: [
-                { name: "A Way Out", img: "", tags: ["Co-op", "AAA"] },
+                { name: "A Way Out", img: "A%20Way%20Out'%20review.jpg", tags: ["Co-op", "AAA"] },
                 { name: "Call of Duty", img: "", tags: ["FPS", "AAA"] },
-                { name: "Cuphead", img: "", tags: ["Co-op", "Indie"] },
-                { name: "Formula 1 (F1)", img: "", tags: ["Racing", "AAA"] },
-                { name: "EA Sports FC 26", img: "", tags: ["Sport", "Multi"] },
-                { name: "Gang Beasts", img: "", tags: ["Multi", "Fun"] },
-                { name: "Ghost of Tsushima", img: "", tags: ["AAA", "Action"] },
-                { name: "God of War", img: "", tags: ["AAA", "Masterpiece"] },
-                { name: "GTA V", img: "", tags: ["AAA", "Open World"] },
-                { name: "Inside", img: "", tags: ["Indie", "Puzzle"] },
-                { name: "It Takes Two", img: "", tags: ["Co-op", "Masterpiece"] },
-                { name: "Limbo", img: "", tags: ["Indie", "Puzzle"] },
-                { name: "Little Nightmares", img: "", tags: ["Horror", "Indie"] },
-                { name: "Little Nightmares II", img: "", tags: ["Horror", "Indie"] },
-                { name: "Little Nightmares III", img: "", tags: ["Horror", "Indie"] },
-                { name: "Naruto: UNSC", img: "", tags: ["Fighting", "Anime"] },
-                { name: "Outlast", img: "", tags: ["Horror", "Indie"] },
-                { name: "PES 2026", img: "", tags: ["Sport", "Multi"] },
-                { name: "RDR 2", img: "", tags: ["AAA", "Open World"] },
-                { name: "Silksong", img: "", tags: ["Indie", "Adventure"] },
-                { name: "Sniper Elite 3", img: "", tags: ["Action", "AAA"] },
-                { name: "Tekken 7", img: "", tags: ["Fighting", "AAA"] },
-                { name: "EA Sports UFC", img: "", tags: ["Fighting", "Sport"] }
+                { name: "Cuphead", img: "cuphead%20by%20mdhr%20studio.jpg", tags: ["Co-op", "Indie"] },
+                { name: "Formula 1 (F1)", img: "F1.jpg", tags: ["Racing", "AAA"] },
+                { name: "EA Sports FC 26", img: "FC%2026.jpg", tags: ["Sport", "Multi"] },
+                { name: "Gang Beasts", img: "GANG%20BEAST.jpg", tags: ["Multi", "Fun"] },
+                { name: "Ghost of Tsushima", img: "GHOST%20OF%20TSUTSHIMA.jpg", tags: ["AAA", "Action"] },
+                { name: "God of War", img: "GOD%20OF%20WAR.jpg", tags: ["AAA", "Masterpiece"] },
+                { name: "GTA V", img: "GTA%20V.jpg", tags: ["AAA", "Open World"] },
+                { name: "Inside", img: "INSIDE.jpg", tags: ["Indie", "Puzzle"] },
+                { name: "It Takes Two", img: "IT%20TAKES%20TWO.jpg", tags: ["Co-op", "Masterpiece"] },
+                { name: "Limbo", img: "LIMBO.jpg", tags: ["Indie", "Puzzle"] },
+                { name: "Little Nightmares", img: "LITLE%20NIGHMARE%20I.jpg", tags: ["Horror", "Indie"] },
+                { name: "Little Nightmares II", img: "LITLE%20NIGHTMARE%20II.jpg", tags: ["Horror", "Indie"] },
+                { name: "Little Nightmares III", img: "LITTLE%20NIGHTMARES%20___.jpg", tags: ["Horror", "Indie"] },
+                { name: "Naruto: UNSC", img: "NARUTO.jpg", tags: ["Fighting", "Anime"] },
+                { name: "Outlast", img: "OUT%20LAST.jpg", tags: ["Horror", "Indie"] },
+                { name: "PES 2026", img: "PES%2026.jpg", tags: ["Sport", "Multi"] },
+                { name: "RDR 2", img: "RDR%202.jpg", tags: ["AAA", "Open World"] },
+                { name: "Silksong", img: "SILK%20SONG.jpg", tags: ["Indie", "Adventure"] },
+                { name: "Sniper Elite 3", img: "Sniper%20Elite%203%20-%20Ultimate%20Edition%20(PS4).jpg", tags: ["Action", "AAA"] },
+                { name: "Tekken 7", img: "TEKKEN%207.jpg", tags: ["Fighting", "AAA"] },
+                { name: "EA Sports UFC", img: "UFC%204.jpg", tags: ["Fighting", "Sport"] }
             ],
             unit6: [
-                { name: "GTA V", img: "", tags: ["AAA", "Open World"] },
-                { name: "EA Sports FC 26", img: "", tags: ["Sport", "Multi"] },
-                { name: "Outlast", img: "", tags: ["Horror", "Indie"] },
-                { name: "It Takes Two", img: "", tags: ["Co-op", "Masterpiece"] },
-                { name: "Tekken 7", img: "", tags: ["Fighting", "AAA"] },
-                { name: "PES 2026", img: "", tags: ["Sport", "Multi"] },
-                { name: "EA Sports UFC 3", img: "", tags: ["Fighting", "Sport"] },
-                { name: "MotoGP", img: "", tags: ["Racing"] },
-                { name: "Unravel Two", img: "", tags: ["Co-op", "Indie"] },
-                { name: "Little Nightmares", img: "", tags: ["Horror", "Indie"] },
-                { name: "Inside", img: "", tags: ["Indie", "Puzzle"] },
-                { name: "Limbo", img: "", tags: ["Indie", "Puzzle"] }
+                { name: "GTA V", img: "GTA%20V.jpg", tags: ["AAA", "Open World"] },
+                { name: "EA Sports FC 26", img: "FC%2026.jpg", tags: ["Sport", "Multi"] },
+                { name: "Outlast", img: "OUT%20LAST.jpg", tags: ["Horror", "Indie"] },
+                { name: "It Takes Two", img: "IT%20TAKES%20TWO.jpg", tags: ["Co-op", "Masterpiece"] },
+                { name: "Tekken 7", img: "TEKKEN%207.jpg", tags: ["Fighting", "AAA"] },
+                { name: "PES 2026", img: "PES%2026.jpg", tags: ["Sport", "Multi"] },
+                { name: "EA Sports UFC 3", img: "UFC%204.jpg", tags: ["Fighting", "Sport"] },
+                { name: "MotoGP", img: "MOTO%20GP.jpg", tags: ["Racing"] },
+                { name: "Unravel Two", img: "UNRAVEL%20TWO.jpg", tags: ["Co-op", "Indie"] },
+                { name: "Little Nightmares", img: "LITLE%20NIGHMARE%20I.jpg", tags: ["Horror", "Indie"] },
+                { name: "Inside", img: "INSIDE.jpg", tags: ["Indie", "Puzzle"] },
+                { name: "Limbo", img: "LIMBO.jpg", tags: ["Indie", "Puzzle"] }
             ]
         };
 
@@ -226,57 +387,46 @@
             document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
             
             // Handle Tab Buttons Styling
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-black', 'text-white');
-                btn.classList.add('hover:bg-gray-100', 'bg-white', 'text-black');
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
             });
             
             document.getElementById(tabId).classList.add('active');
-            
-            // Set active styles
-            element.classList.remove('hover:bg-gray-100', 'bg-white', 'text-black');
-            element.classList.add('bg-black', 'text-white');
+            element.classList.add('active');
         }
 
-        // Render Game Cards / Poster
+        // Render Netflix Style Cards
         function renderCards(unitId, elementId) {
             const container = document.getElementById(elementId);
             container.innerHTML = "";
             
             gameDatabase[unitId].forEach(game => {
-                // Menentukan warna tag berdasarkan genre
-                let tagsHTML = game.tags.map(t => {
-                    let className = "bg-gray-200 text-black"; // Default
-                    if (["AAA", "Masterpiece"].includes(t)) className = "tag-aaa";
-                    else if (["Co-op", "Fun", "Multi"].includes(t)) className = "tag-coop";
-                    else if (["Sport", "Racing"].includes(t)) className = "tag-sport";
-                    else if (["Action", "FPS", "Fighting"].includes(t)) className = "tag-multi";
-                    return `<span class="tag ${className}">${t}</span>`;
-                }).join('');
+                // Generate Tags
+                let tagsHTML = game.tags.map(t => `<span class="tag">${t}</span>`).join('');
 
-                // Generator Placeholder Gambar jika link image tidak ada
-                let encodedName = encodeURIComponent(game.name.split(' ').join('\n'));
-                let imgSrc = game.img ? game.img : `https://placehold.co/300x400/222222/FFD700?text=${encodedName}`;
+                // Image Source Handling (Jika URL kosong, pakai generator gambar abstrak API)
+                let encodedName = encodeURIComponent(game.name);
+                let imgSrc = game.img ? (RAW_URL + game.img) : `https://ui-avatars.com/api/?name=${encodedName}&background=222222&color=E50914&size=300&font-size=0.15&bold=true`;
+
+                // Calculate a fake "Match" percentage for Netflix vibe (90-99%)
+                let fakeMatch = Math.floor(Math.random() * (99 - 90 + 1)) + 90;
 
                 container.innerHTML += `
-                    <div class="mario-card p-0 flex flex-col h-full bg-black group cursor-pointer">
-                        <div class="relative w-full aspect-[3/4] border-b-4 border-black bg-zinc-800 overflow-hidden">
-                            <img src="${imgSrc}" alt="${game.name}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
-                            
-                            <!-- Overlay Tags di atas gambar -->
-                            <div class="absolute top-2 right-2 flex flex-col gap-1 items-end">
+                    <div class="game-card">
+                        <img src="${imgSrc}" alt="${game.name}" loading="lazy" onerror="this.src='https://ui-avatars.com/api/?name=${encodedName}&background=222222&color=ffffff&size=300'">
+                        <div class="card-overlay">
+                            <h3 class="card-title">${game.name}</h3>
+                            <div class="tags-container mb-1">
                                 ${tagsHTML}
                             </div>
-                        </div>
-                        <div class="p-3 bg-white flex-grow flex items-center justify-center text-center">
-                            <h3 class="font-black text-xs md:text-sm leading-tight uppercase text-black group-hover:text-[#FF6B00] transition-colors">${game.name}</h3>
+                            <span class="match-score">${fakeMatch}% Match</span>
                         </div>
                     </div>
                 `;
             });
         }
 
-        // Initialize Application Data
+        // Initialize Render
         window.onload = function() {
             renderCards('unit3', 'list-unit3');
             renderCards('unit4', 'list-unit4');
