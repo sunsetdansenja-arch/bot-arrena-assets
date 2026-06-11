@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Katalog Game - ARENA PLAYBOX</title>
+    
+    <link rel="icon" href="https://raw.githubusercontent.com/sunsetdansenja-arch/bot-arrena-assets/main/logo%20arena%20gaming.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --mario-orange: #FF6B00; --mario-black: #000000; --mario-yellow: #FFD700; }
+        body { 
+            font-family: 'Fredoka', sans-serif; 
+            background-color: var(--mario-orange); 
+            color: var(--mario-black); 
+            -webkit-font-smoothing: antialiased; 
+            background-image: radial-gradient(rgba(0,0,0,0.05) 2px, transparent 2px); 
+            background-size: 20px 20px; 
+            min-height: 100vh;
+        }
+
+        /* Element Mario Style */
+        .mario-card { background-color: white; border: 3px solid var(--mario-black); border-radius: 12px; box-shadow: 4px 4px 0px 0px var(--mario-black); overflow: hidden; transition: all 0.2s ease;}
+        .mario-card:hover { transform: translateY(-4px); box-shadow: 6px 6px 0px 0px var(--mario-black); border-color: var(--mario-yellow); }
+        
+        .mario-btn { background-color: white; border: 3px solid var(--mario-black); border-radius: 10px; box-shadow: 3px 3px 0px 0px var(--mario-black); transition: all 0.15s ease-in-out; font-weight: 900; text-align: center; cursor: pointer; color: var(--mario-black); display: flex; align-items: center; justify-content: center; gap: 8px;}
+        .mario-btn:active:not(:disabled) { transform: translate(3px, 3px); box-shadow: 0px 0px 0px 0px var(--mario-black); }
+
+        /* Animation */
+        .animate-fade { animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Tab Panels */
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; animation: fadeIn 0.4s ease; }
+
+        /* Horizontal Scroll for Mobile Tabs */
+        .tab-scroll-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+        .tab-scroll-container::-webkit-scrollbar { display: none; } /* Hide scrollbar for clean UI */
+        .nav-btn { flex: 0 0 auto; scroll-snap-align: start; min-width: 100px; }
+
+        /* Tag Styles inside Poster */
+        .tag { font-size: 8px; padding: 4px 6px; border-radius: 4px; font-weight: 900; text-transform: uppercase; border: 2px solid var(--mario-black); box-shadow: 2px 2px 0px #000; letter-spacing: 0.5px;}
+        .tag-multi { background: #3b82f6; color: white; }
+        .tag-aaa { background: #9333ea; color: white; }
+        .tag-coop { background: #10b981; color: white; }
+        .tag-sport { background: var(--mario-yellow); color: var(--mario-black); }
+    </style>
+</head>
+<body class="pb-10">
+
+    <!-- HEADER: Fokus Menjawab Customer -->
+    <header class="w-full bg-black p-4 sticky top-0 z-40 border-b-4 border-yellow-400 shadow-xl">
+        <div class="max-w-6xl mx-auto flex justify-between items-center gap-2">
+            <button onclick="window.location.href='https://arena-book.beuna.xyz'" class="mario-btn bg-white text-black p-2 md:px-4 text-[10px] md:text-sm shadow-[2px_2px_0px_#FFD700]">◀ <span class="hidden md:inline">KEMBALI KE </span>BOOKING</button>
+            <div class="text-right">
+                <p class="text-[9px] md:text-xs font-black text-yellow-400 uppercase tracking-widest leading-none">"Kak/Bang, ada game apa aja?"</p>
+                <h1 class="text-base md:text-xl font-black text-white mt-1">INI DAFTAR GAMENYA! 🎮</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto px-4 mt-6">
+        
+        <!-- PANDUAN CEPAT -->
+        <div class="bg-black text-white p-4 rounded-xl border-4 border-yellow-400 shadow-[6px_6px_0px_#000] mb-6 relative overflow-hidden">
+            <div class="absolute -right-4 -top-4 opacity-20 text-8xl">🕹️</div>
+            <div class="relative z-10">
+                <p class="text-xs md:text-sm font-bold leading-relaxed mb-2">Beda unit, beda koleksi gamenya lho!<br>Silakan pilih tab unit di bawah ini untuk melihat koleksi poster game yang tersedia di dalamnya.</p>
+                <p class="text-[10px] text-yellow-400 font-black uppercase tracking-wider animate-pulse">Geser menu di bawah jika pakai HP ➡️</p>
+            </div>
+        </div>
+
+        <!-- MOBILE FRIENDLY TABS -->
+        <div class="tab-scroll-container bg-white border-4 border-black rounded-xl shadow-[4px_4px_0px_#000] mb-6">
+            <button onclick="switchTab('unit3', this)" class="nav-btn py-3 px-4 text-xs md:text-sm font-black uppercase transition-all bg-black text-white">U3 Limo</button>
+            <button onclick="switchTab('unit4', this)" class="nav-btn py-3 px-4 text-xs md:text-sm font-black uppercase transition-all border-l-4 border-black hover:bg-gray-100">U4 Eden</button>
+            <button onclick="switchTab('unit5', this)" class="nav-btn py-3 px-4 text-xs md:text-sm font-black uppercase transition-all border-l-4 border-black hover:bg-gray-100">U5 Pluto</button>
+            <button onclick="switchTab('unit6', this)" class="nav-btn py-3 px-4 text-xs md:text-sm font-black uppercase transition-all border-l-4 border-black hover:bg-gray-100">U6 Falcon</button>
+        </div>
+
+        <!-- ================= UNIT 3 LIMO PANEL ================= -->
+        <div id="unit3" class="tab-panel active">
+            <div class="mb-4 text-center">
+                <h2 class="text-xl md:text-2xl font-black uppercase text-black mb-1 bg-white border-4 border-black shadow-[4px_4px_0px_#000] py-2 px-6 rounded-xl inline-block">🎮 UNIT 3 LIMO</h2>
+                <p class="text-[10px] md:text-xs font-bold text-white bg-black px-4 py-1.5 rounded-full inline-block mt-2 shadow-sm border-2 border-white">Koleksi Multiplayer Terlengkap</p>
+            </div>
+            <!-- Grid Poster: 2 kolom di HP, 4 kolom di Tablet, 5 kolom di PC -->
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5" id="list-unit3"></div>
+        </div>
+
+        <!-- ================= UNIT 4 EDEN PANEL ================= -->
+        <div id="unit4" class="tab-panel">
+            <div class="mb-4 text-center">
+                <h2 class="text-xl md:text-2xl font-black uppercase text-black mb-1 bg-white border-4 border-black shadow-[4px_4px_0px_#000] py-2 px-6 rounded-xl inline-block">🎮 UNIT 4 EDEN</h2>
+                <p class="text-[10px] md:text-xs font-bold text-white bg-black px-4 py-1.5 rounded-full inline-block mt-2 shadow-sm border-2 border-white">Variasi Genre Terluas</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5" id="list-unit4"></div>
+        </div>
+
+        <!-- ================= UNIT 5 PLUTO PANEL ================= -->
+        <div id="unit5" class="tab-panel">
+            <div class="mb-4 text-center">
+                <h2 class="text-xl md:text-2xl font-black uppercase text-black mb-1 bg-white border-4 border-black shadow-[4px_4px_0px_#000] py-2 px-6 rounded-xl inline-block">🎮 UNIT 5 PLUTO</h2>
+                <p class="text-[10px] md:text-xs font-bold text-white bg-black px-4 py-1.5 rounded-full inline-block mt-2 shadow-sm border-2 border-white">Fokus Judul Heavy AAA</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5" id="list-unit5"></div>
+        </div>
+
+        <!-- ================= UNIT 6 FALCON PANEL ================= -->
+        <div id="unit6" class="tab-panel">
+            <div class="mb-4 text-center">
+                <h2 class="text-xl md:text-2xl font-black uppercase text-black mb-1 bg-white border-4 border-black shadow-[4px_4px_0px_#000] py-2 px-6 rounded-xl inline-block">🎮 UNIT 6 FALCON</h2>
+                <p class="text-[10px] md:text-xs font-bold text-white bg-black px-4 py-1.5 rounded-full inline-block mt-2 shadow-sm border-2 border-white">Judul Terpopuler Pilihan</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5" id="list-unit6"></div>
+        </div>
+
+    </div>
+
+    <!-- Script Data & Logic -->
+    <script>
+        // DATABASE GAME: Tambahkan link URL poster di properti 'img'.
+        // Jika 'img' kosong, sistem akan menggunakan gambar generator otomatis sebagai placeholder.
+        const gameDatabase = {
+            unit3: [
+                { name: "A Way Out", img: "", tags: ["Co-op", "AAA"] },
+                { name: "Burnout Paradise", img: "", tags: ["Racing"] },
+                { name: "Call of Duty", img: "", tags: ["FPS", "AAA"] },
+                { name: "Crash Team Racing", img: "", tags: ["Racing", "Multi"] },
+                { name: "Cuphead", img: "", tags: ["Co-op", "Indie"] },
+                { name: "Demon Slayer 2", img: "", tags: ["Fighting", "Anime"] },
+                { name: "EA Sports FC 26", img: "", tags: ["Sport", "Multi"] },
+                { name: "PES 2026", img: "", tags: ["Sport", "Multi"] },
+                { name: "Formula 1 (F1)", img: "", tags: ["Racing", "AAA"] },
+                { name: "Ghost of Tsushima", img: "", tags: ["AAA", "Action"] },
+                { name: "GTA V", img: "", tags: ["AAA", "Open World"] },
+                { name: "Inside", img: "", tags: ["Indie", "Puzzle"] },
+                { name: "It Takes Two", img: "", tags: ["Co-op", "Masterpiece"] },
+                { name: "Limbo", img: "", tags: ["Indie", "Puzzle"] },
+                { name: "Little Nightmares I", img: "", tags: ["Horror", "Indie"] },
+                { name: "Little Nightmares II", img: "", tags: ["Horror", "Indie"] },
+                { name: "Naruto: UNSC", img: "", tags: ["Fighting", "Anime"] },
+                { name: "RDR 2", img: "", tags: ["AAA", "Open World"] },
+                { name: "Resident Evil 6", img: "", tags: ["Horror", "Action"] },
+                { name: "Rocket League", img: "", tags: ["Sport", "Multi"] },
+                { name: "Sniper Elite 3", img: "", tags: ["Action", "AAA"] },
+                { name: "Super Bomberman", img: "", tags: ["Multi", "Fun"] },
+                { name: "Trine", img: "", tags: ["Co-op", "Puzzle"] },
+                { name: "EA Sports UFC", img: "", tags: ["Fighting", "Sport"] }
+            ],
+            unit4: [
+                { name: "A Way Out", img: "", tags: ["Co-op", "AAA"] },
+                { name: "Crash Team Racing", img: "", tags: ["Racing", "Multi"] },
+                { name: "Devil May Cry 5", img: "", tags: ["AAA", "Action"] },
+                { name: "DreadOut 2", img: "", tags: ["Horror", "Indie"] },
+                { name: "Formula 1 (F1)", img: "", tags: ["Racing", "AAA"] },
+                { name: "EA Sports FC 26", img: "", tags: ["Sport", "Multi"] },
+                { name: "Ghost of Tsushima", img: "", tags: ["AAA", "Action"] },
+                { name: "GTA V", img: "", tags: ["AAA", "Open World"] },
+                { name: "Inside", img: "", tags: ["Indie", "Puzzle"] },
+                { name: "It Takes Two", img: "", tags: ["Co-op", "Masterpiece"] },
+                { name: "Limbo", img: "", tags: ["Indie", "Puzzle"] },
+                { name: "Little Nightmares", img: "", tags: ["Horror", "Indie"] },
+                { name: "Little Nightmares II", img: "", tags: ["Horror", "Indie"] },
+                { name: "MotoGP", img: "", tags: ["Racing"] },
+                { name: "Moving Out 2", img: "", tags: ["Co-op", "Fun"] },
+                { name: "Naruto: UNSC", img: "", tags: ["Fighting", "Anime"] },
+                { name: "Outlast", img: "", tags: ["Horror", "Indie"] },
+                { name: "PES 2026", img: "", tags: ["Sport", "Multi"] },
+                { name: "RDR 2", img: "", tags: ["AAA", "Open World"] },
+                { name: "Resident Evil 3", img: "", tags: ["Horror", "AAA"] },
+                { name: "Silksong", img: "", tags: ["Indie", "Adventure"] },
+                { name: "Sleeping Dogs", img: "", tags: ["AAA", "Action"] },
+                { name: "Street Fighter 6", img: "", tags: ["Fighting", "AAA"] },
+                { name: "Super Bomberman", img: "", tags: ["Multi", "Fun"] },
+                { name: "Tekken 7", img: "", tags: ["Fighting", "AAA"] },
+                { name: "EA Sports UFC 4", img: "", tags: ["Fighting", "Sport"] },
+                { name: "Unravel Two", img: "", tags: ["Co-op", "Indie"] }
+            ],
+            unit5: [
+                { name: "A Way Out", img: "", tags: ["Co-op", "AAA"] },
+                { name: "Call of Duty", img: "", tags: ["FPS", "AAA"] },
+                { name: "Cuphead", img: "", tags: ["Co-op", "Indie"] },
+                { name: "Formula 1 (F1)", img: "", tags: ["Racing", "AAA"] },
+                { name: "EA Sports FC 26", img: "", tags: ["Sport", "Multi"] },
+                { name: "Gang Beasts", img: "", tags: ["Multi", "Fun"] },
+                { name: "Ghost of Tsushima", img: "", tags: ["AAA", "Action"] },
+                { name: "God of War", img: "", tags: ["AAA", "Masterpiece"] },
+                { name: "GTA V", img: "", tags: ["AAA", "Open World"] },
+                { name: "Inside", img: "", tags: ["Indie", "Puzzle"] },
+                { name: "It Takes Two", img: "", tags: ["Co-op", "Masterpiece"] },
+                { name: "Limbo", img: "", tags: ["Indie", "Puzzle"] },
+                { name: "Little Nightmares", img: "", tags: ["Horror", "Indie"] },
+                { name: "Little Nightmares II", img: "", tags: ["Horror", "Indie"] },
+                { name: "Little Nightmares III", img: "", tags: ["Horror", "Indie"] },
+                { name: "Naruto: UNSC", img: "", tags: ["Fighting", "Anime"] },
+                { name: "Outlast", img: "", tags: ["Horror", "Indie"] },
+                { name: "PES 2026", img: "", tags: ["Sport", "Multi"] },
+                { name: "RDR 2", img: "", tags: ["AAA", "Open World"] },
+                { name: "Silksong", img: "", tags: ["Indie", "Adventure"] },
+                { name: "Sniper Elite 3", img: "", tags: ["Action", "AAA"] },
+                { name: "Tekken 7", img: "", tags: ["Fighting", "AAA"] },
+                { name: "EA Sports UFC", img: "", tags: ["Fighting", "Sport"] }
+            ],
+            unit6: [
+                { name: "GTA V", img: "", tags: ["AAA", "Open World"] },
+                { name: "EA Sports FC 26", img: "", tags: ["Sport", "Multi"] },
+                { name: "Outlast", img: "", tags: ["Horror", "Indie"] },
+                { name: "It Takes Two", img: "", tags: ["Co-op", "Masterpiece"] },
+                { name: "Tekken 7", img: "", tags: ["Fighting", "AAA"] },
+                { name: "PES 2026", img: "", tags: ["Sport", "Multi"] },
+                { name: "EA Sports UFC 3", img: "", tags: ["Fighting", "Sport"] },
+                { name: "MotoGP", img: "", tags: ["Racing"] },
+                { name: "Unravel Two", img: "", tags: ["Co-op", "Indie"] },
+                { name: "Little Nightmares", img: "", tags: ["Horror", "Indie"] },
+                { name: "Inside", img: "", tags: ["Indie", "Puzzle"] },
+                { name: "Limbo", img: "", tags: ["Indie", "Puzzle"] }
+            ]
+        };
+
+        // Custom Tab Switching Logic
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+            
+            // Handle Tab Buttons Styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-black', 'text-white');
+                btn.classList.add('hover:bg-gray-100', 'bg-white', 'text-black');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            
+            // Set active styles
+            element.classList.remove('hover:bg-gray-100', 'bg-white', 'text-black');
+            element.classList.add('bg-black', 'text-white');
+        }
+
+        // Render Game Cards / Poster
+        function renderCards(unitId, elementId) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = "";
+            
+            gameDatabase[unitId].forEach(game => {
+                // Menentukan warna tag berdasarkan genre
+                let tagsHTML = game.tags.map(t => {
+                    let className = "bg-gray-200 text-black"; // Default
+                    if (["AAA", "Masterpiece"].includes(t)) className = "tag-aaa";
+                    else if (["Co-op", "Fun", "Multi"].includes(t)) className = "tag-coop";
+                    else if (["Sport", "Racing"].includes(t)) className = "tag-sport";
+                    else if (["Action", "FPS", "Fighting"].includes(t)) className = "tag-multi";
+                    return `<span class="tag ${className}">${t}</span>`;
+                }).join('');
+
+                // Generator Placeholder Gambar jika link image tidak ada
+                let encodedName = encodeURIComponent(game.name.split(' ').join('\n'));
+                let imgSrc = game.img ? game.img : `https://placehold.co/300x400/222222/FFD700?text=${encodedName}`;
+
+                container.innerHTML += `
+                    <div class="mario-card p-0 flex flex-col h-full bg-black group cursor-pointer">
+                        <div class="relative w-full aspect-[3/4] border-b-4 border-black bg-zinc-800 overflow-hidden">
+                            <img src="${imgSrc}" alt="${game.name}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
+                            
+                            <!-- Overlay Tags di atas gambar -->
+                            <div class="absolute top-2 right-2 flex flex-col gap-1 items-end">
+                                ${tagsHTML}
+                            </div>
+                        </div>
+                        <div class="p-3 bg-white flex-grow flex items-center justify-center text-center">
+                            <h3 class="font-black text-xs md:text-sm leading-tight uppercase text-black group-hover:text-[#FF6B00] transition-colors">${game.name}</h3>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Initialize Application Data
+        window.onload = function() {
+            renderCards('unit3', 'list-unit3');
+            renderCards('unit4', 'list-unit4');
+            renderCards('unit5', 'list-unit5');
+            renderCards('unit6', 'list-unit6');
+        }
+    </script>
+</body>
+</html>
