@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arena Playbox - Reachout Priority</title>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background: #f4f7f6; color: #333; }
+  h1 { text-align: center; color: #2c3e50; }
+  h2 { color: #2980b9; border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-top: 30px; }
+  table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); margin-bottom: 20px; }
+  th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+  th { background: #34495e; color: white; }
+  tr:hover { background: #f5f5f5; }
+  button { background: #25D366; color: white; border: none; padding: 8px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+  button:hover { background: #1ebe57; }
+  .badge { background: #e74c3c; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>Daftar Prioritas Reachout Arena Playbox</h1>
+<div id="content"></div>
+
+<script>
+const data = [
+  ['Admin 1', 'Syahrul', '6282267256939', 'Banda', 18],
+  ['Admin 1', 'Uti', '6282173792150', 'Banda', 12],
+  ['Admin 1', 'Muhammad Akram', '6285268731837', 'Banda', 10],
+  ['Admin 1', 'Zahran', '6283846980121', 'Banda', 9],
+  ['Admin 1', 'Long', '6285362633860', 'Sabang', 9],
+  ['Admin 1', 'rendy', '6282163489221', 'Sabang', 8],
+  ['Admin 1', 'Rezi', '6282253912601', 'Banda', 8],
+  ['Admin 1', 'Syah finte', '6282161496751', 'Banda', 7],
+  ['Admin 1', 'Riko', '6282298598168', 'Banda', 7],
+  ['Admin 1', 'Alham', '6281262969387', 'Sabang', 6],
+  ['Admin 1', 'alfin', '6282277099293', 'Sabang', 6],
+  ['Admin 1', 'Kafka', '6283119456332', 'Sabang', 6],
+  ['Admin 1', 'Rahmat', '6281397440462', 'Banda', 5],
+  ['Admin 1', 'Abzul fansuri', '6281288911839', 'Sabang', 5],
+  ['Admin 1', 'Rahmat', '6281397440462', 'Banda', 5],
+  ['Admin 1', 'Ebyy', '6282253025837', 'Sabang', 5],
+  ['Admin 1', 'Izul', '6282277162774', 'Banda', 5],
+  ['Admin 1', 'M. Randikha. Pratama', '6285142233685', 'Sabang', 5],
+  ['Admin 1', 'Adi', '6285275241302', 'Sabang', 5],
+  ['Admin 1', 'Arga', '628567331683', 'Banda', 5],
+  ['Admin 1', 'Fajaruddin', '6282160650915', 'Banda', 4],
+  ['Admin 1', 'Kribo', '6282173321786', 'Sabang', 4],
+  ['Admin 1', 'Muammar Asri', '6282273012649', 'Banda', 4],
+  ['Admin 1', 'Raffi', '6283144564852', 'Banda', 4],
+  ['Admin 1', 'Akil (kawan jefri)', '6285765662649', 'Banda', 4],
+  ['Admin 1', 'kitting barber', '6285767924093', 'Banda', 4],
+  ['Admin 1', 'farhan', '6281262075278', 'Banda', 3],
+  ['Admin 1', 'Geran', '6282131580104', 'Banda', 3],
+  ['Admin 1', 'Akmal', '6282211217676', 'Banda', 3],
+  ['Admin 1', 'Aiman', '6282261163664', 'Banda', 3],
+  ['Admin 1', 'Andi', '6282272129484', 'Banda', 3],
+  ['Admin 1', 'Dafa Dego', '6282276306170', 'Sabang', 3],
+  ['Admin 1', 'Wiran Arabil \\\'Usra', '6282329281168', 'Banda', 3],
+  ['Admin 1', 'Saky', '6282364494278', 'Sabang', 3],
+  ['Admin 1', 'Wira', '6283842043526', 'Banda', 3],
+  ['Admin 1', 'David El nico', '6283857797119', 'Banda', 3],
+  ['Admin 1', 'arridha', '6285184076470', 'Banda', 3],
+  ['Admin 1', 'Alif', '6285191137944', 'Banda', 3],
+  ['Admin 1', 'Adlin', '6285216126134', 'Banda', 3],
+  ['Admin 1', 'pasha', '6285240340383', 'Banda', 3],
+  ['Admin 1', 'Gusti setiawan', '6285314173946', 'Sabang', 3],
+  ['Admin 1', 'test', '6285359033973', 'Banda', 3],
+  ['Admin 1', 'naufal', '6285360888219', 'Sabang', 3],
+  ['Admin 1', 'Nanda', '6285373850812', 'Banda', 3],
+  ['Admin 1', 'Raisul', '6287769141367', 'Banda', 3],
+  ['Admin 1', 'Alsya', '62895400935982', 'Banda', 3],
+  ['Admin 1', 'SYUKRAN', '62895411752686', 'Sabang', 3],
+  ['Admin 1', 'Rakan', '6281360234301', 'Sabang', 2],
+  ['Admin 1', 'Zahran', '6283846980121', 'Banda', 2],
+  ['Admin 1', 'Alip', '6285362633860', 'Sabang', 2],
+  ['Admin 2', 'Rafiqul', '6289520484939', 'Banda', 2],
+  ['Admin 2', 'Ali furqon', '628112514009', 'Sabang', 2],
+  ['Admin 2', 'Hendri', '6281260774546', 'Banda', 2],
+  ['Admin 2', 'Khalif mubaraq', '6281265376599', 'Sabang', 2],
+  ['Admin 2', 'Rakan', '6281360234301', 'Sabang', 2],
+  ['Admin 2', 'Apis', '6281360235659', 'Sabang', 2],
+  ['Admin 2', 'Riza', '6281370905914', 'Banda', 2],
+  ['Admin 2', 'afghan', '6282165213317', 'Banda', 2],
+  ['Admin 2', 'Nazarul', '6282165349577', 'Banda', 2],
+  ['Admin 2', 'Ibnu', '6282197697050', 'Sabang', 2],
+  ['Admin 2', 'Bang yudha', '6282211180811', 'Banda', 2],
+  ['Admin 2', 'Rafli muna', '6282271227943', 'Sabang', 2],
+  ['Admin 2', 'Rifki 1', '6282274011123', 'Sabang', 2],
+  ['Admin 2', 'Dendi irawan', '6282274308927', 'Banda', 2],
+  ['Admin 2', 'Hafidz', '6282276420643', 'Sabang', 2],
+  ['Admin 2', 'Rizki', '6282284363736', 'Banda', 2],
+  ['Admin 2', 'Royhan', '6282289470465', 'Banda', 2],
+  ['Admin 2', 'Farhan', '6282363104251', 'Banda', 2],
+  ['Admin 2', 'Fakhri', '6282368741717', 'Banda', 2],
+  ['Admin 2', 'Danda', '6282386341698', 'Banda', 2],
+  ['Admin 2', 'Xavier', '6283112204302', 'Sabang', 2],
+  ['Admin 2', 'Fayadh', '6283144182876', 'Banda', 2],
+  ['Admin 2', 'raffy', '6283148868854', 'Banda', 2],
+  ['Admin 2', 'Yusuf', '6283193423764', 'Banda', 2],
+  ['Admin 2', 'Arief', '6285148484549', 'Banda', 2],
+  ['Admin 2', 'fatih', '6285186852474', 'Banda', 2],
+  ['Admin 2', 'Ganda', '6285210573027', 'Banda', 2],
+  ['Admin 2', 'Azkal', '6285215034476', 'Banda', 2],
+  ['Admin 2', 'alsya', '6285314525766', 'Banda', 2],
+  ['Admin 2', 'Nabil', '6285323339556', 'Sabang', 2],
+  ['Admin 2', 'Bangda', '6285363197413', 'Banda', 2],
+  ['Admin 2', 'Khalil', '6285668109269', 'Banda', 2],
+  ['Admin 2', 'fais', '6285769786652', 'Banda', 2],
+  ['Admin 2', 'karim', '6285833167875', 'Banda', 2],
+  ['Admin 2', 'Ravi', '6287721679136', 'Sabang', 2],
+  ['Admin 2', 'fera maunida', '6287833947986', 'Banda', 2],
+  ['Admin 2', 'Ripal', '62882015689543', 'Banda', 2],
+  ['Admin 2', 'Feri', '6288261531767', 'Banda', 2],
+  ['Admin 2', 'Dapin', '6289515212347', 'Banda', 2],
+  ['Admin 2', 'Kemal', '6289518213655', 'Banda', 2],
+  ['Admin 2', 'Alfath', '62895338681517', 'Sabang', 2],
+  ['Admin 2', 'Ali furqan', '628112514009', 'Sabang', 1],
+  ['Admin 2', 'Alham', '6281262969387', 'Sabang', 1],
+  ['Admin 2', 'Cokuw', '6281335052015', 'Sabang', 1],
+  ['Admin 2', 'Nabil', '6281977123694', 'Banda', 1],
+  ['Admin 2', 'Syah finte', '6282161496751', 'Banda', 1],
+  ['Admin 2', 'Pra tadris', '6282197697050', 'Sabang', 1],
+  ['Admin 2', 'Dzar', '6282211066605', 'Banda', 1],
+  ['Admin 2', 'Aya', '6282226579377', 'Banda', 1],
+  ['Admin 2', 'Rafli muna', '6282271227943', 'Sabang', 1],
+  ['Admin 3', 'Hafidz 2', '6282276420643', 'Sabang', 1],
+  ['Admin 3', 'Rakha', '6282287671534', 'Banda', 1],
+  ['Admin 3', 'Hilmi', '6282320174162', 'Sabang', 1],
+  ['Admin 3', 'Wiran', '6282329281168', 'Banda', 1],
+  ['Admin 3', 'Hari', '6282343460931', 'Sabang', 1],
+  ['Admin 3', 'Fiqih', '6282364494278', 'Sabang', 1],
+  ['Admin 3', 'Adi satria', '6283166651804', 'Banda', 1],
+  ['Admin 3', 'Hizbullah/birul', '6283861586228', 'Banda', 1],
+  ['Admin 3', 'Diki', '6285261516202', 'Banda', 1],
+  ['Admin 3', 'Jefri', '6285760151346', 'Banda', 1],
+  ['Admin 3', 'Kwn jefri', '6285765662649', 'Banda', 1],
+  ['Admin 3', 'Ravi', '6287721679136', 'Sabang', 1],
+  ['Admin 3', 'Pera', '6287833947986', 'Banda', 1],
+  ['Admin 3', 'TESTING', '628116803661', 'Banda', 1],
+  ['Admin 3', 'Ahmat fazil', '6281216625369', 'Banda', 1],
+  ['Admin 3', 'fatir', '6281223501158', 'Banda', 1],
+  ['Admin 3', 'Bejok', '6281226244387', 'Banda', 1],
+  ['Admin 3', 'Bang Al', '6281260125775', 'Banda', 1],
+  ['Admin 3', 'Farenza alfairuz', '6281260697200', 'Banda', 1],
+  ['Admin 3', 'bily', '6281262044132', 'Sabang', 1],
+  ['Admin 3', 'rayhan arroyan', '6281262823341', 'Banda', 1],
+  ['Admin 3', 'Imam gusnanda ariga', '6281264011554', 'Banda', 1],
+  ['Admin 3', 'kausar', '6281264018959', 'Banda', 1],
+  ['Admin 3', 'Juan', '6281264975869', 'Banda', 1],
+  ['Admin 3', 'apil', '6281265076093', 'Sabang', 1],
+  ['Admin 3', 'Wijaya', '6281265858656', 'Banda', 1],
+  ['Admin 3', 'Farenza alfairuz', '6281269011225', 'Banda', 1],
+  ['Admin 3', 'fatih', '6281269921792', 'Banda', 1],
+  ['Admin 3', 'hanif', '6281276189676', 'Banda', 1],
+  ['Admin 3', 'Riki', '6281278235003', 'Sabang', 1],
+  ['Admin 3', 'T reza', '6281286315411', 'Banda', 1],
+  ['Admin 3', 'deski', '6281333150096', 'Banda', 1],
+  ['Admin 3', 'sultan', '6281351959387', 'Banda', 1],
+  ['Admin 3', 'andra', '6281360389691', 'Banda', 1],
+  ['Admin 3', 'Jack', '6281360445524', 'Banda', 1],
+  ['Admin 3', 'Sayet', '6281362388314', 'Banda', 1],
+  ['Admin 3', 'Aulia', '6281370350351', 'Sabang', 1],
+  ['Admin 3', 'farid', '6281374785324', 'Banda', 1],
+  ['Admin 3', 'riffat', '6281375459475', 'Banda', 1],
+  ['Admin 3', 'azis', '6281378435792', 'Banda', 1],
+  ['Admin 3', 'Faiz', '628139472282', 'Sabang', 1],
+  ['Admin 3', 'Haikal', '6281539968294', 'Banda', 1],
+  ['Admin 3', 'Iqbal', '6282130165453', 'Banda', 1],
+  ['Admin 3', 'Geran', '6282132580104', 'Banda', 1],
+  ['Admin 3', 'Ahmad', '6282141326144', 'Banda', 1],
+  ['Admin 3', 'Ridha', '6282152080739', 'Banda', 1],
+  ['Admin 3', 'Rafael Fratma Wahyudi', '6282161057640', 'Banda', 1],
+  ['Admin 3', 'Ilham budi', '6282161094194', 'Banda', 1],
+  ['Admin 3', 'raji', '6282161480825', 'Banda', 1],
+  ['Admin 3', 'acer', '6282162440274', 'Banda', 1],
+  ['Admin 4', 'Tajul fazari', '6282163970638', 'Banda', 1],
+  ['Admin 4', 'Machdum', '6282164417952', 'Banda', 1],
+  ['Admin 4', 'Zafir', '6282164505101', 'Sabang', 1],
+  ['Admin 4', 'rafiq', '6282167106895', 'Banda', 1],
+  ['Admin 4', 'faiz', '6282171786656', 'Banda', 1],
+  ['Admin 4', 'Ikhsan', '628217775598', 'Banda', 1],
+  ['Admin 4', 'Mohammad insan', '6282183311525', 'Banda', 1],
+  ['Admin 4', 'Pra tadris grub', '6282185470351', 'Sabang', 1],
+  ['Admin 4', 'Dany', '6282214487310', 'Banda', 1],
+  ['Admin 4', 'vikri', '6282223416590', 'Banda', 1],
+  ['Admin 4', 'Zul ramadhan', '6282225306240', 'Banda', 1],
+  ['Admin 4', 'Aya', '6282226579377', 'Banda', 1],
+  ['Admin 4', 'Rivan', '6282229036669', 'Sabang', 1],
+  ['Admin 4', 'Daffa', '6282235447926', 'Banda', 1],
+  ['Admin 4', 'satria', '6282236142989', 'Banda', 1],
+  ['Admin 4', 'akbar al fatih', '6282237460920', 'Banda', 1],
+  ['Admin 4', 'reksa', '6282269842246', 'Banda', 1],
+  ['Admin 4', 'tanzilal', '6282272162645', 'Banda', 1],
+  ['Admin 4', 'sufi', '6282272970318', 'Banda', 1],
+  ['Admin 4', 'Rehan', '6282273261311', 'Sabang', 1],
+  ['Admin 4', 'Mulya', '6282273518789', 'Banda', 1],
+  ['Admin 4', 'Radan', '6282275699152', 'Banda', 1],
+  ['Admin 4', 'sitokk', '6282275702997', 'Banda', 1],
+  ['Admin 4', 'Fauzan', '6282275781407', 'Banda', 1],
+  ['Admin 4', 'Habibi', '6282276967816', 'Banda', 1],
+  ['Admin 4', 'Bang Ki Gepe', '6282277110652', 'Banda', 1],
+  ['Admin 4', 'Fadhlul Ihsan', '6282277457104', 'Banda', 1],
+  ['Admin 4', 'Fajriansyah', '6282279459721', 'Banda', 1],
+  ['Admin 4', 'Fadhilsyukri', '6282282066695', 'Banda', 1],
+  ['Admin 4', 'Rakha', '6282287671534', 'Banda', 1],
+  ['Admin 4', 'Fauzan Maulana', '6282291987857', 'Banda', 1],
+  ['Admin 4', 'James', '6282296276569', 'Banda', 1],
+  ['Admin 4', 'repi', '6282297034090', 'Banda', 1],
+  ['Admin 4', 'Riko', '6282298598268', 'Banda', 1],
+  ['Admin 4', 'kiki', '6282299192180', 'Banda', 1],
+  ['Admin 4', 'Habiburrahman', '6282310322369', 'Banda', 1],
+  ['Admin 4', 'Azandy M', '6282311503057', 'Banda', 1],
+  ['Admin 4', 'Acel', '6282316116020', 'Banda', 1],
+  ['Admin 4', 'alpi sahrin', '6282335265624', 'Banda', 1],
+  ['Admin 4', 'Ripal', '6282339122457', 'Sabang', 1],
+  ['Admin 4', 'Fitra', '6282341399089', 'Banda', 1],
+  ['Admin 4', 'Azwar', '6282341681767', 'Sabang', 1],
+  ['Admin 4', 'Ayyub', '6282351338879', 'Banda', 1],
+  ['Admin 4', 'putri', '6282363122206', 'Banda', 1],
+  ['Admin 4', 'Dicky', '6282363756730', 'Banda', 1],
+  ['Admin 4', 'diky', '6282363756739', 'Banda', 1],
+  ['Admin 4', 'Suhada', '6282364328694', 'Sabang', 1],
+  ['Admin 4', 'Aris', '6282366600079', 'Sabang', 1],
+  ['Admin 4', 'Yanda', '6282374638573', 'Banda', 1],
+  ['Admin 4', 'reyval', '6282379411369', 'Sabang', 1],
+];
+
+function chatWa(nomor, nama) {
+    let msg = `maaf bang ${nama} ganggu, ini kami admin arena playbox\nkami mau ngasih tau ke pelanggan-pelanggan arena yang kami prioritasin kalau kami ganti nomor wa kemari bang 082371209570 atau langsung lewat link wa.me/6282371209570\n\nmakasi ya bang atas waktunya`;
+    window.open(`https://wa.me/${nomor}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+const content = document.getElementById('content');
+const admins = ['Admin 1', 'Admin 2', 'Admin 3', 'Admin 4'];
+
+admins.forEach(admin => {
+    let adminData = data.filter(d => d[0] === admin);
+    if(adminData.length === 0) return;
+    
+    let html = `<h2>${admin} (${adminData.length} Pelanggan)</h2>`;
+    html += `<table><tr><th>No</th><th>Nama Pelanggan</th><th>Nomor WA</th><th>Daerah</th><th>Trx</th><th>Aksi</th></tr>`;
+    
+    adminData.forEach((row, i) => {
+        html += `<tr>
+            <td>${i+1}</td>
+            <td>${row[1]}</td>
+            <td>${row[2]}</td>
+            <td>${row[3]}</td>
+            <td><span class="badge">${row[4]}</span></td>
+            <td><button onclick="chatWa('${row[2]}', '${row[1]}')">Chat WA</button></td>
+        </tr>`;
+    });
+    html += `</table>`;
+    content.innerHTML += html;
+});
+</script>
+</body>
+</html>
